@@ -12,6 +12,10 @@
 		997CE5DF253717420060CAED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 997CE5DE253717410060CAED /* Assets.xcassets */; };
 		997CE5E2253717420060CAED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 997CE5E0253717420060CAED /* Main.storyboard */; };
 		997CE5E5253717420060CAED /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 997CE5E4253717420060CAED /* main.m */; };
+		997CE5EE253717ED0060CAED /* libCppRender.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 997CE5ED253717ED0060CAED /* libCppRender.a */; };
+		997CE5F325371A5E0060CAED /* CppGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 997CE5F225371A5E0060CAED /* CppGLView.mm */; };
+		997CE5F625371AED0060CAED /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 997CE5F525371AED0060CAED /* AppKit.framework */; };
+		997CE5F825371BFC0060CAED /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 997CE5F725371BFC0060CAED /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +29,11 @@
 		997CE5E3253717420060CAED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		997CE5E4253717420060CAED /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		997CE5E6253717420060CAED /* CppApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CppApp.entitlements; sourceTree = "<group>"; };
+		997CE5ED253717ED0060CAED /* libCppRender.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libCppRender.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		997CE5F225371A5E0060CAED /* CppGLView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CppGLView.mm; sourceTree = "<group>"; };
+		997CE5F425371A760060CAED /* CppGLView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CppGLView.h; sourceTree = "<group>"; };
+		997CE5F525371AED0060CAED /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		997CE5F725371BFC0060CAED /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +41,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				997CE5F825371BFC0060CAED /* OpenGL.framework in Frameworks */,
+				997CE5F625371AED0060CAED /* AppKit.framework in Frameworks */,
+				997CE5EE253717ED0060CAED /* libCppRender.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +55,7 @@
 			children = (
 				997CE5D7253717400060CAED /* CppApp */,
 				997CE5D6253717400060CAED /* Products */,
+				997CE5EC253717ED0060CAED /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -66,8 +79,20 @@
 				997CE5E3253717420060CAED /* Info.plist */,
 				997CE5E4253717420060CAED /* main.m */,
 				997CE5E6253717420060CAED /* CppApp.entitlements */,
+				997CE5F225371A5E0060CAED /* CppGLView.mm */,
+				997CE5F425371A760060CAED /* CppGLView.h */,
 			);
 			path = CppApp;
+			sourceTree = "<group>";
+		};
+		997CE5EC253717ED0060CAED /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				997CE5F725371BFC0060CAED /* OpenGL.framework */,
+				997CE5F525371AED0060CAED /* AppKit.framework */,
+				997CE5ED253717ED0060CAED /* libCppRender.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,6 +167,7 @@
 				997CE5DD253717400060CAED /* ViewController.m in Sources */,
 				997CE5E5253717420060CAED /* main.m in Sources */,
 				997CE5DA253717400060CAED /* AppDelegate.m in Sources */,
+				997CE5F325371A5E0060CAED /* CppGLView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

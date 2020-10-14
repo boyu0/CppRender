@@ -15,7 +15,8 @@
 class CppRender
 {
     public:
-    void HelloWorld(const char *);
+    static bool init();
+    static void genFrameBuffers(int n, int* ids);
 };
 
 #pragma GCC visibility pop

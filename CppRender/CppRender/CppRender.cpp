@@ -8,17 +8,20 @@
 
 #include <iostream>
 #include "CppRender.hpp"
-#include "CppRenderPriv.hpp"
+#include "CppContext.hpp"
 
-void CppRender::HelloWorld(const char * s)
-{
-    CppRenderPriv *theObj = new CppRenderPriv;
-    theObj->HelloWorldPriv(s);
-    delete theObj;
-};
+CppContext* context = nullptr;
 
-void CppRenderPriv::HelloWorldPriv(const char * s) 
+bool CppRender::init()
 {
-    std::cout << s << std::endl;
+    context = new CppContext();
+    if(context != nullptr ||  !context->init()){
+        
+        return false;
+    }
+}
+
+void CppRender::genFrameBuffers(int n, int* ids)
+{
 };
 
