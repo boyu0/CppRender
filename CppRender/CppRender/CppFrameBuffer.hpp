@@ -10,12 +10,20 @@
 #define CppFrameBuffer_hpp
 
 #include <stdio.h>
+#include "CppDefine.h"
 
 namespace CppRender{
 class FrameBuffer{
 public:
-    FrameBuffer();
-    ~FrameBuffer();
+
+    void bindRenderBuffer(int idx);
+    void bindTexture2D(int idx);
+    void clear(int mask);
+    inline int getTexture2D() { return _texture2DIndex; }
+    
+private:
+    int _renderBufferIndex = CPPRENDER_INVALID_VALUE;
+    int _texture2DIndex = CPPRENDER_INVALID_VALUE;
 };
 }
 

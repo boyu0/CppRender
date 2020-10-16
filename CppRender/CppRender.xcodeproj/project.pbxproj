@@ -21,6 +21,8 @@
 		997CE60D253932250060CAED /* CppVertexArray.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE60B253932250060CAED /* CppVertexArray.hpp */; };
 		997CE6102539A3850060CAED /* CppUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE60E2539A3850060CAED /* CppUtils.cpp */; };
 		997CE6112539A3850060CAED /* CppUtils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE60F2539A3850060CAED /* CppUtils.hpp */; };
+		99F6AEC02539EAC70056EB4F /* CppTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99F6AEBE2539EAC70056EB4F /* CppTexture.cpp */; };
+		99F6AEC12539EAC70056EB4F /* CppTexture.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99F6AEBF2539EAC70056EB4F /* CppTexture.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		997CE60B253932250060CAED /* CppVertexArray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppVertexArray.hpp; sourceTree = "<group>"; };
 		997CE60E2539A3850060CAED /* CppUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppUtils.cpp; sourceTree = "<group>"; };
 		997CE60F2539A3850060CAED /* CppUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppUtils.hpp; sourceTree = "<group>"; };
+		99F6AEBE2539EAC70056EB4F /* CppTexture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppTexture.cpp; sourceTree = "<group>"; };
+		99F6AEBF2539EAC70056EB4F /* CppTexture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppTexture.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,8 @@
 				997CE60B253932250060CAED /* CppVertexArray.hpp */,
 				997CE60E2539A3850060CAED /* CppUtils.cpp */,
 				997CE60F2539A3850060CAED /* CppUtils.hpp */,
+				99F6AEBE2539EAC70056EB4F /* CppTexture.cpp */,
+				99F6AEBF2539EAC70056EB4F /* CppTexture.hpp */,
 			);
 			path = CppRender;
 			sourceTree = "<group>";
@@ -98,6 +104,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99F6AEC12539EAC70056EB4F /* CppTexture.hpp in Headers */,
 				997CE60825387D5E0060CAED /* CppBuffer.hpp in Headers */,
 				997CE600253727E30060CAED /* CppContext.hpp in Headers */,
 				997CE60D253932250060CAED /* CppVertexArray.hpp in Headers */,
@@ -168,6 +175,7 @@
 				997CE60725387D5E0060CAED /* CppBuffer.cpp in Sources */,
 				997CE60C253932250060CAED /* CppVertexArray.cpp in Sources */,
 				997CE5FF253727E30060CAED /* CppContext.cpp in Sources */,
+				99F6AEC02539EAC70056EB4F /* CppTexture.cpp in Sources */,
 				997CE60325387C610060CAED /* CppRenderBuffer.cpp in Sources */,
 				997CE5C6253716DE0060CAED /* CppRender.cpp in Sources */,
 				997CE5FB253726E40060CAED /* CppFrameBuffer.cpp in Sources */,
@@ -297,6 +305,7 @@
 				GCC_ENABLE_CPP_RTTI = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/include";
 			};
 			name = Debug;
 		};
@@ -310,6 +319,7 @@
 				GCC_ENABLE_CPP_RTTI = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/include";
 			};
 			name = Release;
 		};

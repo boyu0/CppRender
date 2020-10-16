@@ -13,6 +13,7 @@
 
 namespace CppRender{
 class RenderBuffer{
+public:
 };
 }
 
