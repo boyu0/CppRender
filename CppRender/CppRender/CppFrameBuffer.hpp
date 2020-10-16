@@ -11,4 +11,12 @@
 
 #include <stdio.h>
 
+namespace CppRender{
+class FrameBuffer{
+public:
+    FrameBuffer();
+    ~FrameBuffer();
+};
+}
+
 #endif /* CppFrameBuffer_hpp */

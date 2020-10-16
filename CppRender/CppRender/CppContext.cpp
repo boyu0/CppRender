@@ -7,18 +7,39 @@
 //
 
 #include "CppContext.hpp"
+#include "CppFrameBuffer.hpp"
+#include "CppRender.hpp"
+#include "CppUtils.hpp"
 
-CppContext::CppContext()
+namespace CppRender{
+Context::Context()
 {
     
 }
 
-CppContext::~CppContext()
+Context::~Context()
 {
     
 }
 
-bool CppContext::init()
+void Context::genFrameBuffers(int n, int* ids)
+{
+    for (int i = 0; i < n; ++i) {
+        FrameBuffer* buffer = new FrameBuffer();
+        _frameBuffers.emplace(std::pair<_frameBufferIndex++, buffer>);
+    }
+}
+
+void Context::bindFrameBuffer(int id)
 {
     
+}
+
+bool Context::init()
+{
+    genFrameBuffers(1, &_defaultFrameBuffer);
+    CPPRENDER_CHECK_RETURN_FALSE(_defaultFrameBuffer != CPPRENDER_INVALID_VALUE);
+    
+    return true;
+}
 }

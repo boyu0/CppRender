@@ -9,19 +9,37 @@
 #include <iostream>
 #include "CppRender.hpp"
 #include "CppContext.hpp"
+#include "CppFrameBuffer.hpp"
+#include "CppBuffer.hpp"
+#include "CppVertexArray.hpp"
+#include <unordered_map>
 
-CppContext* context = nullptr;
+namespace CppRender{
 
-bool CppRender::init()
+Context* ctx = nullptr;
+
+bool Render::init()
 {
-    context = new CppContext();
-    if(context != nullptr ||  !context->init()){
-        
+    ctx = new Context();
+    if(ctx != nullptr ||  !ctx->init()){
         return false;
     }
+    
+    return true;
 }
 
-void CppRender::genFrameBuffers(int n, int* ids)
+void Render::genFrameBuffers(int n, int* ids)
 {
-};
+}
 
+static void bindFrameBuffer(int id)
+{
+    
+}
+
+void Render::clear(unsigned int bit)
+{
+    
+}
+
+}

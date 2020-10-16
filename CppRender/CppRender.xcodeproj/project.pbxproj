@@ -13,6 +13,14 @@
 		997CE5FC253726E40060CAED /* CppFrameBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE5FA253726E40060CAED /* CppFrameBuffer.hpp */; };
 		997CE5FF253727E30060CAED /* CppContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE5FD253727E30060CAED /* CppContext.cpp */; };
 		997CE600253727E30060CAED /* CppContext.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE5FE253727E30060CAED /* CppContext.hpp */; };
+		997CE60325387C610060CAED /* CppRenderBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE60125387C610060CAED /* CppRenderBuffer.cpp */; };
+		997CE60425387C610060CAED /* CppRenderBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE60225387C610060CAED /* CppRenderBuffer.hpp */; };
+		997CE60725387D5E0060CAED /* CppBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE60525387D5E0060CAED /* CppBuffer.cpp */; };
+		997CE60825387D5E0060CAED /* CppBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE60625387D5E0060CAED /* CppBuffer.hpp */; };
+		997CE60C253932250060CAED /* CppVertexArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE60A253932250060CAED /* CppVertexArray.cpp */; };
+		997CE60D253932250060CAED /* CppVertexArray.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE60B253932250060CAED /* CppVertexArray.hpp */; };
+		997CE6102539A3850060CAED /* CppUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE60E2539A3850060CAED /* CppUtils.cpp */; };
+		997CE6112539A3850060CAED /* CppUtils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE60F2539A3850060CAED /* CppUtils.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +31,15 @@
 		997CE5FA253726E40060CAED /* CppFrameBuffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppFrameBuffer.hpp; sourceTree = "<group>"; };
 		997CE5FD253727E30060CAED /* CppContext.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppContext.cpp; sourceTree = "<group>"; };
 		997CE5FE253727E30060CAED /* CppContext.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppContext.hpp; sourceTree = "<group>"; };
+		997CE60125387C610060CAED /* CppRenderBuffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppRenderBuffer.cpp; sourceTree = "<group>"; };
+		997CE60225387C610060CAED /* CppRenderBuffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppRenderBuffer.hpp; sourceTree = "<group>"; };
+		997CE60525387D5E0060CAED /* CppBuffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppBuffer.cpp; sourceTree = "<group>"; };
+		997CE60625387D5E0060CAED /* CppBuffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppBuffer.hpp; sourceTree = "<group>"; };
+		997CE60925392AB00060CAED /* CppDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CppDefine.h; sourceTree = "<group>"; };
+		997CE60A253932250060CAED /* CppVertexArray.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppVertexArray.cpp; sourceTree = "<group>"; };
+		997CE60B253932250060CAED /* CppVertexArray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppVertexArray.hpp; sourceTree = "<group>"; };
+		997CE60E2539A3850060CAED /* CppUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppUtils.cpp; sourceTree = "<group>"; };
+		997CE60F2539A3850060CAED /* CppUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppUtils.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +78,15 @@
 				997CE5FA253726E40060CAED /* CppFrameBuffer.hpp */,
 				997CE5FD253727E30060CAED /* CppContext.cpp */,
 				997CE5FE253727E30060CAED /* CppContext.hpp */,
+				997CE60125387C610060CAED /* CppRenderBuffer.cpp */,
+				997CE60225387C610060CAED /* CppRenderBuffer.hpp */,
+				997CE60525387D5E0060CAED /* CppBuffer.cpp */,
+				997CE60625387D5E0060CAED /* CppBuffer.hpp */,
+				997CE60925392AB00060CAED /* CppDefine.h */,
+				997CE60A253932250060CAED /* CppVertexArray.cpp */,
+				997CE60B253932250060CAED /* CppVertexArray.hpp */,
+				997CE60E2539A3850060CAED /* CppUtils.cpp */,
+				997CE60F2539A3850060CAED /* CppUtils.hpp */,
 			);
 			path = CppRender;
 			sourceTree = "<group>";
@@ -72,8 +98,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				997CE60825387D5E0060CAED /* CppBuffer.hpp in Headers */,
 				997CE600253727E30060CAED /* CppContext.hpp in Headers */,
+				997CE60D253932250060CAED /* CppVertexArray.hpp in Headers */,
 				997CE5C2253716DE0060CAED /* CppRender.hpp in Headers */,
+				997CE6112539A3850060CAED /* CppUtils.hpp in Headers */,
+				997CE60425387C610060CAED /* CppRenderBuffer.hpp in Headers */,
 				997CE5FC253726E40060CAED /* CppFrameBuffer.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,9 +165,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				997CE60725387D5E0060CAED /* CppBuffer.cpp in Sources */,
+				997CE60C253932250060CAED /* CppVertexArray.cpp in Sources */,
 				997CE5FF253727E30060CAED /* CppContext.cpp in Sources */,
+				997CE60325387C610060CAED /* CppRenderBuffer.cpp in Sources */,
 				997CE5C6253716DE0060CAED /* CppRender.cpp in Sources */,
 				997CE5FB253726E40060CAED /* CppFrameBuffer.cpp in Sources */,
+				997CE6102539A3850060CAED /* CppUtils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

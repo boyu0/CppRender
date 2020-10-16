@@ -9,15 +9,18 @@
 #ifndef CppRender_
 #define CppRender_
 
-/* The classes below are exported */
-#pragma GCC visibility push(default)
+#include "CppDefine.h"
 
-class CppRender
+namespace CppRender{
+class Render
 {
-    public:
+public:
     static bool init();
     static void genFrameBuffers(int n, int* ids);
+    static void bindFrameBuffer(int id);
+    
+    static void clear(unsigned int bit);
 };
+}
 
-#pragma GCC visibility pop
 #endif
