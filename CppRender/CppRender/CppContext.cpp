@@ -12,6 +12,7 @@
 #include "CppTexture.hpp"
 #include "CppRender.hpp"
 #include "CppUtils.hpp"
+#include "CppDraw.hpp"
 
 namespace CppRender{
 Context::Context()
@@ -63,6 +64,16 @@ void Context::bindRenderBuffer(int target, int id)
     _currentRenderBufferIndex = id;
 }
 
+int Context::createShader(int type)
+{
+    return 0;
+}
+
+int Context::createProgram()
+{
+    return 0;
+}
+
 void Context::frameBufferTexture2D(int target, int attachment, int textarget, int texture, int level)
 {
     CPPRENDER_ASSERT(_frameBuffers.find(attachment) != _frameBuffers.end(), "");
@@ -92,6 +103,8 @@ void  Context::texImage2D(int target, int level, int internalformat, int width, 
 
 bool Context::init(int width, int height)
 {
+    _draw = new Draw();
+
     int defaultFrameBuffer = CPPRENDER_INVALID_VALUE;
     genFrameBuffers(1, &defaultFrameBuffer);
     CPPRENDER_CHECK_RETURN_FALSE(defaultFrameBuffer != CPPRENDER_INVALID_VALUE);
@@ -124,5 +137,26 @@ void Context::getRenderData(void** data)
     CPPRENDER_ASSERT(_textures.find(texture2dIndex) != _textures.end(), "");
     Texture* tex = _textures[texture2dIndex];
     *data = tex->getData();
+}
+
+
+void Context::begin(int mode)
+{
+    _draw->begin(mode);
+}
+
+void Context::end()
+{
+    _draw->end();
+}
+
+void Context::vertex3f(float x, float y, float z)
+{
+    _draw->vertex3f(x, y, z);
+}
+
+void Context::color3f(float r, float g, float b)
+{
+    _draw->color3f(r, g, b);
 }
 }

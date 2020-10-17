@@ -57,4 +57,24 @@ void Render::getRenderData(void** data)
     return ctx->getRenderData(data);
 }
 
+void Render::begin(int mode)
+{
+    ctx->begin(mode);
+}
+
+void Render::end()
+{
+    ctx->end();
+}
+
+void Render::vertex3f(float x, float y, float z)
+{
+    ctx->vertex3f(x, y, z);
+}
+
+void Render::color3f(float r, float g, float b)
+{
+    ctx->color3f(r, g, b);
+}
+
 }

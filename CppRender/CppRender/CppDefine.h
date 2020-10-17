@@ -27,5 +27,8 @@
 
 #define  CPPRENDER_COLOR_BUFFER_BIT 0x01
 
+#define CPPRENDER_LINES 0x01
+#define CPPRENDER_TRIANGLES 0x02
+
 
 #endif /* CppDefine_h */

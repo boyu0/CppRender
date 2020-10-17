@@ -24,6 +24,11 @@ public:
     static void clear(int bit);
     
     static void getRenderData(void** data);
+    
+    static void begin(int mode);
+    static void end();
+    static void vertex3f(float x, float y, float z);
+    static void color3f(float r, float g, float b);
 
     static Context* getContext();
 };
