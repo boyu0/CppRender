@@ -24,7 +24,7 @@ public:
 
 private:
     glm::vec4 _currentColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-    int _currentMode = CPPRENDER_INVALID_VALUE;
+    int _currentMode = CR_INVALID_VALUE;
     Primitive* _primitive;
 };
 }

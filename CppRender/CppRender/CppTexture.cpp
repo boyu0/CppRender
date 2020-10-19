@@ -13,7 +13,7 @@
 namespace CppRender{
 void Texture::image2D(int target, int level, int internalformat, int width, int height, void* data)
 {
-    CPPRENDER_ASSERT(level==0, "");
+    CR_ASSERT(level==0, "");
     _target = target;
     _format = internalformat;
     _width = width;

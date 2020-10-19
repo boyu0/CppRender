@@ -12,19 +12,21 @@
 #include <assert.h>
 #include "CppDefine.h"
 
-#define CPPRENDER_CHECK_RETURN(cond) if(!(cond)) { return; }
-#define CPPRENDER_CHECK_RETURN_RET(cond, ret) if(!(cond)) { return ret; }
-#define CPPRENDER_CHECK_RETURN_FALSE(cond) CPPRENDER_CHECK_RETURN_RET(cond, false)
-#define CPPRENDER_ASSERT(cond, msg) assert(cond)
+#define CR_CHECK_RETURN(cond) if(!(cond)) { return; }
+#define CR_CHECK_RETURN_RET(cond, ret) if(!(cond)) { return ret; }
+#define CR_CHECK_RETURN_FALSE(cond) CR_CHECK_RETURN_RET(cond, false)
+#define CR_ASSERT(cond, msg) assert(cond)
+#define CR_LOG(...) printf(__VA_ARGS__)
+#define CR_LOGE(format, ...) CR_LOG("CPPRENDER ERROR:"#format, __VA_ARGS__)
 
-#define CPPRENDER_GEN_BUFFER(TBuffer, Map, Index, N, Ids) \
+#define CR_GEN_BUFFER(TBuffer, Map, Index, N, Ids) \
     for (int i = 0; i < N; ++i) { \
         TBuffer* buffer = new TBuffer(); \
         Map.emplace(std::make_pair(Index, buffer)); \
         Ids[i] = Index++; \
     }
 
-#define CPPRENDER_MAP_FIND_RETURN(Map, Id) if(Map.find(Id) != Map.end()){return Map[Id];}else{return nullptr;}
+#define CR_MAP_FIND_RETURN(Map, Id) if(Map.find(Id) != Map.end()){return Map[Id];}else{return nullptr;}
 
 namespace CppRender{
 class Utils

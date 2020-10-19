@@ -6,10 +6,11 @@
 //  Copyright © 2020 test. All rights reserved.
 //
 
-#ifndef CppRender_
-#define CppRender_
+#ifndef CR_
+#define CR_
 
 #include "CppDefine.h"
+#include <string>
 
 namespace CppRender{
 class Context;
@@ -29,6 +30,9 @@ public:
     static void end();
     static void vertex3f(float x, float y, float z);
     static void color3f(float r, float g, float b);
+
+    static int createShader(int type, const std::string& file);
+    static int createProgram();
 
     static Context* getContext();
 };

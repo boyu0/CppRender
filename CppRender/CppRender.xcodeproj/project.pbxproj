@@ -46,7 +46,6 @@
 		997CE66F253AF2C00060CAED /* lfunc.c in Sources */ = {isa = PBXBuildFile; fileRef = 997CE630253AF2C00060CAED /* lfunc.c */; };
 		997CE670253AF2C00060CAED /* lstrlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 997CE631253AF2C00060CAED /* lstrlib.c */; };
 		997CE671253AF2C00060CAED /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 997CE632253AF2C00060CAED /* Makefile */; };
-		997CE672253AF2C00060CAED /* lua.c in Sources */ = {isa = PBXBuildFile; fileRef = 997CE633253AF2C00060CAED /* lua.c */; };
 		997CE673253AF2C00060CAED /* ldebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 997CE634253AF2C00060CAED /* ldebug.h */; };
 		997CE674253AF2C00060CAED /* linit.c in Sources */ = {isa = PBXBuildFile; fileRef = 997CE635253AF2C00060CAED /* linit.c */; };
 		997CE675253AF2C00060CAED /* lcode.h in Headers */ = {isa = PBXBuildFile; fileRef = 997CE636253AF2C00060CAED /* lcode.h */; };
@@ -57,7 +56,6 @@
 		997CE67A253AF2C00060CAED /* lctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 997CE63B253AF2C00060CAED /* lctype.c */; };
 		997CE67B253AF2C00060CAED /* ljumptab.h in Headers */ = {isa = PBXBuildFile; fileRef = 997CE63C253AF2C00060CAED /* ljumptab.h */; };
 		997CE67C253AF2C00060CAED /* llex.h in Headers */ = {isa = PBXBuildFile; fileRef = 997CE63D253AF2C00060CAED /* llex.h */; };
-		997CE67D253AF2C00060CAED /* luac.c in Sources */ = {isa = PBXBuildFile; fileRef = 997CE63E253AF2C00060CAED /* luac.c */; };
 		997CE67E253AF2C00060CAED /* ltm.h in Headers */ = {isa = PBXBuildFile; fileRef = 997CE63F253AF2C00060CAED /* ltm.h */; };
 		997CE67F253AF2C00060CAED /* ltable.c in Sources */ = {isa = PBXBuildFile; fileRef = 997CE640253AF2C00060CAED /* ltable.c */; };
 		997CE680253AF2C00060CAED /* lparser.h in Headers */ = {isa = PBXBuildFile; fileRef = 997CE641253AF2C00060CAED /* lparser.h */; };
@@ -100,6 +98,8 @@
 		997CE6AD253AF5B20060CAED /* CppFragmentShader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE6AB253AF5B20060CAED /* CppFragmentShader.hpp */; };
 		99F6AEC02539EAC70056EB4F /* CppTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99F6AEBE2539EAC70056EB4F /* CppTexture.cpp */; };
 		99F6AEC12539EAC70056EB4F /* CppTexture.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99F6AEBF2539EAC70056EB4F /* CppTexture.hpp */; };
+		99F6AEC9253BC4D00056EB4F /* CppLuaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99F6AEC7253BC4D00056EB4F /* CppLuaEngine.cpp */; };
+		99F6AECA253BC4D00056EB4F /* CppLuaEngine.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99F6AEC8253BC4D00056EB4F /* CppLuaEngine.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -144,7 +144,6 @@
 		997CE630253AF2C00060CAED /* lfunc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lfunc.c; sourceTree = "<group>"; };
 		997CE631253AF2C00060CAED /* lstrlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lstrlib.c; sourceTree = "<group>"; };
 		997CE632253AF2C00060CAED /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
-		997CE633253AF2C00060CAED /* lua.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lua.c; sourceTree = "<group>"; };
 		997CE634253AF2C00060CAED /* ldebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ldebug.h; sourceTree = "<group>"; };
 		997CE635253AF2C00060CAED /* linit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = linit.c; sourceTree = "<group>"; };
 		997CE636253AF2C00060CAED /* lcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lcode.h; sourceTree = "<group>"; };
@@ -155,7 +154,6 @@
 		997CE63B253AF2C00060CAED /* lctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lctype.c; sourceTree = "<group>"; };
 		997CE63C253AF2C00060CAED /* ljumptab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ljumptab.h; sourceTree = "<group>"; };
 		997CE63D253AF2C00060CAED /* llex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = llex.h; sourceTree = "<group>"; };
-		997CE63E253AF2C00060CAED /* luac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = luac.c; sourceTree = "<group>"; };
 		997CE63F253AF2C00060CAED /* ltm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ltm.h; sourceTree = "<group>"; };
 		997CE640253AF2C00060CAED /* ltable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ltable.c; sourceTree = "<group>"; };
 		997CE641253AF2C00060CAED /* lparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lparser.h; sourceTree = "<group>"; };
@@ -198,6 +196,8 @@
 		997CE6AB253AF5B20060CAED /* CppFragmentShader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppFragmentShader.hpp; sourceTree = "<group>"; };
 		99F6AEBE2539EAC70056EB4F /* CppTexture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppTexture.cpp; sourceTree = "<group>"; };
 		99F6AEBF2539EAC70056EB4F /* CppTexture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppTexture.hpp; sourceTree = "<group>"; };
+		99F6AEC7253BC4D00056EB4F /* CppLuaEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppLuaEngine.cpp; sourceTree = "<group>"; };
+		99F6AEC8253BC4D00056EB4F /* CppLuaEngine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppLuaEngine.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -262,6 +262,8 @@
 				997CE6A7253AF5990060CAED /* CppVertexShader.hpp */,
 				997CE6AA253AF5B20060CAED /* CppFragmentShader.cpp */,
 				997CE6AB253AF5B20060CAED /* CppFragmentShader.hpp */,
+				99F6AEC7253BC4D00056EB4F /* CppLuaEngine.cpp */,
+				99F6AEC8253BC4D00056EB4F /* CppLuaEngine.hpp */,
 			);
 			path = CppRender;
 			sourceTree = "<group>";
@@ -288,7 +290,6 @@
 				997CE630253AF2C00060CAED /* lfunc.c */,
 				997CE631253AF2C00060CAED /* lstrlib.c */,
 				997CE632253AF2C00060CAED /* Makefile */,
-				997CE633253AF2C00060CAED /* lua.c */,
 				997CE634253AF2C00060CAED /* ldebug.h */,
 				997CE635253AF2C00060CAED /* linit.c */,
 				997CE636253AF2C00060CAED /* lcode.h */,
@@ -299,7 +300,6 @@
 				997CE63B253AF2C00060CAED /* lctype.c */,
 				997CE63C253AF2C00060CAED /* ljumptab.h */,
 				997CE63D253AF2C00060CAED /* llex.h */,
-				997CE63E253AF2C00060CAED /* luac.c */,
 				997CE63F253AF2C00060CAED /* ltm.h */,
 				997CE640253AF2C00060CAED /* ltable.c */,
 				997CE641253AF2C00060CAED /* lparser.h */,
@@ -380,6 +380,7 @@
 				997CE675253AF2C00060CAED /* lcode.h in Headers */,
 				997CE61D253AEC400060CAED /* CppLines.hpp in Headers */,
 				997CE699253AF2C00060CAED /* ltable.h in Headers */,
+				99F6AECA253BC4D00056EB4F /* CppLuaEngine.hpp in Headers */,
 				997CE67C253AF2C00060CAED /* llex.h in Headers */,
 				997CE5FC253726E40060CAED /* CppFrameBuffer.hpp in Headers */,
 				997CE660253AF2C00060CAED /* lmem.h in Headers */,
@@ -453,14 +454,12 @@
 				997CE66F253AF2C00060CAED /* lfunc.c in Sources */,
 				997CE691253AF2C00060CAED /* lapi.c in Sources */,
 				997CE670253AF2C00060CAED /* lstrlib.c in Sources */,
-				997CE672253AF2C00060CAED /* lua.c in Sources */,
 				997CE60725387D5E0060CAED /* CppBuffer.cpp in Sources */,
 				997CE60C253932250060CAED /* CppVertexArray.cpp in Sources */,
 				997CE694253AF2C00060CAED /* ldebug.c in Sources */,
 				997CE665253AF2C00060CAED /* liolib.c in Sources */,
 				997CE67A253AF2C00060CAED /* lctype.c in Sources */,
 				997CE68A253AF2C00060CAED /* lmem.c in Sources */,
-				997CE67D253AF2C00060CAED /* luac.c in Sources */,
 				997CE5FF253727E30060CAED /* CppContext.cpp in Sources */,
 				997CE66B253AF2C00060CAED /* lmathlib.c in Sources */,
 				997CE686253AF2C00060CAED /* lgc.c in Sources */,
@@ -490,6 +489,7 @@
 				997CE66D253AF2C00060CAED /* loadlib.c in Sources */,
 				997CE6A4253AF4F20060CAED /* CppShader.cpp in Sources */,
 				997CE666253AF2C00060CAED /* lopcodes.c in Sources */,
+				99F6AEC9253BC4D00056EB4F /* CppLuaEngine.cpp in Sources */,
 				997CE669253AF2C00060CAED /* lobject.c in Sources */,
 				997CE690253AF2C00060CAED /* ltablib.c in Sources */,
 				997CE679253AF2C00060CAED /* lundump.c in Sources */,

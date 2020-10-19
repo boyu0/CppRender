@@ -20,11 +20,11 @@ public:
     void clearColor(glm::vec4 color);
     void* getData(int level = 0) { return _data[level]; }
 private:
-    int _target = CPPRENDER_INVALID_VALUE;
-    int _format = CPPRENDER_INVALID_VALUE;
-    int _width = CPPRENDER_INVALID_VALUE;
-    int _height =CPPRENDER_INVALID_VALUE;
-    void* _data[CPPRENDER_TEXUTRE_MAX_LEVEL] = {nullptr};
+    int _target = CR_INVALID_VALUE;
+    int _format = CR_INVALID_VALUE;
+    int _width = CR_INVALID_VALUE;
+    int _height =CR_INVALID_VALUE;
+    void* _data[CR_TEXUTRE_MAX_LEVEL] = {nullptr};
 };
 }
 

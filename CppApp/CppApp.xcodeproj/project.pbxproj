@@ -16,6 +16,7 @@
 		997CE5F325371A5E0060CAED /* CppGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 997CE5F225371A5E0060CAED /* CppGLView.mm */; };
 		997CE5F625371AED0060CAED /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 997CE5F525371AED0060CAED /* AppKit.framework */; };
 		997CE5F825371BFC0060CAED /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 997CE5F725371BFC0060CAED /* OpenGL.framework */; };
+		99F6AECC253BD8440056EB4F /* res in Resources */ = {isa = PBXBuildFile; fileRef = 99F6AECB253BD8440056EB4F /* res */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		997CE5F425371A760060CAED /* CppGLView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CppGLView.h; sourceTree = "<group>"; };
 		997CE5F525371AED0060CAED /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		997CE5F725371BFC0060CAED /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		99F6AECB253BD8440056EB4F /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 		997CE5CC253717400060CAED = {
 			isa = PBXGroup;
 			children = (
+				99F6AECB253BD8440056EB4F /* res */,
 				997CE5D7253717400060CAED /* CppApp */,
 				997CE5D6253717400060CAED /* Products */,
 				997CE5EC253717ED0060CAED /* Frameworks */,
@@ -152,6 +155,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99F6AECC253BD8440056EB4F /* res in Resources */,
 				997CE5DF253717420060CAED /* Assets.xcassets in Resources */,
 				997CE5E2253717420060CAED /* Main.storyboard in Resources */,
 			);
@@ -302,6 +306,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = CppApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -321,6 +326,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = CppApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

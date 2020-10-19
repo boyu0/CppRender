@@ -22,8 +22,8 @@ public:
     inline int getTexture2D() { return _texture2DIndex; }
     
 private:
-    int _renderBufferIndex = CPPRENDER_INVALID_VALUE;
-    int _texture2DIndex = CPPRENDER_INVALID_VALUE;
+    int _renderBufferIndex = CR_INVALID_VALUE;
+    int _texture2DIndex = CR_INVALID_VALUE;
 };
 }
 

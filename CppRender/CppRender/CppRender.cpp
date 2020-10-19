@@ -77,4 +77,12 @@ void Render::color3f(float r, float g, float b)
     ctx->color3f(r, g, b);
 }
 
+int Render::createShader(int type, const std::string& file)
+{
+    return ctx->createShader(type, file);
+}
+int Render::createProgram()
+{
+    return ctx->createProgram();
+}
 }

@@ -26,9 +26,9 @@ void FrameBuffer::bindTexture2D(int idx)
 void FrameBuffer::clear(int mask)
 {
     Context* ctx = Render::getContext();
-    if(mask & CPPRENDER_COLOR_BUFFER_BIT)
+    if(mask & CR_COLOR_BUFFER_BIT)
     {
-        CPPRENDER_ASSERT(_texture2DIndex != CPPRENDER_INVALID_VALUE, "");
+        CR_ASSERT(_texture2DIndex != CR_INVALID_VALUE, "");
         Texture* tex = ctx->getTexture(_texture2DIndex);
         tex->clearColor(ctx->getClearColor());
     }

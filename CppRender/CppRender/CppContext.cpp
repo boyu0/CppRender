@@ -13,6 +13,10 @@
 #include "CppRender.hpp"
 #include "CppUtils.hpp"
 #include "CppDraw.hpp"
+#include "CppLuaEngine.hpp"
+#include "CppShader.hpp"
+#include "CppVertexShader.hpp"
+#include "CppFragmentShader.hpp"
 
 namespace CppRender{
 Context::Context()
@@ -28,7 +32,7 @@ Context::~Context()
 
 void Context::clear(int mask)
 {
-    CPPRENDER_ASSERT(_currentFrameBufferIndex != CPPRENDER_INVALID_VALUE && _frameBuffers.find(_currentFrameBufferIndex) != _frameBuffers.end(), "");
+    CR_ASSERT(_currentFrameBufferIndex != CR_INVALID_VALUE && _frameBuffers.find(_currentFrameBufferIndex) != _frameBuffers.end(), "");
 
     FrameBuffer* frameBuffer = _frameBuffers[_currentFrameBufferIndex];
     frameBuffer->clear(mask);
@@ -41,12 +45,12 @@ void Context::clearColor(float r, float g, float b, float a)
 
 void Context::genFrameBuffers(int n, int* ids)
 {
-    CPPRENDER_GEN_BUFFER(FrameBuffer, _frameBuffers, _frameBufferIndex, n, ids);
+    CR_GEN_BUFFER(FrameBuffer, _frameBuffers, _frameBufferIndex, n, ids);
 }
 
 Texture* Context::getTexture(int id)
 {
-    CPPRENDER_MAP_FIND_RETURN(_textures, id);
+    CR_MAP_FIND_RETURN(_textures, id);
 }
 
 void Context::bindFrameBuffer(int target, int id)
@@ -56,7 +60,7 @@ void Context::bindFrameBuffer(int target, int id)
 
 void Context::genRenderbuffers(int n, int* ids)
 {
-    CPPRENDER_GEN_BUFFER(RenderBuffer, _renderBuffers, _renderBufferIndex, n, ids);
+    CR_GEN_BUFFER(RenderBuffer, _renderBuffers, _renderBufferIndex, n, ids);
 }
 
 void Context::bindRenderBuffer(int target, int id)
@@ -64,9 +68,30 @@ void Context::bindRenderBuffer(int target, int id)
     _currentRenderBufferIndex = id;
 }
 
-int Context::createShader(int type)
+int Context::createShader(int type, const std::string& file)
 {
-    return 0;
+    Shader* shader = nullptr;
+    switch (type)
+    {
+    case CR_VERTEX_SHADER:
+        shader = new VertexShader();
+        break;
+    case CR_FRAGMENT_SHADER:
+        shader = new FragmentShader();
+        break;
+    default:
+        CR_ASSERT(false, "");
+        return false;
+    }
+
+    if(shader == nullptr || !shader->init(this, file))
+    {
+        CR_ASSERT(false, "");
+        return CR_INVALID_VALUE;
+    }
+
+    _shaders.emplace(std::make_pair(_shaderIndex, shader));
+    return _shaderIndex++;
 }
 
 int Context::createProgram()
@@ -76,8 +101,8 @@ int Context::createProgram()
 
 void Context::frameBufferTexture2D(int target, int attachment, int textarget, int texture, int level)
 {
-    CPPRENDER_ASSERT(_frameBuffers.find(attachment) != _frameBuffers.end(), "");
-    CPPRENDER_ASSERT(_textures.find(texture) != _textures.end(), "");
+    CR_ASSERT(_frameBuffers.find(attachment) != _frameBuffers.end(), "");
+    CR_ASSERT(_textures.find(texture) != _textures.end(), "");
 
     FrameBuffer* frameBuffer = _frameBuffers[attachment];
     frameBuffer->bindTexture2D(texture);
@@ -85,7 +110,7 @@ void Context::frameBufferTexture2D(int target, int attachment, int textarget, in
 
 void Context::genTextures(int n, int* ids)
 {
-    CPPRENDER_GEN_BUFFER(Texture, _textures, _textureIndex, n, ids);
+    CR_GEN_BUFFER(Texture, _textures, _textureIndex, n, ids);
 }
 
 void Context::bindTexture(int target, int id)
@@ -95,8 +120,8 @@ void Context::bindTexture(int target, int id)
 
 void  Context::texImage2D(int target, int level, int internalformat, int width, int height, void* data)
 {
-    CPPRENDER_ASSERT(_currentTextureIndex != CPPRENDER_INVALID_VALUE && _textures.find(_currentTextureIndex) != _textures.end(), "");
-    
+    CR_ASSERT(_currentTextureIndex != CR_INVALID_VALUE && _textures.find(_currentTextureIndex) != _textures.end(), "");
+
     Texture* tex = _textures[_currentTextureIndex];
     tex->image2D(target, level, internalformat, width, height, data);
 }
@@ -104,25 +129,30 @@ void  Context::texImage2D(int target, int level, int internalformat, int width, 
 bool Context::init(int width, int height)
 {
     _draw = new Draw();
+    _luaEngine = new LuaEngine();
+    if(_luaEngine == nullptr || !_luaEngine->init())
+    {
+        return false;
+    }
 
-    int defaultFrameBuffer = CPPRENDER_INVALID_VALUE;
+    int defaultFrameBuffer = CR_INVALID_VALUE;
     genFrameBuffers(1, &defaultFrameBuffer);
-    CPPRENDER_CHECK_RETURN_FALSE(defaultFrameBuffer != CPPRENDER_INVALID_VALUE);
-    CPPRENDER_ASSERT(defaultFrameBuffer == 0, "defaultFrameBuffer只能为0");
+    CR_CHECK_RETURN_FALSE(defaultFrameBuffer != CR_INVALID_VALUE);
+    CR_ASSERT(defaultFrameBuffer == 0, "defaultFrameBuffer只能为0");
     bindFrameBuffer(0, defaultFrameBuffer);
 
-//    int defaultRenderBuffer = CPPRENDER_INVALID_VALUE;
+//    int defaultRenderBuffer = CR_INVALID_VALUE;
 //    genRenderbuffers(1, &defaultRenderBuffer);
-//    CPPRENDER_CHECK_RETURN_FALSE(defaultRenderBuffer != CPPRENDER_INVALID_VALUE);
-//    CPPRENDER_ASSERT(defaultRenderBuffer == 0, "defaultRenderBuffer只能为0");
+//    CR_CHECK_RETURN_FALSE(defaultRenderBuffer != CR_INVALID_VALUE);
+//    CR_ASSERT(defaultRenderBuffer == 0, "defaultRenderBuffer只能为0");
 //    bindRenderBuffer(0, defaultRenderBuffer);
 
-    int defaultTexture = CPPRENDER_INVALID_VALUE;
+    int defaultTexture = CR_INVALID_VALUE;
     genTextures(1, &defaultTexture);
-    CPPRENDER_CHECK_RETURN_FALSE(defaultTexture != CPPRENDER_INVALID_VALUE);
-    CPPRENDER_ASSERT(defaultTexture == 0, "defaultTexture只能为0");
+    CR_CHECK_RETURN_FALSE(defaultTexture != CR_INVALID_VALUE);
+    CR_ASSERT(defaultTexture == 0, "defaultTexture只能为0");
     bindTexture(0, defaultTexture);
-    texImage2D(CPPRENDER_TEXTURE_2D, 0, CPPRENDER_RGBA8, width, height, nullptr);
+    texImage2D(CR_TEXTURE_2D, 0, CR_RGBA8, width, height, nullptr);
     frameBufferTexture2D(0, defaultFrameBuffer, 0, defaultTexture, 0);
 
     return true;
@@ -130,11 +160,11 @@ bool Context::init(int width, int height)
 
 void Context::getRenderData(void** data)
 {
-    CPPRENDER_ASSERT(_frameBuffers.find(_currentFrameBufferIndex) != _frameBuffers.end(), "");
+    CR_ASSERT(_frameBuffers.find(_currentFrameBufferIndex) != _frameBuffers.end(), "");
 
     FrameBuffer* frameBuffer = _frameBuffers[_currentFrameBufferIndex];
     int texture2dIndex = frameBuffer->getTexture2D();
-    CPPRENDER_ASSERT(_textures.find(texture2dIndex) != _textures.end(), "");
+    CR_ASSERT(_textures.find(texture2dIndex) != _textures.end(), "");
     Texture* tex = _textures[texture2dIndex];
     *data = tex->getData();
 }

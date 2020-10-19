@@ -122,7 +122,8 @@ using namespace CppRender;
 //    glClearColor(0, 0, 0, 0);
 //    glClear(GL_COLOR_BUFFER_BIT);
     Render::clearColor(1, 1, 0, 1);
-    Render::clear(CPPRENDER_COLOR_BUFFER_BIT);
+    Render::clear(CR_COLOR_BUFFER_BIT);
+//    Render::createShader(CR_VERTEX_SHADER, "/res/shader/testVert.lua");
     
     float vertices[] = {
     //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
