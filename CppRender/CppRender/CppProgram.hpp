@@ -12,8 +12,17 @@
 #include <stdio.h>
 
 namespace CppRender{
+class Shader;
 class Program{
+private:
+
 public:
+    void attach(Shader* shader);
+    bool link();
+
+private:
+    Shader* _vertexShader{};
+    Shader* _fragmentShader{};
 };
 }
 

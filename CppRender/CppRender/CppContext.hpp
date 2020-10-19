@@ -43,9 +43,14 @@ public:
     void genTextures(int n, int* ids);
     void bindTexture(int target, int id);
     void texImage2D(int target, int level, int internalformat, int width, int height, void* data);
+
+    void genVertexArrays(int n, int* ids);
+    void bindVertexArray(int id);
     
     int createShader(int type, const std::string& file);
     int createProgram();
+    void attachShader(int program, int shader);
+    bool linkProgram(int program);
     
     void clearColor(float r, float g, float b, float a);
     void clear(int mask);
@@ -63,22 +68,24 @@ public:
     inline LuaEngine* getLuaEngine() { return _luaEngine; }
 
 private:
-    std::unordered_map<int, VertexArray*> _vetexArrays;
+    std::unordered_map<int, VertexArray*> _vertexArrays;
     std::unordered_map<int, FrameBuffer*> _frameBuffers;
     std::unordered_map<int, RenderBuffer*> _renderBuffers;
     std::unordered_map<int, Buffer*> _buffers;
     std::unordered_map<int, Texture*> _textures;
     std::unordered_map<int, Shader*> _shaders;
     std::unordered_map<int, Program*> _programs;
-    
+
     int _currentFrameBufferIndex = CR_INVALID_VALUE;
     int _currentRenderBufferIndex = CR_INVALID_VALUE;
     int _currentTextureIndex = CR_INVALID_VALUE;
+    int _currentVertexArray = CR_INVALID_VALUE;
     int _frameBufferIndex = 0;
     int _renderBufferIndex = 0;
     int _textureIndex = 0;
-    int _shaderIndex = 0;
-    int programIndex = 0;
+    int _vertexArrayIndex = 0;
+    int _shaderIndex = 1;
+    int programIndex = 1;
     glm::vec4 _color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
     Draw* _draw{};

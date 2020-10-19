@@ -7,3 +7,22 @@
 //
 
 #include "CppVertexShader.hpp"
+#include "CppUtils.hpp"
+
+namespace CppRender{
+bool VertexShader::init(Context* ctx, const std::string& file)
+{
+    if(!Shader::init(ctx, file)){
+        return false;
+    }
+
+    _type = CR_VERTEX_SHADER;
+    unpackTableToGlobal(CR_SHADER_ATTRIBUTE);
+    unpackTableToGlobal(CR_SHADER_VERYING);
+    unpackTableToGlobal(CR_SHADER_UNIFORM);
+    
+    return true;
+}
+
+
+}

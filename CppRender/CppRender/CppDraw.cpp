@@ -7,16 +7,32 @@
 //
 
 #include "CppDraw.hpp"
+#include "CppTriangles.hpp"
+#include "CppUtils.hpp"
 
 namespace CppRender{
 void Draw::begin(int mode)
 {
     _currentMode = mode;
+    if(_primitive)
+    {
+        delete _primitive;
+        _primitive = nullptr;
+    }
+
+    switch (mode)
+    {
+    case CR_TRIANGLES:
+        _primitive = new Triangles();
+        break;
+    default:
+        CR_ASSERT(false, "");
+        break;
+    }
 }
 
 void Draw::end()
 {
-    
 }
 
 void Draw::vertex3f(float x, float y, float z)

@@ -17,6 +17,8 @@
 #include "CppShader.hpp"
 #include "CppVertexShader.hpp"
 #include "CppFragmentShader.hpp"
+#include "CppProgram.hpp"
+#include "CppVertexArray.hpp"
 
 namespace CppRender{
 Context::Context()
@@ -118,6 +120,16 @@ void Context::bindTexture(int target, int id)
     _currentTextureIndex = id;
 }
 
+void Context::genVertexArrays(int n, int* ids)
+{
+    CR_GEN_BUFFER(VertexArray, _vertexArrays, _vertexArrayIndex, n ,ids);
+}
+
+void Context::bindVertexArray(int id)
+{
+
+}
+
 void  Context::texImage2D(int target, int level, int internalformat, int width, int height, void* data)
 {
     CR_ASSERT(_currentTextureIndex != CR_INVALID_VALUE && _textures.find(_currentTextureIndex) != _textures.end(), "");
@@ -155,6 +167,12 @@ bool Context::init(int width, int height)
     texImage2D(CR_TEXTURE_2D, 0, CR_RGBA8, width, height, nullptr);
     frameBufferTexture2D(0, defaultFrameBuffer, 0, defaultTexture, 0);
 
+    int defaultVertexArray = CR_INVALID_VALUE;
+    genVertexArrays(1, &defaultVertexArray);
+    CR_CHECK_RETURN_FALSE(defaultVertexArray != CR_INVALID_VALUE);
+    CR_ASSERT(defaultVertexArray == 0, "defaultVertexArray只能为0");
+    bindVertexArray(defaultVertexArray);
+
     return true;
 }
 
@@ -188,5 +206,18 @@ void Context::vertex3f(float x, float y, float z)
 void Context::color3f(float r, float g, float b)
 {
     _draw->color3f(r, g, b);
+}
+
+void Context::attachShader(int program, int shader)
+{
+    CR_ASSERT(_programs.find(program) != _programs.end(), "");
+    CR_ASSERT(_shaders.find(shader) != _shaders.end(), "");
+    _programs[program]->attach(_shaders[shader]);
+}
+
+bool Context::linkProgram(int program)
+{
+    CR_ASSERT(_programs.find(program) != _programs.end(), "");
+    return _programs[program]->link();
 }
 }

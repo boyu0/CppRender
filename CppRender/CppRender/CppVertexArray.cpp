@@ -7,3 +7,10 @@
 //
 
 #include "CppVertexArray.hpp"
+
+namespace CppRender {
+    void VertexArray::vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer)
+    {
+        _vertexAttributePointerInfos.emplace(std::make_pair(index, VertexAttributePointerInfo{size, type, normalized, stride, pointer}));
+    }
+}

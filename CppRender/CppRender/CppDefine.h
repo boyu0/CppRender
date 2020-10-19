@@ -33,5 +33,14 @@
 #define CR_VERTEX_SHADER 0x01
 #define CR_FRAGMENT_SHADER 0x02
 
+#define CR_LUA_G "_ORIGING"
+#define CR_SHADER_LIB_NAME "crshader"
+#define CR_SHADER_ATTRIBUTE "attribute"
+#define CR_SHADER_VERYING "verying"
+#define CR_SHADER_UNIFORM "uniform"
+#define CR_SHADER_MAINFUNC "main"
+#define CR_SHADER_VERT_POSITION "cr_Position"
+#define CR_SHADER_VERT_COLOR "cr_Color"
+
 
 #endif /* CppDefine_h */

@@ -7,3 +7,9 @@
 //
 
 #include "CppPrimitive.hpp"
+
+namespace CppRender{
+Primitive::~Primitive()
+{
+}
+}

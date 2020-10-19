@@ -10,12 +10,20 @@
 #define CppPrimitive_hpp
 
 #include <stdio.h>
+#include "CppUtils.hpp"
 
 namespace CppRender{
 class Primitive{
 public:
     Primitive()=default;
     virtual ~Primitive()=0;
+
+public:
+    inline void setImmediateMode(bool b) { _immediateMode = b; }
+
+protected:
+    int _type{CR_INVALID_VALUE};
+    bool _immediateMode{false};
 };
 }
 

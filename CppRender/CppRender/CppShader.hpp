@@ -11,14 +11,25 @@
 
 #include <stdio.h>
 #include <string>
+#include "CppDefine.h"
 
 namespace CppRender{
 class Context;
+class LuaEngine;
 class Shader{
 public:
     virtual ~Shader() = 0;
 
-    bool init(Context* ctx, const std::string& file);
+    inline int getType() { return _type; }
+    virtual bool init(Context* ctx, const std::string& file);
+    bool runOne();
+
+protected:
+    bool unpackTableToGlobal(const std::string& name);
+
+protected:
+    LuaEngine* _engine = nullptr;
+    int _type = CR_INVALID_VALUE;
 };
 }
 

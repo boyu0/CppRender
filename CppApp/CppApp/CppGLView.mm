@@ -112,18 +112,29 @@ using namespace CppRender;
     GLuint program;
 }
 
+-(const std::string) getPath:(const std::string& )path{
+    NSBundle * bundle = [NSBundle mainBundle];
+    NSString* nspath = [bundle pathForResource:[NSString stringWithUTF8String:path.c_str()] ofType:@""];
+    const char* strPath = [nspath cStringUsingEncoding:NSUTF8StringEncoding];
+    return std::string(strPath);
+}
+
 -(void) prepareOpenGL{
     GLint swapInterval = 1;
     [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
 //    glViewport(0, 0, 800, 600);
-    Render::init(800, 600);
+    if(!Render::init(800, 600))
+    {
+        printf("false");
+        return;
+    }
     
     
 //    glClearColor(0, 0, 0, 0);
 //    glClear(GL_COLOR_BUFFER_BIT);
     Render::clearColor(1, 1, 0, 1);
     Render::clear(CR_COLOR_BUFFER_BIT);
-//    Render::createShader(CR_VERTEX_SHADER, "/res/shader/testVert.lua");
+    Render::createShader(CR_VERTEX_SHADER, [self getPath:"res/shader/testVert.lua"]);
     
     float vertices[] = {
     //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -

@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <string>
+#include <stack>
 extern "C"{
     #include "lua.h"
 }
@@ -20,9 +21,25 @@ class LuaEngine{
 public:
     bool init();
     bool run(const std::string& file);
-    
+    void pushG(const std::string& name);
+    void popG();
+    bool isNil();
+    int getTop();
+
+    void getG();
+    void getGlobal(const std::string& name);
+    void getField(int i);
+    void getField(const std::string& name);
+    std::string getFieldString(const std::string& name);
+    float getFieldFloat(const std::string& name);
+    float getFieldFloat(int i);
+    void pop(int n);
+    void unpack();
+    bool runFunc(int args, int rets);
+
 private:
     lua_State* L = nullptr;
+    std::stack<std::string> _gs;
 };
 }
 

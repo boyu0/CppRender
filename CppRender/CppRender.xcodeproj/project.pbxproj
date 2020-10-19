@@ -96,6 +96,10 @@
 		997CE6A9253AF5990060CAED /* CppVertexShader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE6A7253AF5990060CAED /* CppVertexShader.hpp */; };
 		997CE6AC253AF5B20060CAED /* CppFragmentShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE6AA253AF5B20060CAED /* CppFragmentShader.cpp */; };
 		997CE6AD253AF5B20060CAED /* CppFragmentShader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE6AB253AF5B20060CAED /* CppFragmentShader.hpp */; };
+		997CE6B4253D3FC10060CAED /* CppLuaShaderLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE6B2253D3FC10060CAED /* CppLuaShaderLib.cpp */; };
+		997CE6B5253D3FC10060CAED /* CppLuaShaderLib.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE6B3253D3FC10060CAED /* CppLuaShaderLib.hpp */; };
+		997CE6B8253D8BFE0060CAED /* CppTriangles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE6B6253D8BFE0060CAED /* CppTriangles.cpp */; };
+		997CE6B9253D8BFE0060CAED /* CppTriangles.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE6B7253D8BFE0060CAED /* CppTriangles.hpp */; };
 		99F6AEC02539EAC70056EB4F /* CppTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99F6AEBE2539EAC70056EB4F /* CppTexture.cpp */; };
 		99F6AEC12539EAC70056EB4F /* CppTexture.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99F6AEBF2539EAC70056EB4F /* CppTexture.hpp */; };
 		99F6AEC9253BC4D00056EB4F /* CppLuaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99F6AEC7253BC4D00056EB4F /* CppLuaEngine.cpp */; };
@@ -194,6 +198,10 @@
 		997CE6A7253AF5990060CAED /* CppVertexShader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppVertexShader.hpp; sourceTree = "<group>"; };
 		997CE6AA253AF5B20060CAED /* CppFragmentShader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppFragmentShader.cpp; sourceTree = "<group>"; };
 		997CE6AB253AF5B20060CAED /* CppFragmentShader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppFragmentShader.hpp; sourceTree = "<group>"; };
+		997CE6B2253D3FC10060CAED /* CppLuaShaderLib.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppLuaShaderLib.cpp; sourceTree = "<group>"; };
+		997CE6B3253D3FC10060CAED /* CppLuaShaderLib.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppLuaShaderLib.hpp; sourceTree = "<group>"; };
+		997CE6B6253D8BFE0060CAED /* CppTriangles.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppTriangles.cpp; sourceTree = "<group>"; };
+		997CE6B7253D8BFE0060CAED /* CppTriangles.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppTriangles.hpp; sourceTree = "<group>"; };
 		99F6AEBE2539EAC70056EB4F /* CppTexture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppTexture.cpp; sourceTree = "<group>"; };
 		99F6AEBF2539EAC70056EB4F /* CppTexture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppTexture.hpp; sourceTree = "<group>"; };
 		99F6AEC7253BC4D00056EB4F /* CppLuaEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppLuaEngine.cpp; sourceTree = "<group>"; };
@@ -264,6 +272,10 @@
 				997CE6AB253AF5B20060CAED /* CppFragmentShader.hpp */,
 				99F6AEC7253BC4D00056EB4F /* CppLuaEngine.cpp */,
 				99F6AEC8253BC4D00056EB4F /* CppLuaEngine.hpp */,
+				997CE6B2253D3FC10060CAED /* CppLuaShaderLib.cpp */,
+				997CE6B3253D3FC10060CAED /* CppLuaShaderLib.hpp */,
+				997CE6B6253D8BFE0060CAED /* CppTriangles.cpp */,
+				997CE6B7253D8BFE0060CAED /* CppTriangles.hpp */,
 			);
 			path = CppRender;
 			sourceTree = "<group>";
@@ -359,6 +371,7 @@
 				997CE695253AF2C00060CAED /* lfunc.h in Headers */,
 				997CE68C253AF2C00060CAED /* lvm.h in Headers */,
 				997CE60825387D5E0060CAED /* CppBuffer.hpp in Headers */,
+				997CE6B9253D8BFE0060CAED /* CppTriangles.hpp in Headers */,
 				997CE696253AF2C00060CAED /* lprefix.h in Headers */,
 				997CE676253AF2C00060CAED /* lapi.h in Headers */,
 				997CE600253727E30060CAED /* CppContext.hpp in Headers */,
@@ -380,6 +393,7 @@
 				997CE675253AF2C00060CAED /* lcode.h in Headers */,
 				997CE61D253AEC400060CAED /* CppLines.hpp in Headers */,
 				997CE699253AF2C00060CAED /* ltable.h in Headers */,
+				997CE6B5253D3FC10060CAED /* CppLuaShaderLib.hpp in Headers */,
 				99F6AECA253BC4D00056EB4F /* CppLuaEngine.hpp in Headers */,
 				997CE67C253AF2C00060CAED /* llex.h in Headers */,
 				997CE5FC253726E40060CAED /* CppFrameBuffer.hpp in Headers */,
@@ -454,6 +468,7 @@
 				997CE66F253AF2C00060CAED /* lfunc.c in Sources */,
 				997CE691253AF2C00060CAED /* lapi.c in Sources */,
 				997CE670253AF2C00060CAED /* lstrlib.c in Sources */,
+				997CE6B4253D3FC10060CAED /* CppLuaShaderLib.cpp in Sources */,
 				997CE60725387D5E0060CAED /* CppBuffer.cpp in Sources */,
 				997CE60C253932250060CAED /* CppVertexArray.cpp in Sources */,
 				997CE694253AF2C00060CAED /* ldebug.c in Sources */,
@@ -474,6 +489,7 @@
 				997CE618253AEA950060CAED /* CppPrimitive.cpp in Sources */,
 				997CE6A8253AF5990060CAED /* CppVertexShader.cpp in Sources */,
 				997CE697253AF2C00060CAED /* lparser.c in Sources */,
+				997CE6B8253D8BFE0060CAED /* CppTriangles.cpp in Sources */,
 				997CE5C6253716DE0060CAED /* CppRender.cpp in Sources */,
 				997CE698253AF2C00060CAED /* llex.c in Sources */,
 				997CE614253AE7160060CAED /* CppDraw.cpp in Sources */,

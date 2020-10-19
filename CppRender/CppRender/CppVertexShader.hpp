@@ -16,6 +16,9 @@ namespace CppRender{
 class VertexShader : public Shader{
 public:
     virtual ~VertexShader() = default;
+
+public:
+    virtual bool init(Context* ctx, const std::string& file);
 };
 }
 

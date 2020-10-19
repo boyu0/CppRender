@@ -10,10 +10,24 @@
 #define CppVertexArray_hpp
 
 #include <stdio.h>
+#include <unordered_map>
 
 namespace CppRender {
 class VertexArray{
-    
+private:
+    struct VertexAttributePointerInfo{
+        int size{};
+        int type{};
+        bool normalized{};
+        int stride{};
+        int pointer{};
+    };
+
+public:
+    void vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer);
+
+private:
+    std::unordered_map<int, VertexAttributePointerInfo> _vertexAttributePointerInfos;
 };
 }
 
