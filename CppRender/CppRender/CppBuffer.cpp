@@ -7,3 +7,27 @@
 //
 
 #include "CppBuffer.hpp"
+#include <memory>
+
+namespace CppRender{
+
+void Buffer::data(int target, int size, void* data, int useage)
+{
+    _data = malloc(size);
+    _size = size;
+    if(data != nullptr)
+    {
+        memcpy(_data, data, size);
+    }
+}
+
+Buffer::~Buffer()
+{
+    if(_data != nullptr)
+    {
+        delete _data;
+        _data = nullptr;
+    }
+}
+
+}

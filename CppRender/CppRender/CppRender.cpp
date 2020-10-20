@@ -28,11 +28,6 @@ bool Render::init(int width, int height)
     return true;
 }
 
-Context* Render::getContext()
-{
-    return ctx;
-}
-
 void Render::genFrameBuffers(int n, int* ids)
 {
 }
@@ -67,14 +62,19 @@ void Render::end()
     ctx->end();
 }
 
-void Render::vertex3f(float x, float y, float z)
+void Render::vertexf(float x, float y, float z, float w)
 {
-    ctx->vertex3f(x, y, z);
+    ctx->vertexf(x, y, z, w);
 }
 
-void Render::color3f(float r, float g, float b)
+void Render::colorf(float r, float g, float b, float a)
 {
-    ctx->color3f(r, g, b);
+    ctx->colorf(r, g, b, a);
+}
+
+void Render::uvf(float u, float v)
+{
+    ctx->uvf(u, v);
 }
 
 int Render::createShader(int type, const std::string& file)

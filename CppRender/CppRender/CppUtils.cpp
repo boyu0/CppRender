@@ -23,4 +23,17 @@ int Utils::getFormatPerSize(int format)
         break;
     }
 }
+
+int Utils::getTypeSize(int type)
+{
+    switch (type)
+    {
+    case CR_FLOAT:
+        return sizeof(float);
+        break;
+    default:
+        return 0;
+        break;
+    }
+}
 }

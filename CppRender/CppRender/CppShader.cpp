@@ -17,15 +17,16 @@ namespace CppRender{
 static int g_index = 0;
 bool Shader::init(Context* ctx, const std::string& file)
 {
-    _engine = ctx->getLuaEngine();
-    _identifier = std::string(CR_SHADER_LIB_NAME) + std::to_string(g_index++);
+    _ctx = ctx;
+    LuaEngine* engine = _ctx->getLuaEngine();
+    _env = std::string(CR_SHADER_LIB_NAME) + std::to_string(g_index++);
     
-    _engine->pushEnv(CR_SHADER_LIB_NAME);
-    _engine->newEnv(_identifier);
-    _engine->pushEnv(_identifier);
-    bool ok = _engine->run(file);
-    _engine->popEnv();
-    _engine->popEnv();
+    engine->pushEnv(CR_SHADER_LIB_NAME);
+    engine->newEnv(_env);
+    engine->pushEnv(_env);
+    bool ok = engine->run(file);
+    engine->popEnv();
+    engine->popEnv();
 
     return ok;
 }
@@ -33,42 +34,45 @@ bool Shader::init(Context* ctx, const std::string& file)
 bool Shader::unpackTableToEnv(const std::string& name)
 {
     bool ret = false;
-    
-    _engine->pushEnv(CR_SHADER_LIB_NAME);
-    _engine->pushEnv(_identifier);
-    _engine->getEnv();
-    _engine->getGlobal(name);
 
-    if(!_engine->isNil())
+    LuaEngine* engine = _ctx->getLuaEngine();
+    engine->pushEnv(CR_SHADER_LIB_NAME);
+    engine->pushEnv(_env);
+    engine->getEnv();
+    engine->getGlobal(name);
+
+    if(!engine->isNil())
     {
         ret = true;
-        _engine->unpack();
+        engine->unpack();
     }
 
-    _engine->pop(2);
-    _engine->popEnv();
-    _engine->popEnv();
+    engine->pop(2);
+    engine->popEnv();
+    engine->popEnv();
     return ret;
 }
 
 bool Shader::runOne()
 {
-    _engine->getGlobal(CR_SHADER_MAINFUNC);
-    if(_engine->isNil())
+    LuaEngine* engine = _ctx->getLuaEngine();
+    engine->getGlobal(CR_SHADER_MAINFUNC);
+    if(engine->isNil())
     {
         CR_ASSERT(false, "main函数不存在");
-        _engine->pop(1);
+        engine->pop(1);
         return false;
     }
 
-    bool ret = _engine->runFunc(0, 0);
+    bool ret = engine->runFunc(0, 0);
     return ret;
 }
 
 Shader::~Shader(){
-    if(!_identifier.empty())
+    if(!_env.empty())
     {
-        _engine->deleteEnv(_identifier);
+        LuaEngine* engine = _ctx->getLuaEngine();
+        engine->deleteEnv(_env);
     }
 }
 }

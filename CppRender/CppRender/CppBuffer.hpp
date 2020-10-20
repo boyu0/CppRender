@@ -12,7 +12,21 @@
 #include <stdio.h>
 
 namespace CppRender{
+class Context;
 class Buffer{
+public:
+    Buffer(Context* ctx):_ctx(ctx){}
+    ~Buffer();
+
+public:
+    void data(int target, int size, void* data, int useage);
+    void* get() { return _data; }
+    int size() { return _size; }
+
+private:
+    Context* _ctx{};
+    void* _data{};
+    int _size{};
 };
 }
 #endif /* CppBuffer_hpp */

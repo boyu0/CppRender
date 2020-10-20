@@ -8,40 +8,25 @@
 
 #include "CppTexture.hpp"
 #include "CppUtils.hpp"
-#include<memory>
+#include "CppRenderBuffer.hpp"
 
 namespace CppRender{
 void Texture::image2D(int target, int level, int internalformat, int width, int height, void* data)
 {
     CR_ASSERT(level==0, "");
+
     _target = target;
-    _format = internalformat;
-    _width = width;
-    _height = height;
-    int perSize = Utils::getFormatPerSize(_format);
-    _data[level] = malloc(width*height*perSize);
-    if(data != nullptr){
-        memcpy(_data[level], data, width*height*perSize);
-    }else{
-        memset(_data[level], 0, width*height*perSize);
+    // TODO: 通用生成和销毁
+    if(_buffers[level])
+    {
+        delete _buffers[level];
     }
+    _buffers[level] = new RenderBuffer(_ctx);
+    _buffers[level]->storage(CR_RENDERBUFFER, internalformat, width, height, data);
 }
 
-void Texture::clearColor(glm::vec4 color)
+void Texture::clearColor(float color[4])
 {
-    char* levelData = (char*)_data[0];
-    int perSize = Utils::getFormatPerSize(_format);
-    for(int i = 0; i < _height; ++i)
-    {
-        char* lineStart = levelData + i * _width * perSize;
-        for(int j = 0; j < _width; ++j)
-        {
-            char* pixelStart = lineStart + j * perSize;
-            for(int k = 0; k < perSize; ++k)
-            {
-                *(pixelStart + k) = (char)(color[k] * 255);
-            }
-        }
-    }
+    _buffers[0]->clearColor(color);
 }
 }

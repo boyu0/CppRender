@@ -33,6 +33,7 @@ public:
     void getField(int i);
     void getField(const std::string& name);
     std::string getFieldString(const std::string& name);
+    std::string getFieldString(int i);
     float getFieldFloat(const std::string& name);
     float getFieldFloat(int i);
     void pop(int n);

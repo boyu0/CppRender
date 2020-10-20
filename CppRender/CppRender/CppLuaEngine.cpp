@@ -125,6 +125,14 @@ std::string LuaEngine::getFieldString(const std::string& name)
     return ret;
 }
 
+std::string LuaEngine::getFieldString(int i)
+{
+    getField(i);
+    std::string ret = lua_tostring(L, -1);
+    pop(1);
+    return ret;
+}
+
 float LuaEngine::getFieldFloat(const std::string& name)
 {
     getField(name);

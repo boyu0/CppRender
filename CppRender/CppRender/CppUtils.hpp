@@ -19,10 +19,10 @@
 #define CR_LOG(...) printf(__VA_ARGS__)
 #define CR_LOGE(format, ...) CR_LOG("CPPRENDER ERROR:"#format, __VA_ARGS__)
 
-#define CR_GEN_BUFFER(TBuffer, Map, Index, N, Ids) \
+#define CR_GEN_ARRAYS(ctx, TType, Map, Index, N, Ids) \
     for (int i = 0; i < N; ++i) { \
-        TBuffer* buffer = new TBuffer(); \
-        Map.emplace(std::make_pair(Index, buffer)); \
+        TType* type = new TType(ctx); \
+        Map.emplace(std::make_pair(Index, type)); \
         Ids[i] = Index++; \
     }
 
@@ -33,6 +33,7 @@ class Utils
 {
 public:
     static int getFormatPerSize(int format);
+    static int getTypeSize(int type);
 };
 }
 

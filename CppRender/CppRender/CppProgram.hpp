@@ -13,16 +13,23 @@
 
 namespace CppRender{
 class Shader;
+class Context;
+class VertexShader;
+class FragmentShader;
 class Program{
-private:
+public:
+    Program(Context* ctx):_ctx(ctx){}
 
 public:
     void attach(Shader* shader);
     bool link();
+    void run();
+    void setProgramAttribute(int n, int index, int size, int type, bool normalized, void* data);
 
 private:
-    Shader* _vertexShader{};
-    Shader* _fragmentShader{};
+    Context* _ctx{};
+    VertexShader* _vertexShader{};
+    FragmentShader* _fragmentShader{};
 };
 }
 

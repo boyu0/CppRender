@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "CppShader.hpp"
+#include <vector>
 
 namespace CppRender{
 class VertexShader : public Shader{
@@ -19,6 +20,13 @@ public:
 
 public:
     virtual bool init(Context* ctx, const std::string& file);
+    void setAttribute(int n, int index, int size, int type, bool normalized, void* data);
+
+private:
+    void initLayouts();
+
+private:
+    std::vector<std::string> _layouts;
 };
 }
 

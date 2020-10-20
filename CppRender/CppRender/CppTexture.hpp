@@ -11,20 +11,25 @@
 
 #include <stdio.h>
 #include "CppDefine.h"
-#include "glm/vec4.hpp"
+#include "CppRenderBuffer.hpp"
 
 namespace CppRender{
+class Context;
 class Texture{
 public:
+    Texture(Context* ctx):_ctx(ctx){}
+public:
     void image2D(int target, int level, int internalformat, int width, int height, void* data);
-    void clearColor(glm::vec4 color);
-    void* getData(int level = 0) { return _data[level]; }
+    void clearColor(float color[4]);
+    void* getData(int level = 0) { return _buffers[level]->getData(); }
+    inline int getWidth() { return _buffers[0]->getWidth(); }
+    inline int getHeight() { return _buffers[0]->getHeight(); }
+    inline int getInternalFormat() { return _buffers[0]->getInternalFormat(); }
+    inline int getTarget() { return _target; }
 private:
-    int _target = CR_INVALID_VALUE;
-    int _format = CR_INVALID_VALUE;
-    int _width = CR_INVALID_VALUE;
-    int _height =CR_INVALID_VALUE;
-    void* _data[CR_TEXUTRE_MAX_LEVEL] = {nullptr};
+    Context* _ctx{};
+    RenderBuffer* _buffers[CR_TEXUTRE_MAX_LEVEL] = {};
+    int _target{};
 };
 }
 

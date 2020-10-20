@@ -43,12 +43,15 @@ void Context::clear(int mask)
 
 void Context::clearColor(float r, float g, float b, float a)
 {
-    _clearColor = glm::vec4(r, g, b, a);
+    _clearColor[0] = r;
+    _clearColor[1] = g;
+    _clearColor[2] = b;
+    _clearColor[3] = a;
 }
 
 void Context::genFrameBuffers(int n, int* ids)
 {
-    CR_GEN_BUFFER(FrameBuffer, _frameBuffers, _frameBufferIndex, n, ids);
+    CR_GEN_ARRAYS(this, FrameBuffer, _frameBuffers, _frameBufferIndex, n, ids);
 }
 
 Texture* Context::getTexture(int id)
@@ -63,7 +66,7 @@ void Context::bindFrameBuffer(int target, int id)
 
 void Context::genRenderbuffers(int n, int* ids)
 {
-    CR_GEN_BUFFER(RenderBuffer, _renderBuffers, _renderBufferIndex, n, ids);
+    CR_GEN_ARRAYS(this, RenderBuffer, _renderBuffers, _renderBufferIndex, n, ids);
 }
 
 void Context::bindRenderBuffer(int target, int id)
@@ -102,6 +105,13 @@ int Context::createProgram()
     return 0;
 }
 
+void Context::vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer)
+{
+    CR_ASSERT(_vertexArrays.find(_currentVertexArrayIndex) != _vertexArrays.end(), "");
+
+    _vertexArrays[_currentVertexArrayIndex]->vertexAttributePointer(index, size, type, normalized, stride, pointer);
+}
+
 void Context::frameBufferTexture2D(int target, int attachment, int textarget, int texture, int level)
 {
     CR_ASSERT(_frameBuffers.find(attachment) != _frameBuffers.end(), "");
@@ -113,7 +123,7 @@ void Context::frameBufferTexture2D(int target, int attachment, int textarget, in
 
 void Context::genTextures(int n, int* ids)
 {
-    CR_GEN_BUFFER(Texture, _textures, _textureIndex, n, ids);
+    CR_GEN_ARRAYS(this, Texture, _textures, _textureIndex, n, ids);
 }
 
 void Context::bindTexture(int target, int id)
@@ -123,7 +133,7 @@ void Context::bindTexture(int target, int id)
 
 void Context::genVertexArrays(int n, int* ids)
 {
-    CR_GEN_BUFFER(VertexArray, _vertexArrays, _vertexArrayIndex, n ,ids);
+    CR_GEN_ARRAYS(this, VertexArray, _vertexArrays, _vertexArrayIndex, n ,ids);
 }
 
 void Context::bindVertexArray(int id)
@@ -133,7 +143,7 @@ void Context::bindVertexArray(int id)
 
 void Context::genBuffers(int n, int* ids)
 {
-    CR_GEN_BUFFER(Buffer, _buffers, _bufferIndex, n, ids);
+    CR_GEN_ARRAYS(this, Buffer, _buffers, _bufferIndex, n, ids);
 }
 void Context::bindBuffer(int target, int id)
 {
@@ -148,7 +158,43 @@ void Context::bindBuffer(int target, int id)
     }
 }
 
-void  Context::texImage2D(int target, int level, int internalformat, int width, int height, void* data)
+void Context::run(int target)
+{
+    switch (target)
+    {
+    case CR_PROGRAM:
+        _programs[_currentProgramIndex]->run();
+        break;
+    default:
+        break;
+    }
+}
+
+void Context::drawArrays(int mode, int start, int count)
+{
+    CR_ASSERT(_frameBuffers.find(_currentFrameBufferIndex) != _frameBuffers.end(), "");
+    _frameBuffers[_currentArrayBufferIndex]->drawArrays(mode, start, count);
+}
+
+void Context::bufferData(int target, int size, void* data, int useage)
+{
+    Buffer* buffer = nullptr;
+    if(target == CR_ARRAY_BUFFER)
+    {
+        CR_ASSERT(_buffers.find(_currentArrayBufferIndex) != _buffers.end(), "");
+        buffer = _buffers[_currentArrayBufferIndex];
+    }else if(target == CR_ELEMENT_ARRAY_BUFFER)
+    {
+        CR_ASSERT(_buffers.find(_currentElementArrayBufferIndex) != _buffers.end(), "");
+        buffer = _buffers[_currentElementArrayBufferIndex];
+    }else{
+        CR_ASSERT(false, "");
+        return;
+    }
+    buffer->data(target, size, data, useage);
+}
+
+void Context::texImage2D(int target, int level, int internalformat, int width, int height, void* data)
 {
     CR_ASSERT(_currentTextureIndex != CR_INVALID_VALUE && _textures.find(_currentTextureIndex) != _textures.end(), "");
 
@@ -156,9 +202,15 @@ void  Context::texImage2D(int target, int level, int internalformat, int width, 
     tex->image2D(target, level, internalformat, width, height, data);
 }
 
+void Context::viewPort(int x, int y, int width, int height)
+{
+    CR_ASSERT(_frameBuffers.find(_currentFrameBufferIndex) != _frameBuffers.end(), "");
+    _frameBuffers[_currentArrayBufferIndex]->viewPort(x, y, width, height);
+}
+
 bool Context::init(int width, int height)
 {
-    _draw = new Draw();
+    _draw = new Draw(this);
     _luaEngine = new LuaEngine();
     if(_luaEngine == nullptr || !_luaEngine->init())
     {
@@ -199,10 +251,7 @@ void Context::getRenderData(void** data)
     CR_ASSERT(_frameBuffers.find(_currentFrameBufferIndex) != _frameBuffers.end(), "");
 
     FrameBuffer* frameBuffer = _frameBuffers[_currentFrameBufferIndex];
-    int texture2dIndex = frameBuffer->getTexture2D();
-    CR_ASSERT(_textures.find(texture2dIndex) != _textures.end(), "");
-    Texture* tex = _textures[texture2dIndex];
-    *data = tex->getData();
+    *data = frameBuffer->getData();
 }
 
 
@@ -216,14 +265,64 @@ void Context::end()
     _draw->end();
 }
 
-void Context::vertex3f(float x, float y, float z)
+void Context::vertexf(float x, float y, float z, float w)
 {
-    _draw->vertex3f(x, y, z);
+    _draw->vertexf(x, y, z);
 }
 
-void Context::color3f(float r, float g, float b)
+void Context::colorf(float r, float g, float b, float a)
 {
-    _draw->color3f(r, g, b);
+    _draw->colorf(r, g, b);
+}
+
+void Context::uvf(float u, float v)
+{
+    _draw->uvf(u, v);
+}
+
+void* Context::mapBuffer(int target)
+{
+    switch (target)
+    {
+    case CR_ARRAY_BUFFER:
+        _buffers[_currentArrayBufferIndex]->get();
+        break;
+    
+    default:
+        break;
+    }
+}
+
+void* Context::mapBufferIndex(int index, int* size)
+{
+    Buffer* buffer = _buffers[index];
+    if(size)
+    {
+        *size = buffer->size();
+    }
+    return buffer->get();
+}
+
+
+void Context::setProgramAttribute(int n, int index, int size, int type, bool normalized, void* data)
+{
+    Program* program = _programs[_currentProgramIndex];
+    program->setProgramAttribute(n, index, size, type, normalized, data);
+}
+
+int Context::get(int target)
+{
+    switch (target)
+    {
+    case CR_ARRAY_BUFFER:
+        return _currentArrayBufferIndex;
+    case CR_ELEMENT_ARRAY_BUFFER:
+        return _currentElementArrayBufferIndex;
+    case CR_PROGRAM:
+        return _currentProgramIndex;
+    default:
+        return CR_INVALID_VALUE;
+    }
 }
 
 void Context::attachShader(int program, int shader)

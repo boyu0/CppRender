@@ -15,7 +15,6 @@
 
 namespace CppRender{
 class Context;
-class LuaEngine;
 class Shader{
 public:
     virtual ~Shader() = 0;
@@ -23,14 +22,15 @@ public:
     inline int getType() { return _type; }
     virtual bool init(Context* ctx, const std::string& file);
     bool runOne();
+    inline std::string& getEnv() { return _env; }
 
 protected:
     bool unpackTableToEnv(const std::string& name);
 
 protected:
-    LuaEngine* _engine = nullptr;
+    Context* _ctx{};
     int _type = CR_INVALID_VALUE;
-    std::string _identifier;
+    std::string _env;
 };
 }
 

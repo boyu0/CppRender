@@ -28,13 +28,12 @@ public:
     
     static void begin(int mode);
     static void end();
-    static void vertex3f(float x, float y, float z);
-    static void color3f(float r, float g, float b);
+    static void vertexf(float x, float y, float z, float w = 1.0f);
+    static void colorf(float r, float g, float b, float a = 1.0f);
+    static void uvf(float u, float v);
 
     static int createShader(int type, const std::string& file);
     static int createProgram();
-
-    static Context* getContext();
 };
 }
 

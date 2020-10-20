@@ -13,7 +13,10 @@
 #include <unordered_map>
 
 namespace CppRender {
+class Context;
 class VertexArray{
+public:
+    VertexArray(Context* ctx):_ctx(ctx){}
 private:
     struct VertexAttributePointerInfo{
         int size{};
@@ -21,13 +24,16 @@ private:
         bool normalized{};
         int stride{};
         int pointer{};
+        int buffer{};
     };
 
 public:
     void vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer);
+    bool setOne(int n);
 
 private:
     std::unordered_map<int, VertexAttributePointerInfo> _vertexAttributePointerInfos;
+    Context* _ctx{};
 };
 }
 
