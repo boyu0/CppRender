@@ -25,11 +25,12 @@ public:
     bool runOne();
 
 protected:
-    bool unpackTableToGlobal(const std::string& name);
+    bool unpackTableToEnv(const std::string& name);
 
 protected:
     LuaEngine* _engine = nullptr;
     int _type = CR_INVALID_VALUE;
+    std::string _identifier;
 };
 }
 

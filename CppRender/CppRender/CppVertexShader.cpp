@@ -17,9 +17,10 @@ bool VertexShader::init(Context* ctx, const std::string& file)
     }
 
     _type = CR_VERTEX_SHADER;
-    unpackTableToGlobal(CR_SHADER_ATTRIBUTE);
-    unpackTableToGlobal(CR_SHADER_VERYING);
-    unpackTableToGlobal(CR_SHADER_UNIFORM);
+    
+    unpackTableToEnv(CR_SHADER_ATTRIBUTE);
+    unpackTableToEnv(CR_SHADER_VERYING);
+    unpackTableToEnv(CR_SHADER_UNIFORM);
     
     return true;
 }

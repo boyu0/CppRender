@@ -11,24 +11,32 @@
 #include "CppLuaEngine.hpp"
 #include "CppUtils.hpp"
 
+
+
 namespace CppRender{
+static int g_index = 0;
 bool Shader::init(Context* ctx, const std::string& file)
 {
     _engine = ctx->getLuaEngine();
-
-    _engine->pushG(CR_SHADER_LIB_NAME);
+    _identifier = std::string(CR_SHADER_LIB_NAME) + std::to_string(g_index++);
+    
+    _engine->pushEnv(CR_SHADER_LIB_NAME);
+    _engine->newEnv(_identifier);
+    _engine->pushEnv(_identifier);
     bool ok = _engine->run(file);
-    unpackTableToGlobal(CR_SHADER_ATTRIBUTE);
-    _engine->popG();
+    _engine->popEnv();
+    _engine->popEnv();
+
     return ok;
 }
 
-
-bool Shader::unpackTableToGlobal(const std::string& name)
+bool Shader::unpackTableToEnv(const std::string& name)
 {
-    int top = _engine->getTop();
     bool ret = false;
-    _engine->getG();
+    
+    _engine->pushEnv(CR_SHADER_LIB_NAME);
+    _engine->pushEnv(_identifier);
+    _engine->getEnv();
     _engine->getGlobal(name);
 
     if(!_engine->isNil())
@@ -38,14 +46,14 @@ bool Shader::unpackTableToGlobal(const std::string& name)
     }
 
     _engine->pop(2);
-    printf("%d", _engine->getTop());
-    CR_ASSERT(top == _engine->getTop(), "");
+    _engine->popEnv();
+    _engine->popEnv();
     return ret;
 }
 
 bool Shader::runOne()
 {
-    _engine->getGlobal("main");
+    _engine->getGlobal(CR_SHADER_MAINFUNC);
     if(_engine->isNil())
     {
         CR_ASSERT(false, "main函数不存在");
@@ -58,5 +66,9 @@ bool Shader::runOne()
 }
 
 Shader::~Shader(){
+    if(!_identifier.empty())
+    {
+        _engine->deleteEnv(_identifier);
+    }
 }
 }

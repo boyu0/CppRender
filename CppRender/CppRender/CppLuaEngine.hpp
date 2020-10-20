@@ -21,12 +21,14 @@ class LuaEngine{
 public:
     bool init();
     bool run(const std::string& file);
-    void pushG(const std::string& name);
-    void popG();
+    void newEnv(const std::string& name);
+    void deleteEnv(const std::string& name);
+    void pushEnv(const std::string& name);
+    void getEnv();
+    void popEnv();
     bool isNil();
     int getTop();
 
-    void getG();
     void getGlobal(const std::string& name);
     void getField(int i);
     void getField(const std::string& name);
@@ -36,6 +38,7 @@ public:
     void pop(int n);
     void unpack();
     bool runFunc(int args, int rets);
+    void newTable();
 
 private:
     lua_State* L = nullptr;

@@ -39,6 +39,9 @@ public:
     void genRenderbuffers(int n, int* ids);
     void bindRenderBuffer(int target, int id);
     void renderbufferStorage(int target, int id);
+
+    void genBuffers(int n, int* ids);
+    void bindBuffer(int target, int id);
     
     void genTextures(int n, int* ids);
     void bindTexture(int target, int id);
@@ -56,7 +59,7 @@ public:
     void clear(int mask);
 
     Texture* getTexture(int id);
-    inline glm::vec4 getClearColor() { return _color; }
+    inline glm::vec4 getClearColor() { return _clearColor; }
     
     void getRenderData(void** data);
     
@@ -79,14 +82,17 @@ private:
     int _currentFrameBufferIndex = CR_INVALID_VALUE;
     int _currentRenderBufferIndex = CR_INVALID_VALUE;
     int _currentTextureIndex = CR_INVALID_VALUE;
-    int _currentVertexArray = CR_INVALID_VALUE;
+    int _currentVertexArrayIndex = CR_INVALID_VALUE;
+    int _currentArrayBufferIndex = CR_INVALID_VALUE;
+    int _currentElementArrayBufferIndex = CR_INVALID_VALUE;
     int _frameBufferIndex = 0;
     int _renderBufferIndex = 0;
+    int _bufferIndex = 0;
     int _textureIndex = 0;
     int _vertexArrayIndex = 0;
     int _shaderIndex = 1;
     int programIndex = 1;
-    glm::vec4 _color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    glm::vec4 _clearColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
     Draw* _draw{};
     LuaEngine* _luaEngine{};

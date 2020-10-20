@@ -19,6 +19,7 @@
 #include "CppFragmentShader.hpp"
 #include "CppProgram.hpp"
 #include "CppVertexArray.hpp"
+#include "CppBuffer.hpp"
 
 namespace CppRender{
 Context::Context()
@@ -42,7 +43,7 @@ void Context::clear(int mask)
 
 void Context::clearColor(float r, float g, float b, float a)
 {
-    _color = glm::vec4(r, g, b, a);
+    _clearColor = glm::vec4(r, g, b, a);
 }
 
 void Context::genFrameBuffers(int n, int* ids)
@@ -127,7 +128,24 @@ void Context::genVertexArrays(int n, int* ids)
 
 void Context::bindVertexArray(int id)
 {
+    _currentVertexArrayIndex = id;
+}
 
+void Context::genBuffers(int n, int* ids)
+{
+    CR_GEN_BUFFER(Buffer, _buffers, _bufferIndex, n, ids);
+}
+void Context::bindBuffer(int target, int id)
+{
+    if(target == CR_ARRAY_BUFFER)
+    {
+        _currentArrayBufferIndex = id;
+    }else if(target == CR_ELEMENT_ARRAY_BUFFER){
+        _currentElementArrayBufferIndex = id;
+    }else{
+        CR_ASSERT(false, "");
+        return;
+    }
 }
 
 void  Context::texImage2D(int target, int level, int internalformat, int width, int height, void* data)

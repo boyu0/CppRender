@@ -44,12 +44,30 @@ bool LuaEngine::init()
     return true;
 }
 
-void LuaEngine::pushG(const std::string& env)
+void LuaEngine::newEnv(const std::string& name)
 {
-    lua_getglobal(L, env.c_str());
+    lua_pushglobaltable(L);
+    lua_newtable(L);
+    lua_setfield(L, -2, name.c_str());
+    pop(1);
+}
+
+void LuaEngine::deleteEnv(const std::string& name)
+{
+    lua_pushglobaltable(L);
+    lua_pushnil(L);
+    lua_setfield(L, -2, name.c_str());
+    pop(1);
+}
+
+void LuaEngine::pushEnv(const std::string& env)
+{
+    lua_pushglobaltable(L);
+    lua_getfield(L, -1, env.c_str());
     lua_getglobal(L, LUA_GNAME);
     lua_setmetatable(L, -2);
     lua_setglobal(L, LUA_GNAME);
+    pop(1);
     _gs.emplace(env);
 }
 
@@ -58,20 +76,23 @@ bool LuaEngine::isNil()
     return lua_isnil(L, -1);
 }
 
-void LuaEngine::popG()
+void LuaEngine::popEnv()
 {
     if(_gs.empty())
     {
         lua_getglobal(L, CR_LUA_G);
+        lua_setglobal(L, LUA_GNAME);
     }else{
         std::string& env = _gs.top();
-        lua_pushstring(L, env.c_str());
+        lua_pushglobaltable(L);
+        lua_getfield(L, -1, env.c_str());
+        lua_setglobal(L, LUA_GNAME);
+        pop(1);
         _gs.pop();
     }
-    lua_setglobal(L, LUA_GNAME);
 }
 
-void LuaEngine::getG()
+void LuaEngine::getEnv()
 {
     getGlobal(LUA_GNAME);
 }
@@ -129,7 +150,11 @@ void LuaEngine::unpack()
         lua_settable(L, -6);
         pop(1);
     }
-    pop(1);
+}
+
+void LuaEngine::newTable()
+{
+    lua_newtable(L);
 }
 
 int LuaEngine::getTop()
