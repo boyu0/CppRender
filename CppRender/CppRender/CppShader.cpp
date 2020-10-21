@@ -20,13 +20,8 @@ bool Shader::init(Context* ctx, const std::string& file)
     _ctx = ctx;
     LuaEngine* engine = _ctx->getLuaEngine();
     _env = std::string(CR_SHADER_LIB_NAME) + std::to_string(g_index++);
-    
-    engine->pushEnv(CR_SHADER_LIB_NAME);
     engine->newEnv(_env);
-    engine->pushEnv(_env);
-    bool ok = engine->run(file);
-    engine->popEnv();
-    engine->popEnv();
+    bool ok = engine->run(_env, file);
 
     return ok;
 }
@@ -36,10 +31,8 @@ bool Shader::unpackTableToEnv(const std::string& name)
     bool ret = false;
 
     LuaEngine* engine = _ctx->getLuaEngine();
-    engine->pushEnv(CR_SHADER_LIB_NAME);
-    engine->pushEnv(_env);
-    engine->getEnv();
-    engine->getGlobal(name);
+    engine->getEnv(_env);
+    engine->getField(name);
 
     if(!engine->isNil())
     {
@@ -48,23 +41,40 @@ bool Shader::unpackTableToEnv(const std::string& name)
     }
 
     engine->pop(2);
-    engine->popEnv();
-    engine->popEnv();
     return ret;
+}
+void Shader::initVariables(const std::string& name, std::vector<std::string>& target)
+{
+    LuaEngine* engine = _ctx->getLuaEngine();
+    engine->getEnv(_env);
+    engine->getField(name);
+    if(engine->isNil())
+    {
+        engine->pop(2);
+        return;
+    }
+    int len = engine->getLen();
+    for(int i = 1; i <= len; ++i)
+    {
+        target.emplace_back(engine->getFieldString(i));
+    }
+    engine->pop(2);
 }
 
 bool Shader::runOne()
 {
     LuaEngine* engine = _ctx->getLuaEngine();
-    engine->getGlobal(CR_SHADER_MAINFUNC);
+    engine->getEnv(_env);
+    engine->getField(CR_SHADER_MAINFUNC);
     if(engine->isNil())
     {
         CR_ASSERT(false, "main函数不存在");
-        engine->pop(1);
+        engine->pop(2);
         return false;
     }
 
-    bool ret = engine->runFunc(0, 0);
+    bool ret = engine->runFunc(_env, 0, 0);
+    engine->pop(1);
     return ret;
 }
 

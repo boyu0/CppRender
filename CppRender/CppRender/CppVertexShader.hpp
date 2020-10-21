@@ -14,19 +14,20 @@
 #include <vector>
 
 namespace CppRender{
+class Program;
 class VertexShader : public Shader{
 public:
     virtual ~VertexShader() = default;
 
 public:
-    virtual bool init(Context* ctx, const std::string& file);
+    virtual bool init(Context* ctx, const std::string& file) override;
     void setAttribute(int n, int index, int size, int type, bool normalized, void* data);
+    void dealResult(Program* program);
 
 private:
-    void initLayouts();
-
-private:
-    std::vector<std::string> _layouts;
+    std::vector<std::string> _attributes;
+    std::vector<std::string> _veryings;
+    std::vector<std::string> _uniforms;
 };
 }
 

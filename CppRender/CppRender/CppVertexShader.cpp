@@ -10,7 +10,11 @@
 #include "CppUtils.hpp"
 #include "CppContext.hpp"
 #include "CppLuaEngine.hpp"
+#include "CppProgram.hpp"
 #include "glm/glm.hpp"
+extern "C"{
+    #include "lua.h"
+}
 
 namespace CppRender{
 bool VertexShader::init(Context* ctx, const std::string& file)
@@ -20,34 +24,11 @@ bool VertexShader::init(Context* ctx, const std::string& file)
     }
 
     _type = CR_VERTEX_SHADER;
-    
-    LuaEngine* engine = _ctx->getLuaEngine();
-    unpackTableToEnv(CR_SHADER_ATTRIBUTE);
-    unpackTableToEnv(CR_SHADER_VERYING);
-    unpackTableToEnv(CR_SHADER_UNIFORM);
-    initLayouts();
+    initVariables(CR_SHADER_ATTRIBUTE, _attributes);
+    initVariables(CR_SHADER_VERYING, _veryings);
+    initVariables(CR_SHADER_UNIFORM, _uniforms);
 
     return true;
-}
-
-void VertexShader::initLayouts()
-{
-    LuaEngine* engine = _ctx->getLuaEngine();
-    engine->pushEnv(_env);
-    engine->getGlobal(CR_SHADER_LAYOUT);
-    if(engine->isNil())
-    {
-        engine->pop(1);
-        engine->popEnv();
-        return;
-    }
-    int len = engine->getLen();
-    for(int i = 1; i <= len; ++i)
-    {
-        _layouts.emplace_back(engine->getFieldString(i));
-    }
-    engine->pop(1);
-    engine->popEnv();
 }
 
 void VertexShader::setAttribute(int n, int index, int size, int type, bool normalized, void* data)
@@ -65,18 +46,56 @@ void VertexShader::setAttribute(int n, int index, int size, int type, bool norma
         }
     }
     LuaEngine* engine = _ctx->getLuaEngine();
-    printf("%d", engine->getTop());
-//    engine->pushEnv(_env);
-    runOne();
-    engine->getGlobal(_layouts[index]);
+    engine->getEnv(_env);
+    engine->getField(_attributes[index]);
     if(engine->isNil())
     {
-        printf("xxxxx");
+        engine->pop(1);
+        engine->newTable();
+        engine->setField(_attributes[index]);
+        engine->getField(_attributes[index]);
     }
     engine->setFieldvf(v, size);
+    engine->pop(2);
+}
+
+void VertexShader::dealResult(Program* program)
+{
+    LuaEngine* engine = _ctx->getLuaEngine();
+    engine->getEnv(_env);
+    // TODO: error
+    engine->getField("cr_Position");
+    int count = engine->getLen();
+    CR_ASSERT(count == 4, "");
+    float pos[4];
+    for(int i = 0; i < 4; ++i)
+    {
+        pos[i] = engine->getFieldFloat(i);
+    }
     engine->pop(1);
-//    engine->popEnv();
-    printf("%d", engine->getTop());
+    program->newVertex(pos);
+
+    for(int index = 0; index < _veryings.size(); ++index)
+    {
+        const std::string& name = _veryings[index];
+        engine->getField(name);
+
+        int type = engine->type();
+        if(type == LUA_TNUMBER){
+            float v = engine->toFloat();
+            program->setVertexAttrf(index, 1, &v);
+        }else if(type == LUA_TTABLE){
+            int count = engine->getLen();
+            float v[4] = {0};
+            for(int i = 0; i < count; ++i){
+                v[i] = engine->getFieldFloat(i);
+            }
+            program->setVertexAttrf(index, count, v);
+        }else{
+            CR_ASSERT(false, "");
+        }
+        engine->pop(1);
+    }
 }
 
 }

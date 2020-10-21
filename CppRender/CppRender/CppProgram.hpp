@@ -10,12 +10,14 @@
 #define CppProgram_hpp
 
 #include <stdio.h>
+#include <string>
 
 namespace CppRender{
 class Shader;
 class Context;
 class VertexShader;
 class FragmentShader;
+class Primitive;
 class Program{
 public:
     Program(Context* ctx):_ctx(ctx){}
@@ -25,6 +27,9 @@ public:
     bool link();
     void run(int mode, int start, int count);
     void setProgramAttribute(int n, int index, int size, int type, bool normalized, void* data);
+    void setVertexAttrf(int name, int count, float f[]);
+    void createPrimitive(int mode);
+    void newVertex(float pos[4]);
 
 private:
     bool runVertex(int start, int count);
@@ -33,6 +38,7 @@ private:
     Context* _ctx{};
     VertexShader* _vertexShader{};
     FragmentShader* _fragmentShader{};
+    Primitive* _primitive{};
 };
 }
 

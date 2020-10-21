@@ -7,3 +7,10 @@
 //
 
 #include "CppFragmentShader.hpp"
+
+namespace CppRender{
+void FragmentShader::dealResult()
+{
+
+}
+}

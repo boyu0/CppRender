@@ -38,8 +38,9 @@
 #define CR_DYNAMIC_DRAW 0x01
 #define CR_STATIC_DRAW 0x02
 
-#define CR_LUA_G "_ORIGING"
-#define CR_SHADER_LIB_NAME "crshader"
+#define CR_LUA_G "_ORIGING_"
+#define CR_LUA_ENV "_ORIGINENV_"
+#define CR_SHADER_LIB_NAME "cr"
 #define CR_SHADER_LAYOUT "layout"
 #define CR_SHADER_ATTRIBUTE "attribute"
 #define CR_SHADER_VERYING "verying"

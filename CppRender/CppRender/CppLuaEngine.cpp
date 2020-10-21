@@ -12,6 +12,7 @@
 extern "C"{
 #include "lauxlib.h"
 #include "lualib.h"
+#include "llex.h"
 }
 
 
@@ -49,6 +50,8 @@ bool LuaEngine::init()
     
     lua_getglobal(L, LUA_GNAME);
     lua_setglobal(L, CR_LUA_G);
+    lua_getglobal(L, LUA_ENV);
+    lua_setglobal(L, CR_LUA_ENV);
 
     return true;
 }
@@ -57,6 +60,10 @@ void LuaEngine::newEnv(const std::string& name)
 {
     lua_pushglobaltable(L);
     lua_newtable(L);
+    lua_newtable(L);
+    lua_getglobal(L, LUA_GNAME);
+    lua_setfield(L, -2, "__index");
+    lua_setmetatable(L, -2);
     lua_setfield(L, -2, name.c_str());
     pop(1);
 }
@@ -69,41 +76,14 @@ void LuaEngine::deleteEnv(const std::string& name)
     pop(1);
 }
 
-void LuaEngine::pushEnv(const std::string& env)
+void LuaEngine::getEnv(const std::string& env)
 {
-    lua_pushglobaltable(L);
-    lua_getfield(L, -1, env.c_str());
-    lua_getglobal(L, LUA_GNAME);
-    lua_setmetatable(L, -2);
-    lua_setglobal(L, LUA_GNAME);
-    pop(1);
-    _gs.emplace(env);
+    lua_getglobal(L, env.c_str());
 }
 
 bool LuaEngine::isNil()
 {
     return lua_isnil(L, -1);
-}
-
-void LuaEngine::popEnv()
-{
-    _gs.pop();
-    if(_gs.empty())
-    {
-        lua_getglobal(L, CR_LUA_G);
-        lua_setglobal(L, LUA_GNAME);
-    }else{
-        std::string& env = _gs.top();
-        lua_pushglobaltable(L);
-        lua_getfield(L, -1, env.c_str());
-        lua_setglobal(L, LUA_GNAME);
-        pop(1);
-    }
-}
-
-void LuaEngine::getEnv()
-{
-    getGlobal(LUA_GNAME);
 }
 
 void LuaEngine::getGlobal(const std::string& name)
@@ -121,9 +101,9 @@ void LuaEngine::getField(int i)
     lua_geti(L, -1, i);
 }
 
-void LuaEngine::getField(const std::string& name)
+void LuaEngine::getField(const std::string& name, int index)
 {
-    lua_getfield(L, -1, name.c_str());
+    lua_getfield(L, index, name.c_str());
 }
 
 void LuaEngine::pop(int n)
@@ -131,11 +111,16 @@ void LuaEngine::pop(int n)
     lua_pop(L, n);
 }
 
-std::string LuaEngine::getFieldString(const std::string& name, bool* b)
+void LuaEngine::setField(const std::string& name, int index)
 {
-    getField(name);
+    lua_setfield(L, index, name.c_str());
+}
+
+std::string LuaEngine::getFieldString(const std::string& name, int index, bool* b)
+{
+    getField(name, index);
     CR_LUA_CHECKNOTNIL(b, "");
-    std::string ret = lua_tostring(L, -1);
+    std::string ret = lua_tostring(L, index);
     pop(1);
     return ret;
 }
@@ -147,6 +132,21 @@ std::string LuaEngine::getFieldString(int i, bool* b)
     std::string ret = lua_tostring(L, -1);
     pop(1);
     return ret;
+}
+
+std::string LuaEngine::toString(int index)
+{
+    return lua_tostring(L, index);
+}
+
+float LuaEngine::toFloat(int index)
+{
+    return lua_tonumber(L, index);
+}
+
+int LuaEngine::type(int index)
+{
+    return lua_type(L, index);
 }
 
 void LuaEngine::setFieldvf(glm::vec4 v, int size)
@@ -187,6 +187,15 @@ void LuaEngine::unpack()
     }
 }
 
+void LuaEngine::walk(std::function<void()> func)
+{
+    lua_pushnil(L);
+    while (lua_next(L, -2) != 0) {
+        func();
+        pop(1);
+    }
+}
+
 void LuaEngine::newTable()
 {
     lua_newtable(L);
@@ -202,8 +211,11 @@ int LuaEngine::getLen()
     return lua_rawlen(L, -1);
 }
 
-bool LuaEngine::runFunc(int args, int rets)
+bool LuaEngine::runFunc(const std::string& env, int args, int rets)
 {
+    lua_getglobal(L, env.c_str());
+    lua_setupvalue(L, -2, 1);
+
     if(lua_pcall(L, args, rets, 0) != 0){
         CR_LOGE("lua RUNTIME ERROR! msg:%s", lua_tostring(L, -1));
         pop(1);
@@ -212,9 +224,19 @@ bool LuaEngine::runFunc(int args, int rets)
     return true;
 }
 
-bool LuaEngine::run(const std::string& file)
+bool LuaEngine::run(const std::string& env, const std::string& file)
 {
-    int status = luaL_dofile(L, file.c_str());
+    int status = luaL_loadfile(L, file.c_str());
+    if(status != LUA_OK){
+        CR_LOGE("加载shader错误：%s\n", lua_tostring(L, -1));
+        CR_ASSERT(false, "");
+    }
+
+    lua_getglobal(L, env.c_str());
+    lua_setupvalue(L, -2, 1);
+
+    status = lua_pcall(L, 0, 0, 0);
+
     if(status != LUA_OK){
         CR_LOGE("加载shader错误：%s\n", lua_tostring(L, -1));
         CR_ASSERT(false, "");

@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <string>
+#include <vector>
 #include "CppDefine.h"
 
 namespace CppRender{
@@ -26,6 +27,7 @@ public:
 
 protected:
     bool unpackTableToEnv(const std::string& name);
+    void initVariables(const std::string& name, std::vector<std::string>& target);
 
 protected:
     Context* _ctx{};

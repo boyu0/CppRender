@@ -13,6 +13,7 @@
 #include "CppLuaEngine.hpp"
 #include "CppVertexShader.hpp"
 #include "CppFragmentShader.hpp"
+#include "CppTriangles.hpp"
 
 namespace CppRender{
 void Program::attach(Shader* shader)
@@ -35,6 +36,11 @@ bool Program::link()
     return true;
 }
 
+void Program::setVertexAttrf(int name, int count, float f[])
+{
+    _primitive->setVertexAttrf(name, count, f);
+}
+
 void Program::setProgramAttribute(int n, int index, int size, int type, bool normalized, void* data)
 {
     _vertexShader->setAttribute(n, index, size, type, normalized, data);
@@ -46,13 +52,32 @@ bool Program::runVertex(int start, int count)
     {
         _ctx->vertexArrayLoadOne(i);
         _vertexShader->runOne();
+        _vertexShader->dealResult(this);
     }
-    
+
     return true;
+}
+
+void Program::newVertex(float pos[4])
+{
+    _primitive->newVertex(pos);
+}
+
+void Program::createPrimitive(int mode)
+{
+    switch (mode)
+    {
+    case CR_TRIANGLES:
+        _primitive = new Triangles();
+        break;
+    default:
+        break;
+    }
 }
 
 void Program::run(int mode, int start, int count)
 {
+    createPrimitive(mode);
     runVertex(start, count);
 }
 

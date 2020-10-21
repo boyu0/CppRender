@@ -14,8 +14,9 @@
 
 namespace CppRender{
 class FragmentShader : public Shader{
-    public:
-        virtual ~FragmentShader() = default;
+public:
+    virtual ~FragmentShader() = default;
+    void dealResult();
 };
 }
 
