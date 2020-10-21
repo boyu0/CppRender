@@ -77,6 +77,7 @@ void FrameBuffer::drawArrays(int mode, int start, int count)
 {
     doViewPort();
     doClear();
+    _ctx->runProgram(mode, start, count);
 }
 
 void FrameBuffer::viewPort(int x, int y, int width, int height)

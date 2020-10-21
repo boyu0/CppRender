@@ -40,9 +40,20 @@ void Program::setProgramAttribute(int n, int index, int size, int type, bool nor
     _vertexShader->setAttribute(n, index, size, type, normalized, data);
 }
 
-void Program::run()
+bool Program::runVertex(int start, int count)
 {
+    for(int i = start; i < start + count; ++i)
+    {
+        _ctx->vertexArrayLoadOne(i);
+        _vertexShader->runOne();
+    }
+    
+    return true;
+}
 
+void Program::run(int mode, int start, int count)
+{
+    runVertex(start, count);
 }
 
 }

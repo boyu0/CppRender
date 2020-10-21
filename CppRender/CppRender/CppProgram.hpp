@@ -23,8 +23,11 @@ public:
 public:
     void attach(Shader* shader);
     bool link();
-    void run();
+    void run(int mode, int start, int count);
     void setProgramAttribute(int n, int index, int size, int type, bool normalized, void* data);
+
+private:
+    bool runVertex(int start, int count);
 
 private:
     Context* _ctx{};

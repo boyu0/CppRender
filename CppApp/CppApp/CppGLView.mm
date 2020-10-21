@@ -132,9 +132,32 @@ using namespace CppRender;
     
 //    glClearColor(0, 0, 0, 0);
 //    glClear(GL_COLOR_BUFFER_BIT);
-    Render::clearColor(1, 1, 0, 1);
+    Render::clearColor(0, 0, 0, 1);
     Render::clear(CR_COLOR_BUFFER_BIT);
-    Render::createShader(CR_VERTEX_SHADER, [self getPath:"res/shader/testVert.lua"]);
+    int crvert = Render::createShader(CR_VERTEX_SHADER, [self getPath:"res/shader/testVert.lua"]);
+    int crfrag = Render::createShader(CR_FRAGMENT_SHADER, [self getPath:"res/shader/testFrag.lua"]);
+    int crprogram = Render::createProgram();
+    Render::attachShader(crprogram, crvert);
+    Render::attachShader(crprogram, crfrag);
+    Render::linkProgram(crprogram);
+    Render::useProgram(crprogram);
+    Render::begin(CR_TRIANGLES);
+    Render::colorf(1.0f, 0.0f, 0.0f);
+    Render::vertexf(0.0f, 0.6f, 0.0f);
+    Render::colorf(0.0f, 1.0f, 0.0f);
+    Render::vertexf(-0.2f, 0.3f, 0.0f);
+    Render::colorf(0.0f, 0.0f, 1.0f);
+    Render::vertexf(0.2f, -0.3f, 0.0f);
+    Render::end();
+    
+//    glColor3f(1.0f, 0.85f, 0.35f);
+//    glBegin(GL_TRIANGLES);
+//    {
+//        glVertex3f(  0.0,  0.6, 0.0);
+//        glVertex3f( -0.2, -0.3, 0.0);
+//        glVertex3f(  0.2, -0.3 ,0.0);
+//    }
+//    glEnd();
     
     float vertices[] = {
     //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -

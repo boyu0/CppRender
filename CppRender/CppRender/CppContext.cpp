@@ -20,6 +20,7 @@
 #include "CppProgram.hpp"
 #include "CppVertexArray.hpp"
 #include "CppBuffer.hpp"
+#include "CppProgram.hpp"
 
 namespace CppRender{
 Context::Context()
@@ -102,7 +103,16 @@ int Context::createShader(int type, const std::string& file)
 
 int Context::createProgram()
 {
-    return 0;
+    Program* program = new Program(this);
+    _programs.emplace(std::make_pair(_programIndex, program));
+    return _programIndex++;
+}
+
+void Context::vertexArrayLoadOne(int n)
+{
+    CR_ASSERT(_vertexArrays.find(_currentVertexArrayIndex) != _vertexArrays.end(), "");
+
+    _vertexArrays[_currentVertexArrayIndex]->loadOne(n);
 }
 
 void Context::vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer)
@@ -158,16 +168,15 @@ void Context::bindBuffer(int target, int id)
     }
 }
 
-void Context::run(int target)
+void Context::runProgram(int mode, int start, int count)
 {
-    switch (target)
-    {
-    case CR_PROGRAM:
-        _programs[_currentProgramIndex]->run();
-        break;
-    default:
-        break;
-    }
+    _programs[_currentProgramIndex]->run(mode, start, count);
+}
+
+
+void Context::useProgram(int program)
+{
+    _currentProgramIndex = program;
 }
 
 void Context::drawArrays(int mode, int start, int count)
@@ -285,11 +294,10 @@ void* Context::mapBuffer(int target)
     switch (target)
     {
     case CR_ARRAY_BUFFER:
-        _buffers[_currentArrayBufferIndex]->get();
-        break;
+        return _buffers[_currentArrayBufferIndex]->get();
     
     default:
-        break;
+        return nullptr;
     }
 }
 

@@ -34,6 +34,9 @@ public:
 
     static int createShader(int type, const std::string& file);
     static int createProgram();
+    static void attachShader(int program, int shader);
+    static bool linkProgram(int program);
+    static void useProgram(int program);
 };
 }
 

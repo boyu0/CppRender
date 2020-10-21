@@ -52,12 +52,14 @@ public:
     void genVertexArrays(int n, int* ids);
     void bindVertexArray(int id);
     void vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer);
+    void vertexArrayLoadOne(int n);
     
     int createShader(int type, const std::string& file);
     int createProgram();
     void attachShader(int program, int shader);
     bool linkProgram(int program);
-    void run(int target);
+    void useProgram(int program);
+    void runProgram(int mode, int start, int count);
     void setProgramAttribute(int n, int index, int size, int type, bool normalized, void* data);
 
     void viewPort(int x, int y, int width, int height);

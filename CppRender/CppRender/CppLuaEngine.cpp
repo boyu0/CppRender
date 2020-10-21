@@ -14,6 +14,15 @@ extern "C"{
 #include "lualib.h"
 }
 
+
+#define CR_LUA_CHECKNOTNIL(b, ret) \
+    if(isNil()){ \
+        if(b){ *b = false; } \
+        pop(1); \
+        return ret; \
+    }else{ if(b){*b = true; }}
+
+
 namespace CppRender{
 static const luaL_Reg loadedlibs[] = {
   {CR_SHADER_LIB_NAME, luaopen_shader},
@@ -78,6 +87,7 @@ bool LuaEngine::isNil()
 
 void LuaEngine::popEnv()
 {
+    _gs.pop();
     if(_gs.empty())
     {
         lua_getglobal(L, CR_LUA_G);
@@ -88,7 +98,6 @@ void LuaEngine::popEnv()
         lua_getfield(L, -1, env.c_str());
         lua_setglobal(L, LUA_GNAME);
         pop(1);
-        _gs.pop();
     }
 }
 
@@ -100,6 +109,11 @@ void LuaEngine::getEnv()
 void LuaEngine::getGlobal(const std::string& name)
 {
     lua_getglobal(L, name.c_str());
+}
+
+void LuaEngine::setGlobal(const std::string& name)
+{
+    lua_setglobal(L, name.c_str());
 }
 
 void LuaEngine::getField(int i)
@@ -117,33 +131,46 @@ void LuaEngine::pop(int n)
     lua_pop(L, n);
 }
 
-std::string LuaEngine::getFieldString(const std::string& name)
+std::string LuaEngine::getFieldString(const std::string& name, bool* b)
 {
     getField(name);
+    CR_LUA_CHECKNOTNIL(b, "");
     std::string ret = lua_tostring(L, -1);
     pop(1);
     return ret;
 }
 
-std::string LuaEngine::getFieldString(int i)
+std::string LuaEngine::getFieldString(int i, bool* b)
 {
     getField(i);
+    CR_LUA_CHECKNOTNIL(b, "");
     std::string ret = lua_tostring(L, -1);
     pop(1);
     return ret;
 }
 
-float LuaEngine::getFieldFloat(const std::string& name)
+void LuaEngine::setFieldvf(glm::vec4 v, int size)
+{
+    for(int i = 0; i < size; ++i)
+    {
+        lua_pushnumber(L, v[i]);
+        lua_seti(L, -2, i+1);
+    }
+}
+
+float LuaEngine::getFieldFloat(const std::string& name, bool* b)
 {
     getField(name);
+    CR_LUA_CHECKNOTNIL(b, 0);
     float ret = lua_tonumberx(L, -1, nullptr);
     pop(1);
     return ret;
 }
 
-float LuaEngine::getFieldFloat(int i)
+float LuaEngine::getFieldFloat(int i, bool* b)
 {
     getField(i);
+    CR_LUA_CHECKNOTNIL(b, 0);
     float ret = lua_tonumberx(L, -1, nullptr);
     pop(1);
     return ret;
@@ -170,6 +197,11 @@ int LuaEngine::getTop()
     return lua_gettop(L);
 }
 
+int LuaEngine::getLen()
+{
+    return lua_rawlen(L, -1);
+}
+
 bool LuaEngine::runFunc(int args, int rets)
 {
     if(lua_pcall(L, args, rets, 0) != 0){
@@ -177,7 +209,7 @@ bool LuaEngine::runFunc(int args, int rets)
         pop(1);
         return false;
     }
-   return true;
+    return true;
 }
 
 bool LuaEngine::run(const std::string& file)

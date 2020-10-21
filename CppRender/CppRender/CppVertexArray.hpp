@@ -29,7 +29,7 @@ private:
 
 public:
     void vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer);
-    bool setOne(int n);
+    void loadOne(int n);
 
 private:
     std::unordered_map<int, VertexAttributePointerInfo> _vertexAttributePointerInfos;

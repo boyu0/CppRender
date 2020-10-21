@@ -85,4 +85,19 @@ int Render::createProgram()
 {
     return ctx->createProgram();
 }
+
+void Render::attachShader(int program, int shader)
+{
+    ctx->attachShader(program, shader);
+}
+
+bool Render::linkProgram(int program)
+{
+    return ctx->linkProgram(program);
+}
+
+void Render::useProgram(int program)
+{
+    ctx->useProgram(program);
+}
 }
