@@ -22,7 +22,7 @@ void Texture::image2D(int target, int level, int internalformat, int width, int 
         delete _buffers[level];
     }
     _buffers[level] = new RenderBuffer(_ctx);
-    _buffers[level]->storage(CR_RENDERBUFFER, internalformat, width, height, data);
+    _buffers[level]->storage(CR_RENDER_BUFFER, internalformat, width, height, data);
 }
 
 void Texture::clearColor(float color[4])

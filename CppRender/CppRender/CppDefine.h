@@ -13,9 +13,12 @@
 
 #define CR_ARRAY_BUFFER 1
 #define CR_ELEMENT_ARRAY_BUFFER 2
-#define CR_RENDERBUFFER 3
-#define CR_PROGRAM 4
+#define CR_RENDER_BUFFER 3
+#define CR_FRAME_BUFFER 4
+#define CR_PROGRAM 5
 
+#define CR_VIEW_PORT 1
+#define CR_WIN_SIZE 2
 
 #define CR_COLOR_BUFFER_BIT 0x4000
 

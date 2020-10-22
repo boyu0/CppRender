@@ -17,6 +17,12 @@ class Triangles : public Primitive{
 public:
     Triangles(Context* ctx);
     virtual ~Triangles()=default;
+
+public:
+    virtual void raster(Program* program) override;
+
+private:
+    void rasterOne(Program* program, int index[3]);
 };
 }
 #endif /* CppTriangles_hpp */

@@ -16,8 +16,9 @@
 
 namespace CppRender{
 class Context;
+class Program;
 class Primitive{
-private:
+protected:
     struct VertexValue{
         float pos[4];
     };
@@ -28,11 +29,11 @@ private:
     };
 public:
     Primitive(Context* ctx, int type, int count):_ctx(ctx), _type(type), _count(count){}
-    virtual ~Primitive()=0;
+    virtual ~Primitive() = 0;
 
     void newVertex(float pos[4]);
     void setVertexAttrf(int name, int count, float f[]);
-    void raster();
+    virtual void raster(Program* program) = 0;
 
 public:
     inline void setImmediateMode(bool b) { _immediateMode = b; }

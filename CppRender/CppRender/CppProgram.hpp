@@ -30,6 +30,7 @@ public:
     void setVertexAttrf(int name, int count, float f[]);
     void createPrimitive(int mode);
     void newVertex(float pos[4]);
+    void runFragment(float x, float y, float color[4]);
 
 private:
     bool runVertex(int start, int count);

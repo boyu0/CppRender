@@ -25,6 +25,7 @@ class Draw;
 class Shader;
 class Program;
 class LuaEngine;
+class Window;
 class Context{
 public:
     Context();
@@ -35,6 +36,8 @@ public:
     void genFrameBuffers(int n, int* ids);
     void bindFrameBuffer(int target, int id);
     void frameBufferTexture2D(int target, int attachment, int textarget, int texture, int level);
+    void getFrameBufferSize(int target, int size[2]);
+    int getFrameBufferTexture2D(int target);
     
     void genRenderbuffers(int n, int* ids);
     void bindRenderBuffer(int target, int id);
@@ -49,6 +52,7 @@ public:
     void genTextures(int n, int* ids);
     void bindTexture(int target, int id);
     void texImage2D(int target, int level, int internalformat, int width, int height, void* data);
+    void getTextureSize(int target, int size[2]);
 
     void genVertexArrays(int n, int* ids);
     void bindVertexArray(int id);
@@ -80,9 +84,8 @@ public:
     void uvf(float u, float v);
     int get(int target);
     void ortho(float left, float right, float bottom, float top, float near, float far);
-    inline glm::mat4 getProjection() { return _projection; }
-
-
+    inline const glm::mat4& getProjection() { return _projection; }
+    void getIntegerv(int target, int out[]);
 
     inline LuaEngine* getLuaEngine() { return _luaEngine; }
 
@@ -114,6 +117,8 @@ private:
     Draw* _draw{};
     LuaEngine* _luaEngine{};
     glm::mat4 _projection;
+
+    Window* _window{};
 };
 }
 

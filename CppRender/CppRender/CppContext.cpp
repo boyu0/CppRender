@@ -21,6 +21,7 @@
 #include "CppVertexArray.hpp"
 #include "CppBuffer.hpp"
 #include "CppProgram.hpp"
+#include "CppWindow.hpp"
 #include "glm/ext.hpp"
 
 namespace CppRender{
@@ -142,6 +143,13 @@ void Context::bindTexture(int target, int id)
     _currentTextureIndex = id;
 }
 
+void Context::getTextureSize(int target, int size[2])
+{
+    CR_ASSERT(_textures.find(target) != _textures.end(), "");
+    size[0] = _textures[target]->getWidth();
+    size[1] = _textures[target]->getHeight();
+}
+
 void Context::genVertexArrays(int n, int* ids)
 {
     CR_GEN_ARRAYS(this, VertexArray, _vertexArrays, _vertexArrayIndex, n ,ids);
@@ -220,7 +228,41 @@ void Context::texImage2D(int target, int level, int internalformat, int width, i
 void Context::viewPort(int x, int y, int width, int height)
 {
     CR_ASSERT(_frameBuffers.find(_currentFrameBufferIndex) != _frameBuffers.end(), "");
-    _frameBuffers[_currentArrayBufferIndex]->viewPort(x, y, width, height);
+    // _frameBuffers[_currentArrayBufferIndex]->viewPort(x, y, width, height);
+}
+
+
+void Context::getFrameBufferSize(int target, int size[2])
+{
+    _frameBuffers[target]->getSize(size);
+}
+
+void Context::getIntegerv(int target, int out[])
+{
+    switch (target)
+    {
+    case CR_VIEW_PORT:
+    {
+        int* p = _frameBuffers[_currentArrayBufferIndex]->getViewPort();
+        out[0] = p[0];
+        out[1] = p[1];
+        out[2] = p[2];
+        out[3] = p[3];
+        return;
+    }
+    break;
+    case CR_WIN_SIZE:
+    {
+        out[0] = 800;
+        out[1] = 600;
+        return;
+    }
+    break;
+    default:
+        break;
+    }
+
+    return;
 }
 
 bool Context::init(int width, int height)
@@ -234,31 +276,11 @@ bool Context::init(int width, int height)
 
     ortho(-1, 1, -1, 1, -1, 1);
 
-    int defaultFrameBuffer = CR_INVALID_VALUE;
-    genFrameBuffers(1, &defaultFrameBuffer);
-    CR_CHECK_RETURN_FALSE(defaultFrameBuffer != CR_INVALID_VALUE);
-    CR_ASSERT(defaultFrameBuffer == 0, "defaultFrameBuffer只能为0");
-    bindFrameBuffer(0, defaultFrameBuffer);
-
-//    int defaultRenderBuffer = CR_INVALID_VALUE;
-//    genRenderbuffers(1, &defaultRenderBuffer);
-//    CR_CHECK_RETURN_FALSE(defaultRenderBuffer != CR_INVALID_VALUE);
-//    CR_ASSERT(defaultRenderBuffer == 0, "defaultRenderBuffer只能为0");
-//    bindRenderBuffer(0, defaultRenderBuffer);
-
-    int defaultTexture = CR_INVALID_VALUE;
-    genTextures(1, &defaultTexture);
-    CR_CHECK_RETURN_FALSE(defaultTexture != CR_INVALID_VALUE);
-    CR_ASSERT(defaultTexture == 0, "defaultTexture只能为0");
-    bindTexture(0, defaultTexture);
-    texImage2D(CR_TEXTURE_2D, 0, CR_RGBA8, width, height, nullptr);
-    frameBufferTexture2D(0, defaultFrameBuffer, 0, defaultTexture, 0);
-
-    int defaultVertexArray = CR_INVALID_VALUE;
-    genVertexArrays(1, &defaultVertexArray);
-    CR_CHECK_RETURN_FALSE(defaultVertexArray != CR_INVALID_VALUE);
-    CR_ASSERT(defaultVertexArray == 0, "defaultVertexArray只能为0");
-    bindVertexArray(defaultVertexArray);
+    _window = new Window(this);
+    if(_window == nullptr || !_window->init(width, height))
+    {
+        return false;
+    }
 
     return true;
 }
@@ -303,7 +325,8 @@ void* Context::mapBuffer(int target)
     {
     case CR_ARRAY_BUFFER:
         return _buffers[_currentArrayBufferIndex]->get();
-    
+    case CR_RENDER_BUFFER:
+        return _frameBuffers[_currentFrameBufferIndex]->getData();
     default:
         return nullptr;
     }
@@ -336,6 +359,8 @@ int Context::get(int target)
         return _currentElementArrayBufferIndex;
     case CR_PROGRAM:
         return _currentProgramIndex;
+    case CR_FRAME_BUFFER:
+        return _currentFrameBufferIndex;
     default:
         return CR_INVALID_VALUE;
     }

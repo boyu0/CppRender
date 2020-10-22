@@ -26,6 +26,8 @@
         Ids[i] = Index++; \
     }
 
+#define CR_FLOAT_FIX(f) std::floor((f) + 0.00001)
+
 #define CR_MAP_FIND_RETURN(Map, Id) if(Map.find(Id) != Map.end()){return Map[Id];}else{return nullptr;}
 
 namespace CppRender{

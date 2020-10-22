@@ -23,11 +23,11 @@ public:
     void bindTexture2D(int idx);
     void clear(int mask);
     inline int getTexture2D() { return _texture2DIndex; }
-    void viewPort(int x, int y, int width, int height);
+    inline int* getViewPort() { return _view; }
     void drawArrays(int mode, int start, int count);
-    void doViewPort();
     void doClear();
     void* getData();
+    void getSize(int size[2]);
 
 private:
     Context* _ctx{};

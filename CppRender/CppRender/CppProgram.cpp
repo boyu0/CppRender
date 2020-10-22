@@ -58,6 +58,14 @@ bool Program::runVertex(int start, int count)
     return true;
 }
 
+void Program::runFragment(float x, float y, float color[4])
+{
+    color[0] = 1.0f;
+    color[1] = 0.0f;
+    color[2] = 0.0f;
+    color[3] = 1.0f;
+}
+
 void Program::newVertex(float pos[4])
 {
     _primitive->newVertex(pos);
@@ -79,7 +87,7 @@ void Program::run(int mode, int start, int count)
 {
     createPrimitive(mode);
     runVertex(start, count);
-    _primitive->raster();
+    _primitive->raster(this);
 }
 
 }
