@@ -9,8 +9,10 @@
 #include "CppTriangles.hpp"
 
 namespace CppRender{
-Triangles::Triangles()
+Triangles::Triangles(Context* ctx)
+:Primitive(ctx, CR_TRIANGLES, 3)
 {
-    _type = CR_TRIANGLES;
 }
+
+
 }

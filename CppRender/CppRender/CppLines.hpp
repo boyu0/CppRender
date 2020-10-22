@@ -15,7 +15,7 @@
 namespace CppRender{
 class Lines : public Primitive{
 public:
-    Lines();
+    Lines(Context* ctx);
     virtual ~Lines();
 };
 }

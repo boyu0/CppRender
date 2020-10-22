@@ -7,10 +7,11 @@
 //
 
 #include "CppLines.hpp"
-
+#include "CppUtils.hpp"
 
 namespace CppRender{
-Lines::Lines()
+Lines::Lines(Context* ctx)
+:Primitive(ctx, CR_LINES, 2)
 {
     
 }

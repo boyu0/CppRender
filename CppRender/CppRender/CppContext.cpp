@@ -21,6 +21,7 @@
 #include "CppVertexArray.hpp"
 #include "CppBuffer.hpp"
 #include "CppProgram.hpp"
+#include "glm/ext.hpp"
 
 namespace CppRender{
 Context::Context()
@@ -179,6 +180,11 @@ void Context::useProgram(int program)
     _currentProgramIndex = program;
 }
 
+void Context::ortho(float left, float right, float bottom, float top, float near, float far)
+{
+    _projection = glm::ortho(left, right, bottom, top, near, far);
+}
+
 void Context::drawArrays(int mode, int start, int count)
 {
     CR_ASSERT(_frameBuffers.find(_currentFrameBufferIndex) != _frameBuffers.end(), "");
@@ -225,6 +231,8 @@ bool Context::init(int width, int height)
     {
         return false;
     }
+
+    ortho(-1, 1, -1, 1, -1, 1);
 
     int defaultFrameBuffer = CR_INVALID_VALUE;
     genFrameBuffers(1, &defaultFrameBuffer);

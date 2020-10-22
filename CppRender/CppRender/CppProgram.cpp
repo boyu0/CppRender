@@ -68,7 +68,7 @@ void Program::createPrimitive(int mode)
     switch (mode)
     {
     case CR_TRIANGLES:
-        _primitive = new Triangles();
+        _primitive = new Triangles(_ctx);
         break;
     default:
         break;
@@ -79,6 +79,7 @@ void Program::run(int mode, int start, int count)
 {
     createPrimitive(mode);
     runVertex(start, count);
+    _primitive->raster();
 }
 
 }

@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <string>
 #include "CppDefine.h"
+#include "glm/matrix.hpp"
 
 namespace CppRender{
 class VertexArray;
@@ -78,6 +79,10 @@ public:
     void colorf(float r, float g, float b, float w);
     void uvf(float u, float v);
     int get(int target);
+    void ortho(float left, float right, float bottom, float top, float near, float far);
+    inline glm::mat4 getProjection() { return _projection; }
+
+
 
     inline LuaEngine* getLuaEngine() { return _luaEngine; }
 
@@ -108,6 +113,7 @@ private:
 
     Draw* _draw{};
     LuaEngine* _luaEngine{};
+    glm::mat4 _projection;
 };
 }
 

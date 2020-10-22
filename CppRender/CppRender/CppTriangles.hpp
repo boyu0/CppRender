@@ -12,9 +12,10 @@
 #include <stdio.h>
 #include "CppPrimitive.hpp"
 namespace CppRender{
+class Context;
 class Triangles : public Primitive{
 public:
-    Triangles();
+    Triangles(Context* ctx);
     virtual ~Triangles()=default;
 };
 }

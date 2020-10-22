@@ -7,6 +7,11 @@
 //
 
 #include "CppPrimitive.hpp"
+#include "glm/glm.hpp"
+#include "glm/common.hpp"
+#include "glm/matrix.hpp"
+#include "glm/ext.hpp"
+#include "CppContext.hpp"
 
 namespace CppRender{
 Primitive::~Primitive()
@@ -28,5 +33,18 @@ void Primitive::setVertexAttrf(int name, int count, float f[])
         attr.f[i] = f[i];
     }
     v.emplace_back(attr);
+}
+
+void Primitive::raster()
+{
+    glm::mat4x4 projection = _ctx->getProjection();
+    std::vector<VertexValue> v(_vetexValues.size());
+    for(int i = 0; i < _vetexValues.size(); ++i)
+    {
+        VertexValue& value = _vetexValues[i];
+        glm::vec4 pos = glm::vec4(value.pos[0], value.pos[1], value.pos[2], value.pos[3]);
+        glm::vec4 screenpos = projection * pos;
+        printf("pos x:%f y:%f z:%f w:%f\n", screenpos.x, screenpos.y, screenpos.z, screenpos.w);
+    }
 }
 }

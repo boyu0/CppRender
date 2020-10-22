@@ -70,7 +70,7 @@ void VertexShader::dealResult(Program* program)
     float pos[4];
     for(int i = 0; i < 4; ++i)
     {
-        pos[i] = engine->getFieldFloat(i);
+        pos[i] = engine->getFieldFloat(i+1);
     }
     engine->pop(1);
     program->newVertex(pos);
@@ -88,7 +88,7 @@ void VertexShader::dealResult(Program* program)
             int count = engine->getLen();
             float v[4] = {0};
             for(int i = 0; i < count; ++i){
-                v[i] = engine->getFieldFloat(i);
+                v[i] = engine->getFieldFloat(i+1);
             }
             program->setVertexAttrf(index, count, v);
         }else{
