@@ -25,9 +25,10 @@ public:
     bool runOne();
     inline std::string& getEnv() { return _env; }
 
+    void initVariables(const std::string& name, std::vector<std::string>& target);
+
 protected:
     bool unpackTableToEnv(const std::string& name);
-    void initVariables(const std::string& name, std::vector<std::string>& target);
 
 protected:
     Context* _ctx{};

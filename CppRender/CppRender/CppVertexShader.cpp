@@ -33,7 +33,7 @@ bool VertexShader::init(Context* ctx, const std::string& file)
 
 void VertexShader::setAttribute(int n, int index, int size, int type, bool normalized, void* data)
 {
-    glm::vec4 v;
+    float v[4];
     for(int i = 0; i < size; ++i)
     {
         switch (type)
@@ -47,14 +47,7 @@ void VertexShader::setAttribute(int n, int index, int size, int type, bool norma
     }
     LuaEngine* engine = _ctx->getLuaEngine();
     engine->getEnv(_env);
-    engine->getField(_attributes[index]);
-    if(engine->isNil())
-    {
-        engine->pop(1);
-        engine->newTable();
-        engine->setField(_attributes[index]);
-        engine->getField(_attributes[index]);
-    }
+    engine->getFieldOrNewTable(_attributes[index]);
     engine->setFieldvf(v, size);
     engine->pop(2);
 }
@@ -77,24 +70,10 @@ void VertexShader::dealResult(Program* program)
 
     for(int index = 0; index < _veryings.size(); ++index)
     {
-        const std::string& name = _veryings[index];
-        engine->getField(name);
-
-        int type = engine->type();
-        if(type == LUA_TNUMBER){
-            float v = engine->toFloat();
-            program->setVertexAttrf(index, 1, &v);
-        }else if(type == LUA_TTABLE){
-            int count = engine->getLen();
-            float v[4] = {0};
-            for(int i = 0; i < count; ++i){
-                v[i] = engine->getFieldFloat(i+1);
-            }
-            program->setVertexAttrf(index, count, v);
-        }else{
-            CR_ASSERT(false, "");
-        }
-        engine->pop(1);
+        float v[4] = {0};
+        int count;
+        engine->getFieldvf(_veryings[index], -1, v, &count);
+        program->pushVertexAttrf(count, v);
     }
 }
 

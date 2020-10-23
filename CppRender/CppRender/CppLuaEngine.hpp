@@ -12,7 +12,6 @@
 #include <stdio.h>
 #include <string>
 #include <stack>
-#include "glm/glm.hpp"
 extern "C"{
     #include "lua.h"
 }
@@ -32,13 +31,15 @@ public:
     void setGlobal(const std::string& name);
     void getField(int i);
     void getField(const std::string& name, int index = -1);
+    void getFieldOrNewTable(const std::string& name, int index = -1);
     void setField(const std::string& name, int index = -2);
     int getLen();
     std::string getFieldString(const std::string& name, int index = -1, bool* bNil = nullptr);
     std::string getFieldString(int i, bool* bNil = nullptr);
-    void setFieldvf(glm::vec4 v, int size);
+    void setFieldvf(float v[], int size);
     float getFieldFloat(const std::string& name, bool* bNil = nullptr);
     float getFieldFloat(int i, bool* bNil = nullptr);
+    void getFieldvf(const std::string& name, int index, float v[], int* siz = nullptr);
     void pop(int n);
     void unpack();
     void walk(std::function<void()> func);

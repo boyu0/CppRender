@@ -63,6 +63,13 @@ void* FrameBuffer::getData()
 void FrameBuffer::getSize(int size[2])
 {
 
+    Texture* tex = _ctx->getTexture(_texture2DIndex);
+    if(tex)
+    {
+        size[0] = tex->getWidth();
+        size[1] = tex->getHeight();
+    }
+
 }
 
 void FrameBuffer::drawArrays(int mode, int start, int count)

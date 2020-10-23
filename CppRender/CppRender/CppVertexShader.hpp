@@ -23,6 +23,7 @@ public:
     virtual bool init(Context* ctx, const std::string& file) override;
     void setAttribute(int n, int index, int size, int type, bool normalized, void* data);
     void dealResult(Program* program);
+    const std::vector<std::string>& getVeryings() {  return _veryings; }
 
 private:
     std::vector<std::string> _attributes;

@@ -36,4 +36,29 @@ int Utils::getTypeSize(int type)
         break;
     }
 }
+
+bool Utils::isRight(const glm::vec2& a, const glm::vec2& b, const glm::vec2& p)
+{
+    glm::vec2 ab = b - a;
+    glm::vec2 ap = p - a;
+    return glm::cross(glm::vec3(ab.x, ab.y, 0), glm::vec3(ap.x, ap.y, 0)).z >= 0;
+}
+
+glm::vec3 Utils::getTrianglePos(const glm::vec2& a, const glm::vec2& b, const glm::vec2& c, const glm::vec2& p)
+{
+    glm::vec3 s[2];
+    for(int i = 2; i--;){
+        s[i][0] = c[i] - a[i];
+        s[i][1] = b[i] - a[i];
+        s[i][2] = a[i] - p[i];
+    }
+    glm::vec3 u = glm::cross(s[0], s[1]);
+    if(std::abs(u[2])>1e-2)
+    {
+        return glm::vec3(1-(u.x+u.y)/u.z, u.x/u.z, u.y/u.z);
+    }
+
+    return glm::vec3(-1, 1, 1);
+}
+
 }

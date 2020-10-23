@@ -79,6 +79,7 @@ unsigned char data[] = {
 #include "../../CppRender/CppRender/CppRender.hpp"
 #include <string>
 #include <iostream>
+#define STB_IMAGE_IMPLEMENTATION
 #include "../../CppRender/include/stb_image.h"
 
 std::string vShader =
@@ -132,7 +133,7 @@ using namespace CppRender;
     
 //    glClearColor(0, 0, 0, 0);
 //    glClear(GL_COLOR_BUFFER_BIT);
-    Render::clearColor(0, 0, 0, 1);
+    Render::clearColor(0, 0, 1, 1);
     Render::clear(CR_COLOR_BUFFER_BIT);
     int crvert = Render::createShader(CR_VERTEX_SHADER, [self getPath:"res/shader/testVert.lua"]);
     int crfrag = Render::createShader(CR_FRAGMENT_SHADER, [self getPath:"res/shader/testFrag.lua"]);
@@ -161,11 +162,18 @@ using namespace CppRender;
     
     float vertices[] = {
     //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
-         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 左上
+         1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f,   // 右上
+         1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 1.0f,   // 右下
+        -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 1.0f,   // 左下
+        -1.0f,  1.0f, 0.0f,   0.0f, 0.0f, 0.0f,   0.0f, 0.0f    // 左上
     };
+    // float vertices[] = {
+    // //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
+    //      -1.0f,  -0.5f, 0.0f,   0.2f, 0.0f, 0.0f,   1.0f, 0.0f,   // 右上
+    //      -0.5f, 1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   1.0f, 1.0f,   // 右下
+    //     -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 1.0f,   // 左下
+    //     1.0f,  -1.0f, 0.0f,   0.2f, 0.0f, 0.0f,   0.0f, 0.0f    // 左上
+    // };
     unsigned int indices[] = {
         0, 1, 3,
         1, 2, 3,
@@ -174,28 +182,46 @@ using namespace CppRender;
     glGenVertexArraysAPPLE(1, &VAO);
     glBindVertexArrayAPPLE(VAO);
     
-
+    int vert = compileShader(vShader, GL_VERTEX_SHADER);
+    int frag = compileShader(fShader, GL_FRAGMENT_SHADER);
+    program = createProgram(vert, frag);
+    
+    
+    
     unsigned int VBO;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STREAM_DRAW);
     
-    
+
+//    glActiveTexture(GL_TEXTURE0 + 0);
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
-    int width = 32, height = 32;
     void* renderData = nullptr;
     Render::getRenderData(&renderData);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0, GL_RGBA, GL_UNSIGNED_BYTE, renderData);
+    
+    int x = 800, y = 600, channels;
+//    unsigned char* data = stbi_load([self getPath:"res/png/test.png"].c_str(), &x, &y, &channels, 4);
+    
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, renderData);
     glGenerateMipmap(GL_TEXTURE_2D);
 //    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 800, 600, 0, GL_RGBA8, GL_UNSIGNED_BYTE, nullptr);
     
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(0 * sizeof(float)));
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
+    int pos;
+//    pos= glGetUniformLocation(program, "ourTexture");
+//    glUniform1i(pos, 0);
+    
+    
+    pos = glGetAttribLocation(program, "aPos");
+    glVertexAttribPointer(pos, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)(0 * sizeof(float)));
+    glEnableVertexAttribArray(pos);
+    pos = glGetAttribLocation(program, "aColor");
+    glVertexAttribPointer(pos, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(pos);
+    pos = glGetAttribLocation(program, "aTexCoord");
+    glVertexAttribPointer(pos, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(pos);
     
     unsigned int EBO;
     glGenBuffers(1, &EBO);
@@ -205,9 +231,6 @@ using namespace CppRender;
     glBindVertexArrayAPPLE(0);
     
 
-    int vert = compileShader(vShader, GL_VERTEX_SHADER);
-    int frag = compileShader(fShader, GL_FRAGMENT_SHADER);
-    program = createProgram(vert, frag);
 
 
 }
@@ -254,15 +277,13 @@ GLuint compileShader(const std::string& code, GLenum type)
 }
 
 -(void) drawAnObject{
+    void* renderData;
+//    Render::getRenderData(&renderData);
+//    glTexSubImage2D(GL_TEXTURE_2D, texture, 0, 0, 800, 600, GL_RGBA8, GL_UNSIGNED_BYTE, renderData);
+    glBindVertexArrayAPPLE(VAO);
     glUseProgram(program);
     glBindTexture(GL_TEXTURE_2D, texture);
-    
-    void* renderData;
-    Render::getRenderData(&renderData);
-    glTexSubImage2D(GL_TEXTURE_2D, texture, 0, 0, 800, 600, GL_RGBA8, GL_UNSIGNED_BYTE, renderData);
-    glBindVertexArrayAPPLE(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    
 }
 
 -(void) drawRect: (NSRect) bounds

@@ -24,10 +24,17 @@ void Primitive::newVertex(float pos[4])
     _vertexAttrs.push_back({});
 }
 
-void Primitive::setVertexAttrf(int name, int count, float f[])
+float* Primitive::getVertexAttrf(int index, int name, int* count)
+{
+    auto& v = _vertexAttrs[index][name];
+    *count = v.count;
+    return v.f;
+}
+
+void Primitive::pushVertexAttrf(int count, float f[])
 {
     auto& v = _vertexAttrs.back();
-    VertexAttr attr{name, count};
+    VertexAttr attr{count};
     for(int i = 0; i < count; ++i)
     {
         attr.f[i] = f[i];

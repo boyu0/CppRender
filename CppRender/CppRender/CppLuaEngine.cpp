@@ -106,6 +106,18 @@ void LuaEngine::getField(const std::string& name, int index)
     lua_getfield(L, index, name.c_str());
 }
 
+void LuaEngine::getFieldOrNewTable(const std::string& name, int index)
+{
+    getField(name, index);
+    if(isNil())
+    {
+        pop(1);
+        newTable();
+        setField(name, index-1);
+        getField(name, index);
+    }
+}
+
 void LuaEngine::pop(int n)
 {
     lua_pop(L, n);
@@ -149,13 +161,32 @@ int LuaEngine::type(int index)
     return lua_type(L, index);
 }
 
-void LuaEngine::setFieldvf(glm::vec4 v, int size)
+void LuaEngine::setFieldvf(float v[], int size)
 {
     for(int i = 0; i < size; ++i)
     {
         lua_pushnumber(L, v[i]);
         lua_seti(L, -2, i+1);
     }
+}
+
+void LuaEngine::getFieldvf(const std::string& name, int index, float v[], int* size)
+{
+    getField(name);
+    int t = type();
+    if(t == LUA_TNUMBER){
+        v[0] = toFloat();
+        if(size){ *size = 1; }
+    }else if(t == LUA_TTABLE){
+        int count = getLen();
+        for(int i = 0; i < count; ++i){
+            v[i] = getFieldFloat(i+1);
+        }
+        if(size){ *size = count; }
+    }else{
+        CR_ASSERT(false, "");
+    }
+    pop(1);
 }
 
 float LuaEngine::getFieldFloat(const std::string& name, bool* b)

@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include "CppDefine.h"
+#include "glm/glm.hpp"
 
 #define CR_CHECK_RETURN(cond) if(!(cond)) { return; }
 #define CR_CHECK_RETURN_RET(cond, ret) if(!(cond)) { return ret; }
@@ -36,6 +37,8 @@ class Utils
 public:
     static int getFormatPerSize(int format);
     static int getTypeSize(int type);
+    static bool isRight(const glm::vec2& a, const glm::vec2& b, const glm::vec2& p);
+    static glm::vec3 getTrianglePos(const glm::vec2& a, const glm::vec2& b, const glm::vec2& c, const glm::vec2& p);
 };
 }
 

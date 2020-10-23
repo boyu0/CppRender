@@ -23,7 +23,6 @@ protected:
         float pos[4];
     };
     struct VertexAttr{
-        int name;
         int count;
         float f[4];
     };
@@ -32,7 +31,8 @@ public:
     virtual ~Primitive() = 0;
 
     void newVertex(float pos[4]);
-    void setVertexAttrf(int name, int count, float f[]);
+    void pushVertexAttrf(int count, float f[]);
+    float* getVertexAttrf(int index, int name, int* count);
     virtual void raster(Program* program) = 0;
 
 public:

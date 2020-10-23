@@ -16,7 +16,12 @@ namespace CppRender{
 class FragmentShader : public Shader{
 public:
     virtual ~FragmentShader() = default;
+
+public:
+    virtual bool init(Context* ctx, const std::string& file) override;
     void dealResult();
+    void setVerying(const std::string& name, int count, float f[]);
+    void getResult(float color[4]);
 };
 }
 

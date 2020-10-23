@@ -36,9 +36,9 @@ bool Program::link()
     return true;
 }
 
-void Program::setVertexAttrf(int name, int count, float f[])
+void Program::pushVertexAttrf(int count, float f[])
 {
-    _primitive->setVertexAttrf(name, count, f);
+    _primitive->pushVertexAttrf(count, f);
 }
 
 void Program::setProgramAttribute(int n, int index, int size, int type, bool normalized, void* data)
@@ -58,12 +58,25 @@ bool Program::runVertex(int start, int count)
     return true;
 }
 
-void Program::runFragment(float x, float y, float color[4])
+void Program::runFragment(int count, int index[], float portion[], float color[4])
 {
-    color[0] = 1.0f;
-    color[1] = 0.0f;
-    color[2] = 0.0f;
-    color[3] = 1.0f;
+    auto& veryings = _vertexShader->getVeryings();
+    for(int i = 0; i < veryings.size(); ++i)
+    {
+        float result[4] = {0};
+        int pcount = 0;
+        for(int j = 0; j < count; ++j)
+        {
+            float* p = _primitive->getVertexAttrf(index[j], i, &pcount);
+            for(int k = 0; k < pcount; ++k)
+            {
+                result[k] += portion[j] * p[k];
+            }
+        }
+        _fragmentShader->setVerying(veryings[i], pcount, result);
+    }
+    _fragmentShader->runOne();
+    _fragmentShader->getResult(color);
 }
 
 void Program::newVertex(float pos[4])

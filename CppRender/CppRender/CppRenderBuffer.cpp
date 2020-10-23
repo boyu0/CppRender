@@ -30,17 +30,17 @@ void RenderBuffer::storage(int target, int internalformat, int width, int height
 
 void RenderBuffer::clearColor(float color[4])
 {
-    char* levelData = (char*)_data;
+    unsigned char* levelData = (unsigned char*)_data;
     int perSize = Utils::getFormatPerSize(_format);
     for(int i = 0; i < _height; ++i)
     {
-        char* lineStart = levelData + i * _width * perSize;
+        unsigned char* lineStart = levelData + i * _width * perSize;
         for(int j = 0; j < _width; ++j)
         {
-            char* pixelStart = lineStart + j * perSize;
+            unsigned char* pixelStart = lineStart + j * perSize;
             for(int k = 0; k < perSize; ++k)
             {
-                *(pixelStart + k) = (char)(color[k] * 255);
+                *(pixelStart + k) = (unsigned char)(color[k] * 255);
             }
         }
     }
