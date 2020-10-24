@@ -48,6 +48,7 @@ public:
     void bufferData(int target, int size, void* data, int useage);
     void* mapBuffer(int target);
     void* mapBufferIndex(int index, int* size = nullptr);
+    void deleteBuffers(int n, int* ids);
     
     void genTextures(int n, int* ids);
     void bindTexture(int target, int id);
@@ -65,7 +66,7 @@ public:
     bool linkProgram(int program);
     void useProgram(int program);
     void runProgram(int mode, int start, int count);
-    void setProgramAttribute(int n, int index, int size, int type, bool normalized, void* data);
+    void setProgramAttribute(int index, int size, int type, bool normalized, void* data);
 
     void viewPort(int x, int y, int width, int height);
     void clearColor(float r, float g, float b, float a);

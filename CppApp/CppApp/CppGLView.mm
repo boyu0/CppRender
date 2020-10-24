@@ -111,6 +111,7 @@ using namespace CppRender;
     GLuint texture;
     GLuint VAO;
     GLuint program;
+    NSDate* _now;
 }
 
 -(const std::string) getPath:(const std::string& )path{
@@ -122,7 +123,7 @@ using namespace CppRender;
 
 -(void) prepareOpenGL{
     GLint swapInterval = 1;
-    [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+//    [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
 //    glViewport(0, 0, 800, 600);
     if(!Render::init(800, 600))
     {
@@ -143,10 +144,16 @@ using namespace CppRender;
     Render::linkProgram(crprogram);
     Render::useProgram(crprogram);
     Render::begin(CR_TRIANGLES);
+    int tex;
+    Render::genTextures(1, &tex);
+    Render::bindTexture(tex);
+    Render::texCoord2f(0.0f, 0.0f);
     Render::colorf(1.0f, 0.0f, 0.0f);
     Render::vertexf(0.0f, 0.6f, 0.5f);
+    Render::texCoord2f(1.0f, 0.0f);
     Render::colorf(0.0f, 1.0f, 0.0f);
     Render::vertexf(-0.2f, 0.3f, 0.0f);
+    Render::texCoord2f(1.0f, 1.0f);
     Render::colorf(0.0f, 0.0f, 1.0f);
     Render::vertexf(0.2f, -0.3f, 0.0f);
     Render::end();
@@ -231,8 +238,15 @@ using namespace CppRender;
     glBindVertexArrayAPPLE(0);
     
 
+    _now = [NSDate date];
+    [NSTimer scheduledTimerWithTimeInterval:1.0/60 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
 
+}
 
+-(void)timerFired:(NSTimer *)sender{
+    NSLog(@"%f",  [sender.fireDate timeIntervalSinceDate:_now]);
+    [self setNeedsDisplay:YES];
+    _now = [NSDate date];
 }
 
 int createProgram(GLuint vertex, GLuint fragment)
@@ -278,8 +292,17 @@ GLuint compileShader(const std::string& code, GLenum type)
 
 -(void) drawAnObject{
     void* renderData;
-//    Render::getRenderData(&renderData);
-//    glTexSubImage2D(GL_TEXTURE_2D, texture, 0, 0, 800, 600, GL_RGBA8, GL_UNSIGNED_BYTE, renderData);
+
+    Render::begin(CR_TRIANGLES);
+    Render::colorf(1.0f, 0.0f, 0.0f);
+    Render::vertexf(0.0f, 0.6f, 0.5f);
+    Render::colorf(0.0f, 1.0f, 0.0f);
+    Render::vertexf(-0.2f, 0.3f, 0.0f);
+    Render::colorf(0.0f, 0.0f, 1.0f);
+    Render::vertexf(0.2f, -0.3f, 0.0f);
+    Render::end();
+   Render::getRenderData(&renderData);
+   glTexSubImage2D(GL_TEXTURE_2D, texture, 0, 0, 800, 600, GL_RGBA8, GL_UNSIGNED_BYTE, renderData);
     glBindVertexArrayAPPLE(VAO);
     glUseProgram(program);
     glBindTexture(GL_TEXTURE_2D, texture);

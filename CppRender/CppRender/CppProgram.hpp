@@ -18,6 +18,7 @@ class Context;
 class VertexShader;
 class FragmentShader;
 class Primitive;
+class LuaEngine;
 class Program{
 public:
     Program(Context* ctx):_ctx(ctx){}
@@ -26,11 +27,19 @@ public:
     void attach(Shader* shader);
     bool link();
     void run(int mode, int start, int count);
-    void setProgramAttribute(int n, int index, int size, int type, bool normalized, void* data);
+    void setAttribute(int index, int size, int type, bool normalized, void* data);
+    void setUniform(const std::string& name, float x);
+    void setUniform(const std::string& name, float x, float y);
+    void setUniform(const std::string& name, float x, float y, float z);
+    void setUniform(const std::string& name, float x, float y, float z, float w);
+    void setUniform(const std::string& name, int x);
     void pushVertexAttrf(int count, float f[]);
     void createPrimitive(int mode);
     void newVertex(float pos[4]);
     void runFragment(int count, int index[], float portion[], float color[4]);
+    void getTexture2DColor(int index, float u, float v, float color[4]);
+    void clear();
+    LuaEngine* getLuaEngine();
 
 private:
     bool runVertex(int start, int count);
@@ -40,6 +49,7 @@ private:
     VertexShader* _vertexShader{};
     FragmentShader* _fragmentShader{};
     Primitive* _primitive{};
+    std::string _env;
 };
 }
 

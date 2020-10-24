@@ -31,25 +31,10 @@ bool VertexShader::init(Context* ctx, const std::string& file)
     return true;
 }
 
-void VertexShader::setAttribute(int n, int index, int size, int type, bool normalized, void* data)
+void VertexShader::setAttribute(int index, int size, int type, bool normalized, void* data)
 {
-    float v[4];
-    for(int i = 0; i < size; ++i)
-    {
-        switch (type)
-        {
-        case CR_FLOAT:
-                v[i] = *((float*)data + i);
-            break;
-        default:
-            break;
-        }
-    }
-    LuaEngine* engine = _ctx->getLuaEngine();
-    engine->getEnv(_env);
-    engine->getFieldOrNewTable(_attributes[index]);
-    engine->setFieldvf(v, size);
-    engine->pop(2);
+    if(_attributes.size() <= index) { return; }
+    Utils::setValue(_ctx, _env, _attributes[index], size, type, normalized, data);
 }
 
 void VertexShader::dealResult(Program* program)
@@ -72,7 +57,7 @@ void VertexShader::dealResult(Program* program)
     {
         float v[4] = {0};
         int count;
-        engine->getFieldvf(_veryings[index], -1, v, &count);
+        engine->getFieldv(_veryings[index], -1, v, &count);
         program->pushVertexAttrf(count, v);
     }
 }

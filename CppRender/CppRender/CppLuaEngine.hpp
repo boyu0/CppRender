@@ -24,6 +24,7 @@ public:
     void newEnv(const std::string& name);
     void deleteEnv(const std::string& name);
     void getEnv(const std::string& name);
+    void setSuper();
     bool isNil();
     int getTop();
 
@@ -36,10 +37,14 @@ public:
     int getLen();
     std::string getFieldString(const std::string& name, int index = -1, bool* bNil = nullptr);
     std::string getFieldString(int i, bool* bNil = nullptr);
-    void setFieldvf(float v[], int size);
+    void setFieldv(float v[], int size);
+    void setFieldv(int v[], int size);
     float getFieldFloat(const std::string& name, bool* bNil = nullptr);
     float getFieldFloat(int i, bool* bNil = nullptr);
-    void getFieldvf(const std::string& name, int index, float v[], int* siz = nullptr);
+    void setFieldFloat(const std::string& name, float f, int index = -1);
+    void setFieldInt(const std::string& name, int i, int index = -1);
+    void setFieldUserData(const std::string& name, void* userdata, int index = -1);
+    void getFieldv(const std::string& name, int index, float v[], int* siz = nullptr);
     void pop(int n);
     void unpack();
     void walk(std::function<void()> func);

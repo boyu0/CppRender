@@ -32,7 +32,7 @@ void FragmentShader::setVerying(const std::string& name, int count, float f[])
     LuaEngine* engine = _ctx->getLuaEngine();
     engine->getEnv(_env);
     engine->getFieldOrNewTable(name);
-    engine->setFieldvf(f, count);
+    engine->setFieldv(f, count);
     engine->pop(2);
 }
 
@@ -40,7 +40,7 @@ void FragmentShader::getResult(float color[4])
 {
     LuaEngine* engine = _ctx->getLuaEngine();
     engine->getEnv(_env);
-    engine->getFieldvf(CR_SHADER_VERT_COLOR, -1, color);
+    engine->getFieldv(CR_SHADER_VERT_COLOR, -1, color);
     engine->pop(1);
 }
 }

@@ -37,6 +37,22 @@ void Render::bindFrameBuffer(int id)
     
 }
 
+
+void Render::genTextures(int n, int* ids)
+{
+    ctx->genTextures(n ,ids);
+}
+
+void Render::bindTexture(int id)
+{
+    ctx->bindTexture(0, id);
+}
+
+void Render::texCoord2f(float u, float v)
+{
+    ctx->uvf(u, v);
+}
+
 void Render::clearColor(float r, float g, float b, float a)
 {
     ctx->clearColor(r, g, b, a);

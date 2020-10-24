@@ -26,6 +26,8 @@ public:
     inline int getHeight() { return _buffers[0]->getHeight(); }
     inline int getInternalFormat() { return _buffers[0]->getInternalFormat(); }
     inline int getTarget() { return _target; }
+    void readPixel(int level, int x, int y, float color[4]);
+    void readPixel(int level, float x, float y, float color[4]);
 private:
     Context* _ctx{};
     RenderBuffer* _buffers[CR_TEXUTRE_MAX_LEVEL] = {};

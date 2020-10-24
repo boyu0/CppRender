@@ -76,6 +76,15 @@ void LuaEngine::deleteEnv(const std::string& name)
     pop(1);
 }
 
+void LuaEngine::setSuper()
+{
+    lua_newtable(L);
+    lua_pushvalue(L, -2);
+    lua_setfield(L, -2, "__index");
+    lua_setmetatable(L, -3);
+    pop(2);
+}
+
 void LuaEngine::getEnv(const std::string& env)
 {
     lua_getglobal(L, env.c_str());
@@ -161,7 +170,13 @@ int LuaEngine::type(int index)
     return lua_type(L, index);
 }
 
-void LuaEngine::setFieldvf(float v[], int size)
+void LuaEngine::setFieldUserData(const std::string& name, void* userdata, int index)
+{
+    lua_pushlightuserdata(L, userdata);
+    lua_setfield(L, index-1, name.c_str());
+}
+
+void LuaEngine::setFieldv(float v[], int size)
 {
     for(int i = 0; i < size; ++i)
     {
@@ -170,7 +185,28 @@ void LuaEngine::setFieldvf(float v[], int size)
     }
 }
 
-void LuaEngine::getFieldvf(const std::string& name, int index, float v[], int* size)
+void LuaEngine::setFieldv(int v[], int size)
+{
+    for(int i = 0; i < size; ++i)
+    {
+        lua_pushinteger(L, v[i]);
+        lua_seti(L, -2, i+1);
+    }
+}
+
+void LuaEngine::setFieldFloat(const std::string& name, float f, int index)
+{
+    lua_pushnumber(L, f);
+    lua_setfield(L, index-1, name.c_str());
+}
+
+void LuaEngine::setFieldInt(const std::string& name, int i, int index)
+{
+    lua_pushinteger(L, i);
+    lua_setfield(L, index-1, name.c_str());
+}
+
+void LuaEngine::getFieldv(const std::string& name, int index, float v[], int* size)
 {
     getField(name);
     int t = type();

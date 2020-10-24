@@ -26,7 +26,6 @@ Buffer::~Buffer()
     if(_data != nullptr)
     {
         delete _data;
-        _data = nullptr;
     }
 }
 

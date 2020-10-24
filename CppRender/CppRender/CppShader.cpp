@@ -19,7 +19,7 @@ bool Shader::init(Context* ctx, const std::string& file)
 {
     _ctx = ctx;
     LuaEngine* engine = _ctx->getLuaEngine();
-    _env = std::string(CR_SHADER_LIB_NAME) + std::to_string(g_index++);
+    _env = std::string(CR_SHADER_ENV_PREFIX) + std::to_string(g_index++);
     engine->newEnv(_env);
     bool ok = engine->run(_env, file);
 

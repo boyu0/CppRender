@@ -117,6 +117,11 @@ void Context::vertexArrayLoadOne(int n)
     _vertexArrays[_currentVertexArrayIndex]->loadOne(n);
 }
 
+void Context::deleteBuffers(int n, int* ids)
+{
+    CR_DELETE_ARRAYS(this, _buffers, n, ids);
+}
+
 void Context::vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer)
 {
     CR_ASSERT(_vertexArrays.find(_currentVertexArrayIndex) != _vertexArrays.end(), "");
@@ -343,10 +348,10 @@ void* Context::mapBufferIndex(int index, int* size)
 }
 
 
-void Context::setProgramAttribute(int n, int index, int size, int type, bool normalized, void* data)
+void Context::setProgramAttribute(int index, int size, int type, bool normalized, void* data)
 {
     Program* program = _programs[_currentProgramIndex];
-    program->setProgramAttribute(n, index, size, type, normalized, data);
+    program->setAttribute(index, size, type, normalized, data);
 }
 
 int Context::get(int target)

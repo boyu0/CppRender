@@ -14,8 +14,11 @@
 #include "CppVertexShader.hpp"
 #include "CppFragmentShader.hpp"
 #include "CppTriangles.hpp"
+#include "CppTexture.hpp"
 
 namespace CppRender{
+static int g_index = 0;
+
 void Program::attach(Shader* shader)
 {
     switch (shader->getType())
@@ -33,6 +36,12 @@ void Program::attach(Shader* shader)
 
 bool Program::link()
 {
+    _env = std::string(CR_PROGRAM_ENV_PREFIX) + std::to_string(g_index++);
+    LuaEngine* engine = _ctx->getLuaEngine();
+    engine->newEnv(_env);
+    engine->getEnv(_env);
+    engine->setFieldUserData(CR_PROGRAM_LUA_NAME, this);
+    engine->pop(1);
     return true;
 }
 
@@ -41,9 +50,9 @@ void Program::pushVertexAttrf(int count, float f[])
     _primitive->pushVertexAttrf(count, f);
 }
 
-void Program::setProgramAttribute(int n, int index, int size, int type, bool normalized, void* data)
+void Program::setAttribute(int index, int size, int type, bool normalized, void* data)
 {
-    _vertexShader->setAttribute(n, index, size, type, normalized, data);
+    _vertexShader->setAttribute(index, size, type, normalized, data);
 }
 
 bool Program::runVertex(int start, int count)
@@ -56,6 +65,32 @@ bool Program::runVertex(int start, int count)
     }
 
     return true;
+}
+
+
+void Program::setUniform(const std::string& name, float x)
+{
+    Utils::setValue(_ctx, _env, name, 1, CR_FLOAT, false, &x);
+}
+void Program::setUniform(const std::string& name, float x, float y)
+{
+    float f[2] = {x, y};
+    Utils::setValue(_ctx, _env, name, 2, CR_FLOAT, false, f);
+}
+void Program::setUniform(const std::string& name, float x, float y, float z)
+{
+    float f[3] = {x, y, z};
+    Utils::setValue(_ctx, _env, name, 3, CR_FLOAT, false, f);
+}
+void Program::setUniform(const std::string& name, float x, float y, float z, float w)
+{
+    float f[4] = {x, y, z, w};
+    Utils::setValue(_ctx, _env, name, 4, CR_FLOAT, false, f);
+}
+
+void Program::setUniform(const std::string& name, int x)
+{
+    Utils::setValue(_ctx, _env, name, 1, CR_INT, false, &x);
 }
 
 void Program::runFragment(int count, int index[], float portion[], float color[4])
@@ -77,6 +112,17 @@ void Program::runFragment(int count, int index[], float portion[], float color[4
     }
     _fragmentShader->runOne();
     _fragmentShader->getResult(color);
+}
+
+LuaEngine* Program::getLuaEngine()
+{
+    return _ctx->getLuaEngine();
+}
+
+void Program::getTexture2DColor(int index, float u, float v, float color[4])
+{
+    Texture* tex = _ctx->getTexture(index);
+    tex->readPixel(0, u, v, color);
 }
 
 void Program::newVertex(float pos[4])
@@ -101,6 +147,12 @@ void Program::run(int mode, int start, int count)
     createPrimitive(mode);
     runVertex(start, count);
     _primitive->raster(this);
+    clear();
+}
+void Program::clear()
+{
+    delete _primitive;
+    _primitive = nullptr;
 }
 
 }

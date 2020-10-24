@@ -20,6 +20,10 @@ public:
     static bool init(int width, int height);
     static void genFrameBuffers(int n, int* ids);
     static void bindFrameBuffer(int id);
+
+    static void genTextures(int n, int* ids);
+    static void bindTexture(int id);
+    static void texCoord2f(float u, float v);
     
     static void clearColor(float r, float g, float b, float a);
     static void clear(int bit);

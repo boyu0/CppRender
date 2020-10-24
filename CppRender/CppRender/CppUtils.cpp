@@ -7,6 +7,8 @@
 //
 
 #include "CppUtils.hpp"
+#include "CppContext.hpp"
+#include "CppLuaEngine.hpp"
 
 namespace CppRender{
 int Utils::getFormatPerSize(int format)
@@ -59,6 +61,53 @@ glm::vec3 Utils::getTrianglePos(const glm::vec2& a, const glm::vec2& b, const gl
     }
 
     return glm::vec3(-1, 1, 1);
+}
+void Utils::setValue(Context* ctx, const std::string& env, const std::string& name, int size, int type, bool normalized, void* data)
+{
+    LuaEngine* engine = ctx->getLuaEngine();
+    engine->getEnv(env);
+    switch (type)
+    {
+    case CR_FLOAT:
+    {
+        if(size == 1)
+        {
+            engine->setFieldFloat(name.c_str(), ((float*)data)[0]);
+        }else
+        {
+            engine->getFieldOrNewTable(name);
+            float v[4];
+            for(int i = 0; i < size; ++i)
+            {
+                v[i] = *((float*)data + i);
+                engine->setFieldv(v, size);
+            }
+            engine->pop(1);
+        }
+        break;
+    }
+    case CR_INT:
+    {
+        if(size == 1)
+        {
+            engine->setFieldInt(name.c_str(), ((int*)data)[0]);
+        }else
+        {
+            engine->getFieldOrNewTable(name);
+            int v[4];
+            for(int i = 0; i < size; ++i)
+            {
+                v[i] = *((int*)data + i);
+                engine->setFieldv(v, size);
+            }
+            engine->pop(1);
+        }
+        break;
+    }
+    default:
+        break;
+    }
+    engine->pop(1);
 }
 
 }

@@ -25,6 +25,9 @@ public:
     inline int getWidth() { return _width; }
     inline int getHeight() { return _height; }
     inline int getInternalFormat() { return _format; }
+    inline int getPerSize() { return _perSize; }
+    void readPixel(int x, int y, float color[4]);
+    void readPixel(float x, float y, float color[4]);
 
 private:
     Context* _ctx{};
@@ -33,6 +36,7 @@ private:
     int _width = CR_INVALID_VALUE;
     int _height =CR_INVALID_VALUE;
     void* _data{};
+    int _perSize = CR_INVALID_VALUE;
 };
 }
 

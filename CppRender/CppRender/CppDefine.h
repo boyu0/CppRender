@@ -44,6 +44,9 @@
 #define CR_LUA_G "_ORIGING_"
 #define CR_LUA_ENV "_ORIGINENV_"
 #define CR_SHADER_LIB_NAME "cr"
+#define CR_SHADER_ENV_PREFIX "crshader_"
+#define CR_PROGRAM_ENV_PREFIX "crprogram_"
+#define CR_PROGRAM_LUA_NAME "engine"
 #define CR_SHADER_LAYOUT "layout"
 #define CR_SHADER_ATTRIBUTE "attribute"
 #define CR_SHADER_VERYING "verying"
@@ -53,6 +56,7 @@
 #define CR_SHADER_VERT_COLOR "cr_Color"
 
 #define CR_FLOAT 0x01
+#define CR_INT 0x02
 
 
 #endif /* CppDefine_h */
