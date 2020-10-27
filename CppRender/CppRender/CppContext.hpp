@@ -67,6 +67,7 @@ public:
     void useProgram(int program);
     void runProgram(int mode, int start, int count);
     void setProgramAttribute(int index, int size, int type, bool normalized, void* data);
+    void setProgramUniform(const std::string& name, int i);
 
     void viewPort(int x, int y, int width, int height);
     void clearColor(float r, float g, float b, float a);

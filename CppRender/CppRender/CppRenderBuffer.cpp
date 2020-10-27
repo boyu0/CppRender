@@ -31,7 +31,7 @@ void RenderBuffer::storage(int target, int internalformat, int width, int height
 void RenderBuffer::readPixel(int x, int y, float color[4])
 {
     unsigned char* levelData = (unsigned char*)_data;
-    unsigned char* c = levelData + (y * _height + x) * _perSize;
+    unsigned char* c = levelData + (y * _width + x) * _perSize;
     color[0] = c[0] / 255.0f;
     color[1] = c[1] / 255.0f;
     color[2] = c[2] / 255.0f;

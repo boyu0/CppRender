@@ -39,6 +39,8 @@ public:
     void runFragment(int count, int index[], float portion[], float color[4]);
     void getTexture2DColor(int index, float u, float v, float color[4]);
     void clear();
+    void beginEnv(int type);
+    void endEnv(int type);
     LuaEngine* getLuaEngine();
 
 private:

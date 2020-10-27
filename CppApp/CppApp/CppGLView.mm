@@ -134,7 +134,7 @@ using namespace CppRender;
     
 //    glClearColor(0, 0, 0, 0);
 //    glClear(GL_COLOR_BUFFER_BIT);
-    Render::clearColor(0, 0, 1, 1);
+    Render::clearColor(1, 1, 1, 1);
     Render::clear(CR_COLOR_BUFFER_BIT);
     int crvert = Render::createShader(CR_VERTEX_SHADER, [self getPath:"res/shader/testVert.lua"]);
     int crfrag = Render::createShader(CR_FRAGMENT_SHADER, [self getPath:"res/shader/testFrag.lua"]);
@@ -147,15 +147,20 @@ using namespace CppRender;
     int tex;
     Render::genTextures(1, &tex);
     Render::bindTexture(tex);
-    Render::texCoord2f(0.0f, 0.0f);
-    Render::colorf(1.0f, 0.0f, 0.0f);
-    Render::vertexf(0.0f, 0.6f, 0.5f);
-    Render::texCoord2f(1.0f, 0.0f);
-    Render::colorf(0.0f, 1.0f, 0.0f);
-    Render::vertexf(-0.2f, 0.3f, 0.0f);
+    int width, height;
+    unsigned char* data = stbi_load([self getPath:"res/png/test.png"].c_str(), &width, &height, nullptr, 4);
+    Render::texImage2D(CR_TEXTURE_2D, 0, CR_RGBA8, width, height, data);
+    
     Render::texCoord2f(1.0f, 1.0f);
+    Render::colorf(1.0f, 0.0f, 0.0f);
+    Render::vertexf(1.0f, 1.0f, 0.5f);
+    Render::texCoord2f(0.0f, 0.0f);
+    Render::colorf(0.0f, -1.0f, 0.0f);
+    Render::vertexf(-1.0f, -1.0f, 0.0f);
+    Render::texCoord2f(1.0f, 0.0f);
     Render::colorf(0.0f, 0.0f, 1.0f);
-    Render::vertexf(0.2f, -0.3f, 0.0f);
+    Render::vertexf(1.0f, -1.0f, 0.0f);
+    
     Render::end();
     
 //    glColor3f(1.0f, 0.85f, 0.35f);

@@ -55,14 +55,54 @@ void Program::setAttribute(int index, int size, int type, bool normalized, void*
     _vertexShader->setAttribute(index, size, type, normalized, data);
 }
 
+void Program::beginEnv(int type)
+{
+    Shader* shader = nullptr;
+    switch (type) {
+        case CR_VERTEX_SHADER:
+            shader = _vertexShader;
+            break;
+        case CR_FRAGMENT_SHADER:
+            shader = _fragmentShader;
+            break;
+        default:
+            break;
+    }
+    LuaEngine* engine = _ctx->getLuaEngine();
+    engine->getEnv(shader->getEnv());
+    engine->getEnv(_env);
+    engine->setSuper();
+}
+
+void Program::endEnv(int type)
+{
+    Shader* shader = nullptr;
+    switch (type) {
+        case CR_VERTEX_SHADER:
+            shader = _vertexShader;
+            break;
+        case CR_FRAGMENT_SHADER:
+            shader = _fragmentShader;
+            break;
+        default:
+            break;
+    }
+    LuaEngine* engine = _ctx->getLuaEngine();
+    engine->getEnv(shader->getEnv());
+    engine->getEnv(CR_LUA_G);
+    engine->setSuper();
+}
+
 bool Program::runVertex(int start, int count)
 {
+    beginEnv(CR_VERTEX_SHADER);
     for(int i = start; i < start + count; ++i)
     {
         _ctx->vertexArrayLoadOne(i);
         _vertexShader->runOne();
         _vertexShader->dealResult(this);
     }
+    endEnv(CR_VERTEX_SHADER);
 
     return true;
 }
@@ -146,7 +186,9 @@ void Program::run(int mode, int start, int count)
 {
     createPrimitive(mode);
     runVertex(start, count);
+    beginEnv(CR_FRAGMENT_SHADER);
     _primitive->raster(this);
+    endEnv(CR_FRAGMENT_SHADER);
     clear();
 }
 void Program::clear()

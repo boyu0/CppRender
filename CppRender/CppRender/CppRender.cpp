@@ -116,4 +116,9 @@ void Render::useProgram(int program)
 {
     ctx->useProgram(program);
 }
+
+void Render::texImage2D(int target, int level, int internalformat, int width, int height, void* data)
+{
+    ctx->texImage2D(target, level, internalformat, width, height, data);
+}
 }

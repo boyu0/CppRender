@@ -18,16 +18,16 @@ extern "C"{
 
 namespace CppRender{
 static int shader_texture2D (lua_State *L) {
-  lua_pushglobaltable(L);
+  lua_getupvalue(L, -4, 1);
   lua_getfield(L, -1, CR_PROGRAM_LUA_NAME);
   Program* program = (Program*)lua_touserdata(L, -1);
   lua_pop(L, 1);
-  float texture = lua_tonumber(L, -1);
+  float texture = lua_tonumber(L, 2);
 
-  lua_geti(L, -2, 1);
+  lua_geti(L, 1, 1);
   float u = lua_tonumber(L, -1);
   lua_pop(L, 1);
-  lua_geti(L, -2, 2);
+  lua_geti(L, 1, 2);
   float v = lua_tonumber(L, -1);
   lua_pop(L, 1);
 

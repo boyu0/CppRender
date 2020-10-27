@@ -61,7 +61,7 @@ void LuaEngine::newEnv(const std::string& name)
     lua_pushglobaltable(L);
     lua_newtable(L);
     lua_newtable(L);
-    lua_getglobal(L, LUA_GNAME);
+    lua_getglobal(L, CR_LUA_G);
     lua_setfield(L, -2, "__index");
     lua_setmetatable(L, -2);
     lua_setfield(L, -2, name.c_str());
@@ -285,6 +285,7 @@ bool LuaEngine::runFunc(const std::string& env, int args, int rets)
 
     if(lua_pcall(L, args, rets, 0) != 0){
         CR_LOGE("lua RUNTIME ERROR! msg:%s", lua_tostring(L, -1));
+        CR_ASSERT(false, "");
         pop(1);
         return false;
     }

@@ -24,6 +24,7 @@ public:
     static void genTextures(int n, int* ids);
     static void bindTexture(int id);
     static void texCoord2f(float u, float v);
+    static void texImage2D(int target, int level, int internalformat, int width, int height, void* data);
     
     static void clearColor(float r, float g, float b, float a);
     static void clear(int bit);

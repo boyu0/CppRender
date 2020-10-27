@@ -354,6 +354,12 @@ void Context::setProgramAttribute(int index, int size, int type, bool normalized
     program->setAttribute(index, size, type, normalized, data);
 }
 
+void Context::setProgramUniform(const std::string& name, int i)
+{
+    Program* program = _programs[_currentProgramIndex];
+    program->setUniform(name, i);
+}
+
 int Context::get(int target)
 {
     switch (target)
@@ -366,6 +372,8 @@ int Context::get(int target)
         return _currentProgramIndex;
     case CR_FRAME_BUFFER:
         return _currentFrameBufferIndex;
+    case CR_TEXTURE_2D:
+        return _currentTextureIndex;
     default:
         return CR_INVALID_VALUE;
     }

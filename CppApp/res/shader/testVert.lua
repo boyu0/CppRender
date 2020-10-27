@@ -1,5 +1,5 @@
 attribute = {"aPos", "aColor", "aUV"}
-verying = {"oColor",}
+verying = {"oColor", "uv"}
 uniform = {}
 
 function main()
@@ -8,6 +8,7 @@ function main()
     -- print("aUV", aUV[1], aUV[2])
     cr_Position = aPos;
     oColor = aColor;
+    uv = aUV;
 end
 
 
