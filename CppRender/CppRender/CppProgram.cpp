@@ -187,7 +187,7 @@ void Program::run(int mode, int start, int count)
     createPrimitive(mode);
     runVertex(start, count);
     beginEnv(CR_FRAGMENT_SHADER);
-    _primitive->raster(this);
+    _primitive->raster(this, start, count);
     endEnv(CR_FRAGMENT_SHADER);
     clear();
 }

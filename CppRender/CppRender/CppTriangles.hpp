@@ -19,7 +19,7 @@ public:
     virtual ~Triangles()=default;
 
 public:
-    virtual void raster(Program* program) override;
+    virtual void raster(Program* program, int start, int count) override;
 
 private:
     void rasterOne(Program* program, int index[3]);

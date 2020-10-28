@@ -95,12 +95,25 @@ void Triangles::rasterOne(Program* program, int index[3])
     }
 }
 
-void Triangles::raster(Program* program)
+void Triangles::raster(Program* program, int start, int count)
 {
-    for(int i = 0; i < _vetexValues.size() - 2; i += 3)
+    int ea = _ctx->get(CR_INVALID_VALUE);
+    if(ea <= 0)
     {
-        int index[3] = {i, i+1, i+2};
-        rasterOne(program, index);
+        for(int i = 0; i < _vetexValues.size() - 2; i += 3)
+        {
+            int index[3] = {i, i+1, i+2};
+            rasterOne(program, index);
+        }
+    }else{
+        int size;
+        int* ebuffer = (int*)_ctx->mapBufferIndex(ea, &size);
+        size = size / sizeof(int);
+        for(int i = 0; i < size - 2; i += 3)
+        {
+            int index[3] = {ebuffer[i], ebuffer[i+1], ebuffer[i+2]};
+            rasterOne(program, index);
+        }
     }
 }
 

@@ -32,7 +32,7 @@ void Texture::readPixel(int level, int x, int y, float color[4])
 
 void Texture::readPixel(int level, float x, float y, float color[4])
 {
-    _buffers[level]->readPixel(x, y, color);
+    _buffers[level]->readPixel(x, 1.0f-y, color);
 }
 
 void Texture::clearColor(float color[4])

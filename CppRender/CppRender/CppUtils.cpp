@@ -57,7 +57,7 @@ glm::vec3 Utils::getTrianglePos(const glm::vec2& a, const glm::vec2& b, const gl
     glm::vec3 u = glm::cross(s[0], s[1]);
     if(std::abs(u[2])>1e-2)
     {
-        return glm::vec3(1-(u.x+u.y)/u.z, u.x/u.z, u.y/u.z);
+        return glm::vec3(1-(u.x+u.y)/u.z, u.y/u.z, u.x/u.z);
     }
 
     return glm::vec3(-1, 1, 1);

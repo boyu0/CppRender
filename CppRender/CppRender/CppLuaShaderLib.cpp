@@ -37,7 +37,7 @@ static int shader_texture2D (lua_State *L) {
   for(int i = 0; i < 4; ++i)
   {
     lua_pushnumber(L, color[i]);
-    lua_seti(L, -2, i);
+    lua_seti(L, -2, i+1);
   }
 
   return 1;

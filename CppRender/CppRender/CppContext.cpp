@@ -316,7 +316,7 @@ void Context::vertexf(float x, float y, float z, float w)
 
 void Context::colorf(float r, float g, float b, float a)
 {
-    _draw->colorf(r, g, b);
+    _draw->colorf(r, g, b, a);
 }
 
 void Context::uvf(float u, float v)

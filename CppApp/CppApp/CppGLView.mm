@@ -155,11 +155,22 @@ using namespace CppRender;
     Render::colorf(1.0f, 0.0f, 0.0f);
     Render::vertexf(1.0f, 1.0f, 0.5f);
     Render::texCoord2f(0.0f, 0.0f);
-    Render::colorf(0.0f, -1.0f, 0.0f);
+    Render::colorf(0.0f, 1.0f, 0.0f);
     Render::vertexf(-1.0f, -1.0f, 0.0f);
     Render::texCoord2f(1.0f, 0.0f);
     Render::colorf(0.0f, 0.0f, 1.0f);
     Render::vertexf(1.0f, -1.0f, 0.0f);
+
+
+    Render::texCoord2f(1.0f, 1.0f);
+    Render::colorf(1.0f, 0.0f, 0.0f);
+    Render::vertexf(1.0f, 1.0f, 0.5f);
+    Render::texCoord2f(0.0f, 1.0f);
+    Render::colorf(0.0f, 0.0f, 1.0f);
+    Render::vertexf(-1.0f, 1.0f, 0.0f);
+    Render::texCoord2f(0.0f, 0.0f);
+    Render::colorf(0.0f, 1.0f, 0.0f);
+    Render::vertexf(-1.0f, -1.0f, 0.0f);
     
     Render::end();
     
@@ -174,10 +185,10 @@ using namespace CppRender;
     
     float vertices[] = {
     //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
-         1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f,   // 右上
-         1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 1.0f,   // 右下
-        -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 1.0f,   // 左下
-        -1.0f,  1.0f, 0.0f,   0.0f, 0.0f, 0.0f,   0.0f, 0.0f    // 左上
+         1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
+         1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
+        -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
+        -1.0f,  1.0f, 0.0f,   0.0f, 0.0f, 0.0f,   0.0f, 1.0f    // 左上
     };
     // float vertices[] = {
     // //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -

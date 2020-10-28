@@ -33,7 +33,7 @@ public:
     void newVertex(float pos[4]);
     void pushVertexAttrf(int count, float f[]);
     float* getVertexAttrf(int index, int name, int* count);
-    virtual void raster(Program* program) = 0;
+    virtual void raster(Program* program, int start, int count) = 0;
 
 public:
     inline void setImmediateMode(bool b) { _immediateMode = b; }
