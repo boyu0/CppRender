@@ -28,15 +28,36 @@ bool Render::init(int width, int height)
     return true;
 }
 
+void Render::bufferData(int target, int size, void* data, int useage)
+{
+    ctx->bufferData(target, size, data, useage);
+}
+
 void Render::genFrameBuffers(int n, int* ids)
 {
+    ctx->genFrameBuffers(n, ids);
 }
 
 void Render::bindFrameBuffer(int id)
 {
-    
+    ctx->bindFrameBuffer(0, id);
 }
 
+
+void Render::genVertexArrays(int n, int* ids)
+{
+    ctx->genVertexArrays(n, ids);
+}
+
+void Render::bindVertexArray(int id)
+{
+    ctx->bindVertexArray(id);
+}
+
+void Render::vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer)
+{
+    ctx->vertexAttributePointer(index, size, type, normalized, stride, pointer);
+}
 
 void Render::genTextures(int n, int* ids)
 {
@@ -63,9 +84,9 @@ void Render::clear(int bit)
     ctx->clear(bit);
 }
 
-void Render::getRenderData(void** data)
+void* Render::getRenderData()
 {
-    return ctx->getRenderData(data);
+    return ctx->getRenderData();
 }
 
 void Render::begin(int mode)
@@ -76,6 +97,21 @@ void Render::begin(int mode)
 void Render::end()
 {
     ctx->end();
+}
+
+void Render::genBuffers(int n, int* ids)
+{
+    ctx->genBuffers(n, ids);
+}
+
+void Render::bindBuffer(int target, int id)
+{
+    ctx->bindBuffer(target, id);
+}
+
+void Render::setProgramUniform(const std::string& name, int i)
+{
+    ctx->setProgramUniform(name, i);
 }
 
 void Render::vertexf(float x, float y, float z, float w)
@@ -120,5 +156,15 @@ void Render::useProgram(int program)
 void Render::texImage2D(int target, int level, int internalformat, int width, int height, void* data)
 {
     ctx->texImage2D(target, level, internalformat, width, height, data);
+}
+
+void Render::perspective(float fov, float width, float height, float znear, float zfar)
+{
+    ctx->perspective(fov, width, height, znear, zfar);
+}
+
+void Render::drawArrays(int mode, int start, int count)
+{
+    ctx->drawArrays(mode, start, count);
 }
 }

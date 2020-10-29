@@ -81,6 +81,7 @@ unsigned char data[] = {
 #include <iostream>
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../CppRender/include/stb_image.h"
+#include "../../CppRender/include/glm/glm.hpp"
 
 std::string vShader =
 "attribute vec3 aPos; \
@@ -104,6 +105,8 @@ void main() \
     gl_FragColor = texture2D(ourTexture, TexCoord); \
 }";
 
+static int g_width = 300;
+static int g_height = 200;
 
 using namespace CppRender;
 @implementation CppGLView{
@@ -121,21 +124,118 @@ using namespace CppRender;
     return std::string(strPath);
 }
 
--(void) prepareOpenGL{
-    GLint swapInterval = 1;
-//    [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
-//    glViewport(0, 0, 800, 600);
-    if(!Render::init(800, 600))
-    {
-        printf("false");
-        return;
-    }
+// ---------------------------------------------------------
+//-(void) prepareRender
+//{
+//
+//    int crvert = Render::createShader(CR_VERTEX_SHADER, [self getPath:"res/shader/testVert.lua"]);
+//    int crfrag = Render::createShader(CR_FRAGMENT_SHADER, [self getPath:"res/shader/testFrag.lua"]);
+//    int crprogram = Render::createProgram();
+//    Render::attachShader(crprogram, crvert);
+//    Render::attachShader(crprogram, crfrag);
+//    Render::linkProgram(crprogram);
+//    Render::useProgram(crprogram);
+//    int tex;
+//    Render::genTextures(1, &tex);
+//    Render::bindTexture(tex);
+//    int width, height;
+//    unsigned char* data = stbi_load([self getPath:"res/png/test.png"].c_str(), &width, &height, nullptr, 4);
+//    Render::texImage2D(CR_TEXTURE_2D, 0, CR_RGBA8, width, height, data);
+//}
+//
+//-(void) drawRender
+//{
+//    Render::begin(CR_TRIANGLES);
+//    Render::texCoord2f(1.0f, 1.0f);
+//    Render::colorf(1.0f, 0.0f, 0.0f);
+//    Render::vertexf(1.0f, 1.0f, 0.5f);
+//    Render::texCoord2f(0.0f, 0.0f);
+//    Render::colorf(0.0f, 1.0f, 0.0f);
+//    Render::vertexf(-1.0f, -1.0f, 0.0f);
+//    Render::texCoord2f(1.0f, 0.0f);
+//    Render::colorf(0.0f, 0.0f, 1.0f);
+//    Render::vertexf(1.0f, -1.0f, 0.0f);
+//
+//
+//    Render::texCoord2f(1.0f, 1.0f);
+//    Render::colorf(1.0f, 0.0f, 0.0f);
+//    Render::vertexf(1.0f, 1.0f, 0.5f);
+//    Render::texCoord2f(0.0f, 1.0f);
+//    Render::colorf(0.0f, 0.0f, 1.0f);
+//    Render::vertexf(-1.0f, 1.0f, 0.0f);
+//    Render::texCoord2f(0.0f, 0.0f);
+//    Render::colorf(0.0f, 1.0f, 0.0f);
+//    Render::vertexf(-1.0f, -1.0f, 0.0f);
+//    Render::end();
+//}
+
+// --------------------------------------------------------------
+int buffers[2];
+int vao;
+-(void) prepareRender{
+    float vertices[] = {
+           -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+           0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
+           0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+           0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+           -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+           -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+    
+           -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+           0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+           0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+           0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+           -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
+           -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+    
+           -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+           -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+           -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+           -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+           -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+           -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    
+           0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+           0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+           0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+           0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+           0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+           0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    
+           -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+           0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
+           0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+           0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+           -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+           -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+    
+           -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+           0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+           0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+           0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+           -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
+           -0.5f, 0.5f, -0.5f, 0.0f, 1.0f
+       };
+
+    Render::perspective(glm::radians(45.0f), g_width, g_height, 0.1f, 100.0f);
+
+    Render::genVertexArrays(1, &vao);
+    Render::bindVertexArray(vao);
+    Render::genBuffers(2, buffers);
+    Render::bindBuffer(CR_ARRAY_BUFFER, buffers[0]);
+    Render::bufferData(CR_ARRAY_BUFFER, sizeof(vertices), vertices, CR_STATIC_DRAW);
+    
+    Render::vertexAttributePointer(0, 3, CR_FLOAT, false, 5 * sizeof(float), 0);
+    Render::vertexAttributePointer(1, 2, CR_FLOAT, false, 5 * sizeof(float), 3*sizeof(float));
+    
+    int texture;
+    Render::genTextures(1, &texture);
+    Render::bindTexture(texture);
+    int width, height;
+    unsigned char* data = stbi_load([self getPath:"res/png/test.png"].c_str(), &width, &height, nullptr, 4);
+    Render::texImage2D(CR_TEXTURE_2D, 0, CR_RGBA8, width, height, data);
     
     
-//    glClearColor(0, 0, 0, 0);
-//    glClear(GL_COLOR_BUFFER_BIT);
-    Render::clearColor(1, 1, 1, 1);
-    Render::clear(CR_COLOR_BUFFER_BIT);
     int crvert = Render::createShader(CR_VERTEX_SHADER, [self getPath:"res/shader/testVert.lua"]);
     int crfrag = Render::createShader(CR_FRAGMENT_SHADER, [self getPath:"res/shader/testFrag.lua"]);
     int crprogram = Render::createProgram();
@@ -143,45 +243,37 @@ using namespace CppRender;
     Render::attachShader(crprogram, crfrag);
     Render::linkProgram(crprogram);
     Render::useProgram(crprogram);
-    Render::begin(CR_TRIANGLES);
-    int tex;
-    Render::genTextures(1, &tex);
-    Render::bindTexture(tex);
-    int width, height;
-    unsigned char* data = stbi_load([self getPath:"res/png/test.png"].c_str(), &width, &height, nullptr, 4);
-    Render::texImage2D(CR_TEXTURE_2D, 0, CR_RGBA8, width, height, data);
+    Render::setProgramUniform("texture", texture);
+//    Render::bindBuffer(CR_ELEMENT_ARRAY_BUFFER, buffers[1]);
+//    Render::bufferData(CR_ELEMENT_ARRAY_BUFFER, 0, nullptr, CR_STATIC_DRAW);
     
-    Render::texCoord2f(1.0f, 1.0f);
-    Render::colorf(1.0f, 0.0f, 0.0f);
-    Render::vertexf(1.0f, 1.0f, 0.5f);
-    Render::texCoord2f(0.0f, 0.0f);
-    Render::colorf(0.0f, 1.0f, 0.0f);
-    Render::vertexf(-1.0f, -1.0f, 0.0f);
-    Render::texCoord2f(1.0f, 0.0f);
-    Render::colorf(0.0f, 0.0f, 1.0f);
-    Render::vertexf(1.0f, -1.0f, 0.0f);
+    Render::bindVertexArray(0);
+}
+
+-(void) drawRender{
+    
+    Render::bindVertexArray(vao);
+    Render::drawArrays(CR_TRIANGLES, 0, 36);
+    
+}
 
 
-    Render::texCoord2f(1.0f, 1.0f);
-    Render::colorf(1.0f, 0.0f, 0.0f);
-    Render::vertexf(1.0f, 1.0f, 0.5f);
-    Render::texCoord2f(0.0f, 1.0f);
-    Render::colorf(0.0f, 0.0f, 1.0f);
-    Render::vertexf(-1.0f, 1.0f, 0.0f);
-    Render::texCoord2f(0.0f, 0.0f);
-    Render::colorf(0.0f, 1.0f, 0.0f);
-    Render::vertexf(-1.0f, -1.0f, 0.0f);
-    
-    Render::end();
-    
-//    glColor3f(1.0f, 0.85f, 0.35f);
-//    glBegin(GL_TRIANGLES);
-//    {
-//        glVertex3f(  0.0,  0.6, 0.0);
-//        glVertex3f( -0.2, -0.3, 0.0);
-//        glVertex3f(  0.2, -0.3 ,0.0);
-//    }
-//    glEnd();
+
+-(void) prepareOpenGL{
+    GLint swapInterval = 1;
+//    [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+//    glViewport(0, 0, 800, 600);
+
+    if(!Render::init(g_width, g_height))
+    {
+        printf("false");
+        return;
+    }
+
+    Render::clearColor(1, 1, 1, 1);
+    Render::clear(CR_COLOR_BUFFER_BIT);
+    [self prepareRender];
+    [self drawRender];
     
     float vertices[] = {
     //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
@@ -217,23 +309,14 @@ using namespace CppRender;
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STREAM_DRAW);
     
 
-//    glActiveTexture(GL_TEXTURE0 + 0);
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
-    void* renderData = nullptr;
-    Render::getRenderData(&renderData);
-    
-    int x = 800, y = 600, channels;
-//    unsigned char* data = stbi_load([self getPath:"res/png/test.png"].c_str(), &x, &y, &channels, 4);
-    
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, renderData);
+    void* renderData = malloc(800*600*4);
+//    renderData = Render::getRenderData();
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, g_width, g_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     glGenerateMipmap(GL_TEXTURE_2D);
-//    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 800, 600, 0, GL_RGBA8, GL_UNSIGNED_BYTE, nullptr);
     
     int pos;
-//    pos= glGetUniformLocation(program, "ourTexture");
-//    glUniform1i(pos, 0);
     
     
     pos = glGetAttribLocation(program, "aPos");
@@ -307,26 +390,18 @@ GLuint compileShader(const std::string& code, GLenum type)
 }
 
 -(void) drawAnObject{
-    void* renderData;
-
-    Render::begin(CR_TRIANGLES);
-    Render::colorf(1.0f, 0.0f, 0.0f);
-    Render::vertexf(0.0f, 0.6f, 0.5f);
-    Render::colorf(0.0f, 1.0f, 0.0f);
-    Render::vertexf(-0.2f, 0.3f, 0.0f);
-    Render::colorf(0.0f, 0.0f, 1.0f);
-    Render::vertexf(0.2f, -0.3f, 0.0f);
-    Render::end();
-   Render::getRenderData(&renderData);
-   glTexSubImage2D(GL_TEXTURE_2D, texture, 0, 0, 800, 600, GL_RGBA8, GL_UNSIGNED_BYTE, renderData);
     glBindVertexArrayAPPLE(VAO);
     glUseProgram(program);
     glBindTexture(GL_TEXTURE_2D, texture);
+     void* renderData = Render::getRenderData();
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, g_width, g_height, GL_RGBA, GL_UNSIGNED_BYTE, renderData);
+    glGenerateMipmap(GL_TEXTURE_2D);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 -(void) drawRect: (NSRect) bounds
 {
+//    [self drawRender];
     [self drawAnObject];
     glFlush();
 }

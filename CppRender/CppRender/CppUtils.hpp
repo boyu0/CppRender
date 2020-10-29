@@ -40,6 +40,7 @@
 
 #define CR_MAP_FIND_RETURN(Map, Id) if(Map.find(Id) != Map.end()){return Map[Id];}else{return nullptr;}
 
+struct lua_State;
 namespace CppRender{
 class Context;
 class Utils
@@ -50,6 +51,9 @@ public:
     static bool isRight(const glm::vec2& a, const glm::vec2& b, const glm::vec2& p);
     static glm::vec3 getTrianglePos(const glm::vec2& a, const glm::vec2& b, const glm::vec2& c, const glm::vec2& p);
     static void setValue(Context* ctx, const std::string& env, const std::string& name, int size, int type, bool normalized, void* data);
+    static void getFieldv(lua_State* L, int index, float v[], int* size);
+    static void pushArray(lua_State* L, float v[], int size);
+    static void matmul(lua_State* L, int aIndex, int bIndex);
 };
 }
 

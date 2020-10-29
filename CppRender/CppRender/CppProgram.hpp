@@ -33,6 +33,7 @@ public:
     void setUniform(const std::string& name, float x, float y, float z);
     void setUniform(const std::string& name, float x, float y, float z, float w);
     void setUniform(const std::string& name, int x);
+    void setUniform(const std::string& name, float f[], int count);
     void pushVertexAttrf(int count, float f[]);
     void createPrimitive(int mode);
     void newVertex(float pos[4]);

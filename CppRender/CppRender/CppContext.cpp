@@ -165,6 +165,11 @@ void Context::bindVertexArray(int id)
     _currentVertexArrayIndex = id;
 }
 
+void Context::setProgramUniform(const std::string& name, float f[], int count)
+{
+     _programs[_currentProgramIndex]->setUniform(name, f, count);
+}
+
 void Context::genBuffers(int n, int* ids)
 {
     CR_GEN_ARRAYS(this, Buffer, _buffers, _bufferIndex, n, ids);
@@ -196,6 +201,11 @@ void Context::useProgram(int program)
 void Context::ortho(float left, float right, float bottom, float top, float near, float far)
 {
     _projection = glm::ortho(left, right, bottom, top, near, far);
+}
+
+void Context::perspective(float fov, float width, float height, float znear, float zfar)
+{
+    _projection = glm::perspectiveFov(fov, width, height, znear, zfar);
 }
 
 void Context::drawArrays(int mode, int start, int count)
@@ -290,12 +300,12 @@ bool Context::init(int width, int height)
     return true;
 }
 
-void Context::getRenderData(void** data)
+void* Context::getRenderData()
 {
     CR_ASSERT(_frameBuffers.find(_currentFrameBufferIndex) != _frameBuffers.end(), "");
 
     FrameBuffer* frameBuffer = _frameBuffers[_currentFrameBufferIndex];
-    *data = frameBuffer->getData();
+    return frameBuffer->getData();
 }
 
 

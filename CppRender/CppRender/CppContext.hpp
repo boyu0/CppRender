@@ -68,6 +68,7 @@ public:
     void runProgram(int mode, int start, int count);
     void setProgramAttribute(int index, int size, int type, bool normalized, void* data);
     void setProgramUniform(const std::string& name, int i);
+    void setProgramUniform(const std::string& name, float f[], int count);
 
     void viewPort(int x, int y, int width, int height);
     void clearColor(float r, float g, float b, float a);
@@ -77,7 +78,7 @@ public:
     Texture* getTexture(int id);
     inline float* getClearColor() { return _clearColor; }
     
-    void getRenderData(void** data);
+    void* getRenderData();
     
     void begin(int mode);
     void end();
@@ -86,6 +87,7 @@ public:
     void uvf(float u, float v);
     int get(int target);
     void ortho(float left, float right, float bottom, float top, float near, float far);
+    void perspective(float fov, float width, float height, float znear, float zfar);
     inline const glm::mat4& getProjection() { return _projection; }
     void getIntegerv(int target, int out[]);
 

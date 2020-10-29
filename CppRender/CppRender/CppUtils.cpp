@@ -9,6 +9,10 @@
 #include "CppUtils.hpp"
 #include "CppContext.hpp"
 #include "CppLuaEngine.hpp"
+extern "C"{
+#include "lua.h"
+}
+#include "glm/gtc/type_ptr.hpp"
 
 namespace CppRender{
 int Utils::getFormatPerSize(int format)
@@ -76,12 +80,12 @@ void Utils::setValue(Context* ctx, const std::string& env, const std::string& na
         }else
         {
             engine->getFieldOrNewTable(name);
-            float v[4];
+            float v[16];
             for(int i = 0; i < size; ++i)
             {
                 v[i] = *((float*)data + i);
-                engine->setFieldv(v, size);
             }
+            engine->setFieldv(v, size);
             engine->pop(1);
         }
         break;
@@ -94,7 +98,7 @@ void Utils::setValue(Context* ctx, const std::string& env, const std::string& na
         }else
         {
             engine->getFieldOrNewTable(name);
-            int v[4];
+            int v[16];
             for(int i = 0; i < size; ++i)
             {
                 v[i] = *((int*)data + i);
@@ -109,5 +113,58 @@ void Utils::setValue(Context* ctx, const std::string& env, const std::string& na
     }
     engine->pop(1);
 }
+
+void Utils::getFieldv(lua_State* L, int index, float v[], int* size)
+{
+    int t = lua_type(L, index);
+    if(t == LUA_TNUMBER){
+        v[0] = lua_tonumber(L, index);
+        if(size){ *size = 1; }
+    }else if(t == LUA_TTABLE){
+        int count = (int)lua_rawlen(L, index);
+        for(int i = 0; i < count; ++i){
+            lua_geti(L, index, i+1);
+            v[i] = lua_tonumber(L, -1);
+            lua_pop(L, 1);
+        }
+        if(size){ *size = count; }
+    }else{
+        CR_ASSERT(false, "");
+    }
+}
+
+void pushArray(lua_State* L, float v[], int size)
+{
+    lua_newtable(L);
+    for(int i = 0; i < size; ++i)
+    {
+        lua_pushnumber(L, v[i]);
+        lua_seti(L, -2, i+1);
+    }
+}
+
+void Utils::matmul(lua_State *L, int aIndex, int bIndex) {
+    float va[16];
+    float vb[16];
+    int counta;
+    int countb;
+    getFieldv(L, aIndex, va, &counta);
+    getFieldv(L, bIndex, vb, &countb);
+    
+    if(counta == 16 && countb == 16)
+    {
+        glm::mat4 ma = glm::make_mat4(va);
+        glm::mat4 mb = glm::make_mat4(vb);
+        glm::mat4 mc = ma * mb;
+        pushArray(L, glm::value_ptr(mc), 16);
+    }else if(counta == 16 && countb == 4)
+    {
+        glm::mat4 ma = glm::make_mat4(va);
+        glm::vec4 mb = glm::make_vec4(vb);
+        glm::vec4 mc = ma * mb;
+        pushArray(L, glm::value_ptr(mc), 4);
+    }
+}
+
 
 }

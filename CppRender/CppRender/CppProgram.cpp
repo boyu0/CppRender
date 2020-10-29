@@ -128,6 +128,11 @@ void Program::setUniform(const std::string& name, float x, float y, float z, flo
     Utils::setValue(_ctx, _env, name, 4, CR_FLOAT, false, f);
 }
 
+void Program::setUniform(const std::string& name, float f[], int count)
+{
+    Utils::setValue(_ctx, _env, name, count, CR_FLOAT, false, f);
+}
+
 void Program::setUniform(const std::string& name, int x)
 {
     Utils::setValue(_ctx, _env, name, 1, CR_INT, false, &x);
