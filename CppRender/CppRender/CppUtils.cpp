@@ -143,6 +143,67 @@ void Utils::pushArray(lua_State* L, float v[], int size)
     }
 }
 
+void Utils::normalize(lua_State* L, int index)
+{
+    float v[3];
+    getFieldv(L, index, v, nullptr);
+    
+    glm::vec3 m = glm::normalize(glm::make_vec3(v));
+    pushArray(L, glm::value_ptr(m), 3);
+}
+
+void Utils::add(lua_State* L, int aIndex, int bIndex)
+{
+    float va[4] = {};
+    int counta;
+    float vb[4] = {};
+    int countb;
+    getFieldv(L, aIndex, va, &counta);
+    getFieldv(L, bIndex, vb, &countb);
+    
+    glm::vec4 m = glm::make_vec4(va) + glm::make_vec4(vb);
+    pushArray(L, glm::value_ptr(m), counta < countb ? counta : countb);
+}
+
+void Utils::sub(lua_State* L, int aIndex, int bIndex)
+{
+    float va[4] = {};
+    int counta;
+    float vb[4] = {};
+    int countb;
+    getFieldv(L, aIndex, va, &counta);
+    getFieldv(L, bIndex, vb, &countb);
+    
+    glm::vec4 m = glm::make_vec4(va) - glm::make_vec4(vb);
+    pushArray(L, glm::value_ptr(m), counta < countb ? counta : countb);
+}
+
+void Utils::dot(lua_State* L, int aIndex, int bIndex)
+{
+    float va[3] = {};
+    int counta;
+    float vb[3] = {};
+    int countb;
+    getFieldv(L, aIndex, va, &counta);
+    getFieldv(L, bIndex, vb, &countb);
+    
+    float m = glm::dot(glm::make_vec3(va), glm::make_vec3(vb));
+    lua_pushnumber(L, m);
+}
+
+void Utils::reflect(lua_State* L, int aIndex, int bIndex)
+{
+    float va[3] = {};
+    int counta;
+    float vb[3] = {};
+    int countb;
+    getFieldv(L, aIndex, va, &counta);
+    getFieldv(L, bIndex, vb, &countb);
+    
+    glm::vec3 m = glm::reflect(glm::make_vec3(va), glm::make_vec3(vb));
+    pushArray(L, glm::value_ptr(m), 3);
+}
+
 void Utils::matmul(lua_State *L, int aIndex, int bIndex) {
     float va[16];
     float vb[16];
@@ -163,6 +224,28 @@ void Utils::matmul(lua_State *L, int aIndex, int bIndex) {
         glm::vec4 mb = glm::make_vec4(vb);
         glm::vec4 mc = ma * mb;
         pushArray(L, glm::value_ptr(mc), 4);
+    }else if(counta == 1 && countb == 3)
+    {
+        glm::vec3 mc = glm::make_vec3(vb) * va[0];
+        pushArray(L, glm::value_ptr(mc), 3);
+    }else if(counta == 3 && countb == 1)
+    {
+        glm::vec3 mc = glm::make_vec3(va) * vb[0];
+        pushArray(L, glm::value_ptr(mc), 3);
+    }else if(counta == 1 && countb == 4)
+    {
+        glm::vec4 mc = glm::make_vec4(vb) * va[0];
+        pushArray(L, glm::value_ptr(mc), 4);
+    }else if(counta == 4 && countb == 1)
+    {
+        glm::vec4 mc = glm::make_vec4(va) * vb[0];
+        pushArray(L, glm::value_ptr(mc), 4);
+    }else if(counta == 3 && countb == 3)
+    {
+        glm::vec3 mc = glm::make_vec3(va) * glm::make_vec3(vb);
+        pushArray(L, glm::value_ptr(mc), 3);
+    }else{
+        CR_ASSERT(false, "");
     }
 }
 

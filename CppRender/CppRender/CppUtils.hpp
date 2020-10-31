@@ -54,6 +54,11 @@ public:
     static void getFieldv(lua_State* L, int index, float v[], int* size);
     static void pushArray(lua_State* L, float v[], int size);
     static void matmul(lua_State* L, int aIndex, int bIndex);
+    static void normalize(lua_State* L, int index);
+    static void add(lua_State* L, int aIndex, int bIndex);
+    static void sub(lua_State* L, int aIndex, int bIndex);
+    static void dot(lua_State* L, int aIndex, int bIndex);
+    static void reflect(lua_State* L, int aIndex, int bIndex);
 };
 }
 

@@ -50,9 +50,44 @@ static int shader_matmul(lua_State* L){
     return 1;
 }
 
+static int shader_normalize(lua_State* L){
+
+    Utils::normalize(L, 1);
+    return 1;
+}
+
+static int shader_sub(lua_State* L){
+
+    Utils::sub(L, 1, 2);
+    return 1;
+}
+
+static int shader_add(lua_State* L){
+
+    Utils::add(L, 1, 2);
+    return 1;
+}
+
+static int shader_dot(lua_State* L){
+
+    Utils::dot(L, 1, 2);
+    return 1;
+}
+
+static int shader_reflect(lua_State* L){
+
+    Utils::reflect(L, 1, 2);
+    return 1;
+}
+
 static const luaL_Reg shaderlib[] = {
     {"texture2D",   shader_texture2D},
     {"mul",   shader_matmul},
+    {"normalize", shader_normalize},
+    {"sub", shader_sub},
+    {"add", shader_add},
+    {"dot", shader_dot},
+    {"reflect", shader_reflect},
   {NULL, NULL},
 };
 
