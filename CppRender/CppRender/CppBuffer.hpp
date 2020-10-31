@@ -19,7 +19,7 @@ public:
     ~Buffer();
 
 public:
-    void data(int target, int size, void* data, int useage);
+    void data(int size, void* data, int useage);
     void* get() { return _data; }
     int size() { return _size; }
 

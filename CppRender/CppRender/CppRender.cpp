@@ -167,4 +167,19 @@ void Render::drawArrays(int mode, int start, int count)
 {
     ctx->drawArrays(mode, start, count);
 }
+
+void Render::setProgramUniform(const std::string& name, float f[], int count)
+{
+    ctx->setProgramUniform(name, f, count);
+}
+
+void Render::enable(int target)
+{
+    ctx->enable(target);
+}
+
+void Render::disable(int target)
+{
+    ctx->disable(target);
+}
 }

@@ -46,9 +46,12 @@ public:
     void genBuffers(int n, int* ids);
     void bindBuffer(int target, int id);
     void bufferData(int target, int size, void* data, int useage);
+    void bufferDataIndex(int index, int size, void* data, int useage);
     void* mapBuffer(int target);
     void* mapBufferIndex(int index, int* size = nullptr);
     void deleteBuffers(int n, int* ids);
+    int genDepthBuffer();
+    int getDepthBuffer();
     
     void genTextures(int n, int* ids);
     void bindTexture(int target, int id);
@@ -74,6 +77,9 @@ public:
     void clearColor(float r, float g, float b, float a);
     void clear(int mask);
     void drawArrays(int mode, int start, int count);
+    
+    void enable(int target);
+    void disable(int target);
 
     Texture* getTexture(int id);
     inline float* getClearColor() { return _clearColor; }

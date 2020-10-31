@@ -17,11 +17,10 @@
 #define CR_FRAME_BUFFER 4
 #define CR_PROGRAM 5
 #define CR_TEXTURE_2D 6
+#define CR_DEPTH_BUFFER 7
 
 #define CR_VIEW_PORT 1
 #define CR_WIN_SIZE 2
-
-#define CR_COLOR_BUFFER_BIT 0x4000
 
 #define CR_RGB8 0x01
 #define CR_RGBA8 0x02
@@ -31,6 +30,7 @@
 #define CR_TEXUTRE_MAX_LEVEL 10
 
 #define  CR_COLOR_BUFFER_BIT 0x01
+#define  CR_DEPTH_BUFFER_BIT 0x01
 
 #define CR_LINES 0x01
 #define CR_TRIANGLES 0x02

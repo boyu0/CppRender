@@ -82,6 +82,7 @@ unsigned char data[] = {
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../CppRender/include/stb_image.h"
 #include "../../CppRender/include/glm/glm.hpp"
+#include "../../CppRender/include/glm/ext.hpp"
 
 std::string vShader =
 "attribute vec3 aPos; \
@@ -115,6 +116,7 @@ using namespace CppRender;
     GLuint VAO;
     GLuint program;
     NSDate* _now;
+    NSDate* _start;
 }
 
 -(const std::string) getPath:(const std::string& )path{
@@ -182,18 +184,18 @@ int vao;
            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
     
            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+           0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
            0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
            0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-           0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-           -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+         -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
     
            -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+           -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
            -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-           -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-           -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
            -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+           -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
     
            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
@@ -203,11 +205,11 @@ int vao;
            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
     
            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+           0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
            0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
            0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-           0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-           -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+           -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
     
            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
@@ -216,6 +218,8 @@ int vao;
            -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f
        };
+    
+    Render::enable(CR_DEPTH_BUFFER);
 
     Render::perspective(glm::radians(45.0f), g_width, g_height, 0.1f, 100.0f);
 
@@ -232,7 +236,7 @@ int vao;
     Render::genTextures(1, &texture);
     Render::bindTexture(texture);
     int width, height;
-    unsigned char* data = stbi_load([self getPath:"res/png/test.png"].c_str(), &width, &height, nullptr, 4);
+    unsigned char* data = stbi_load([self getPath:"res/png/container.jpg"].c_str(), &width, &height, nullptr, 4);
     Render::texImage2D(CR_TEXTURE_2D, 0, CR_RGBA8, width, height, data);
     
     
@@ -244,6 +248,13 @@ int vao;
     Render::linkProgram(crprogram);
     Render::useProgram(crprogram);
     Render::setProgramUniform("texture", texture);
+    
+    glm::mat4 view = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, 0.0f, -3.0f));
+    Render::setProgramUniform("view", glm::value_ptr(view), 16);
+    glm::mat4 projection = glm::perspective(45.0f, (float)g_width/g_height, 0.1f, 100.0f);
+    Render::setProgramUniform("projection", glm::value_ptr(projection), 16);
+
+
 //    Render::bindBuffer(CR_ELEMENT_ARRAY_BUFFER, buffers[1]);
 //    Render::bufferData(CR_ELEMENT_ARRAY_BUFFER, 0, nullptr, CR_STATIC_DRAW);
     
@@ -251,6 +262,11 @@ int vao;
 }
 
 -(void) drawRender{
+    Render::clear(CR_COLOR_BUFFER_BIT | CR_DEPTH_BUFFER_BIT);
+    float time = [_now timeIntervalSinceDate:_start];
+    glm::mat4 model = glm::rotate(glm::mat4(1.0), 50.0f * time * 0.02f, glm::vec3(0.5f, 1.0f, 0.0f));
+//    glm::mat4 model = glm::mat4(1.0);
+    Render::setProgramUniform("model", glm::value_ptr(model), 16);
     
     Render::bindVertexArray(vao);
     Render::drawArrays(CR_TRIANGLES, 0, 36);
@@ -269,9 +285,11 @@ int vao;
         printf("false");
         return;
     }
-
+    
+    _now = [NSDate date];
+    _start = [NSDate date];
     Render::clearColor(1, 1, 1, 1);
-    Render::clear(CR_COLOR_BUFFER_BIT);
+    Render::clear(CR_COLOR_BUFFER_BIT | CR_DEPTH_BUFFER_BIT);
     [self prepareRender];
     [self drawRender];
     
@@ -335,17 +353,15 @@ int vao;
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     glBindVertexArrayAPPLE(0);
-    
 
-    _now = [NSDate date];
     [NSTimer scheduledTimerWithTimeInterval:1.0/60 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
 
 }
 
 -(void)timerFired:(NSTimer *)sender{
-    NSLog(@"%f",  [sender.fireDate timeIntervalSinceDate:_now]);
-    [self setNeedsDisplay:YES];
+//    NSLog(@"%f",  [sender.fireDate timeIntervalSinceDate:_now]);
     _now = [NSDate date];
+    [self setNeedsDisplay:YES];
 }
 
 int createProgram(GLuint vertex, GLuint fragment)
@@ -401,7 +417,7 @@ GLuint compileShader(const std::string& code, GLenum type)
 
 -(void) drawRect: (NSRect) bounds
 {
-//    [self drawRender];
+    [self drawRender];
     [self drawAnObject];
     glFlush();
 }

@@ -43,6 +43,17 @@ void FrameBuffer::doClear()
             tex->clearColor(_clearColor);
         }
     }
+    
+    if(_clearMask & CR_DEPTH_BUFFER_BIT)
+    {
+        if(_depthBufferIndex != CR_INVALID_VALUE)
+        {
+            void* data = _ctx->mapBufferIndex(_depthBufferIndex);
+            Texture* tex = _ctx->getTexture(_texture2DIndex);
+            int size = tex->getWidth() * tex->getHeight();
+            memset(data, 0x7f, size);
+        }
+    }
 
     _clearMask = 0;
 }
@@ -58,6 +69,25 @@ void* FrameBuffer::getData()
     }
 
     return nullptr;
+}
+
+int FrameBuffer::genDepthBuffer()
+{
+    if(_depthBufferIndex != CR_INVALID_VALUE) { return _depthBufferIndex; }
+    Texture* tex = _ctx->getTexture(_texture2DIndex);
+    _ctx->genBuffers(1, &_depthBufferIndex);
+    int size = tex->getWidth() * tex->getHeight();
+    _ctx->bufferDataIndex(_depthBufferIndex, size, nullptr, CR_STATIC_DRAW);
+    void* data = _ctx->mapBufferIndex(_depthBufferIndex);
+    memset(data, 0x7f, size);
+    return _depthBufferIndex;
+}
+
+void FrameBuffer::deleteDepthBuffer()
+{
+    if(_depthBufferIndex == CR_INVALID_VALUE) { return; }
+    _ctx->deleteBuffers(1, &_depthBufferIndex);
+    _depthBufferIndex = CR_INVALID_VALUE;
 }
 
 void FrameBuffer::getSize(int size[2])

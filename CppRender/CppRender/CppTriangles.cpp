@@ -9,6 +9,7 @@
 #include "CppTriangles.hpp"
 #include "CppContext.hpp"
 #include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include "CppProgram.hpp"
 #include <cmath>
 
@@ -36,10 +37,13 @@ void Triangles::rasterOne(Program* program, int index[3])
     int size[2];
     _ctx->getFrameBufferSize(frameBufferIndex, size);
     glm::vec4 p[3] = {
-        projectionVec4(proj, _vetexValues[index[0]].pos),
-        projectionVec4(proj, _vetexValues[index[1]].pos),
-        projectionVec4(proj, _vetexValues[index[2]].pos),
+        glm::make_vec4(_vetexValues[index[0]].pos),
+        glm::make_vec4(_vetexValues[index[1]].pos),
+        glm::make_vec4(_vetexValues[index[2]].pos),
     };
+    p[0] /= p[0].w;
+    p[1] /= p[1].w;
+    p[2] /= p[2].w;
 
     // 包围盒
     float left = std::min(std::min(p[0].x, p[1].x), p[2].x);
@@ -74,6 +78,13 @@ void Triangles::rasterOne(Program* program, int index[3])
     float y = starty;
     float color[4];
     unsigned char* buffer = (unsigned char*)_ctx->mapBuffer(CR_RENDER_BUFFER);
+    
+    int depthBuffer = _ctx->getDepthBuffer();
+    char* depthData = nullptr;
+    if(depthBuffer != CR_INVALID_VALUE)
+    {
+        depthData = (char*)_ctx->mapBufferIndex(depthBuffer);
+    }
     for(; iy <= iendy; y+=pery, ++iy)
     {
         int ix = istartx;
@@ -81,11 +92,24 @@ void Triangles::rasterOne(Program* program, int index[3])
         for(; ix <= iendx; x+=perx, ++ix)
         {
             glm::vec2 pp(x, y);
-            if(Utils::isRight(p[0], p[1], pp) && Utils::isRight(p[1], p[2], pp) && Utils::isRight(p[2], p[0], pp))
+            bool r1 = Utils::isRight(p[0], p[1], pp);
+            bool r2 = Utils::isRight(p[1], p[2], pp);
+            bool r3 = Utils::isRight(p[2], p[0], pp);
+            if(r1 == r2 && r2 == r3)
             {
+                
                 glm::vec3 tpos = Utils::getTrianglePos(p[0], p[1], p[2], pp);
-                float ftpos[3] = {tpos[0], tpos[1], tpos[2]};
-                program->runFragment(3, index, ftpos, color);
+                if(depthData != nullptr)
+                {
+                    // 深度测试
+                    float fz = tpos[0] * p[0].z + tpos[1] * p[1].z + tpos[2] * p[2].z;
+                    if(fz > 1.0f || fz < -1.0f) { continue; }
+                    int z = fz * 127;
+                    int index = (iy * size[0] + ix);
+                    if(z > depthData[index]) { continue; }
+                    depthData[index] = (char)z;
+                }
+                program->runFragment(3, index, glm::value_ptr(tpos), color);
                 buffer[(iy * size[0] + ix) * 4] = (unsigned char)(color[0] * 255);
                 buffer[(iy * size[0] + ix) * 4 + 1] = (unsigned char)(color[1] * 255);
                 buffer[(iy * size[0] + ix) * 4 + 2] = (unsigned char)(color[2] * 255);

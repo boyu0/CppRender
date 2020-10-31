@@ -38,6 +38,9 @@ public:
     static void clear(int bit);
     static void drawArrays(int mode, int start, int count);
     
+    static void enable(int target);
+    static void disable(int target);
+    
     static void* getRenderData();
     
     static void begin(int mode);
@@ -52,6 +55,7 @@ public:
     static bool linkProgram(int program);
     static void useProgram(int program);
     static void setProgramUniform(const std::string& name, int i);
+    static void setProgramUniform(const std::string& name, float f[], int count);
     
     static void perspective(float fov, float width, float height, float znear, float zfar);
 };

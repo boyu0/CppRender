@@ -28,10 +28,14 @@ public:
     void doClear();
     void* getData();
     void getSize(int size[2]);
+    int genDepthBuffer();
+    inline int getDepthBuffer(){return _depthBufferIndex;}
+    void deleteDepthBuffer();
 
 private:
     Context* _ctx{};
     int _renderBufferIndex = CR_INVALID_VALUE;
+    int _depthBufferIndex = CR_INVALID_VALUE;
     int _texture2DIndex = CR_INVALID_VALUE;
     int _view[4] = {0};
     float _clearColor[4] = {0.0f, 0.0f, 0.0f, 1.0f};

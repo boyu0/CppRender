@@ -11,7 +11,7 @@
 
 namespace CppRender{
 
-void Buffer::data(int target, int size, void* data, int useage)
+void Buffer::data(int size, void* data, int useage)
 {
     _data = malloc(size);
     _size = size;

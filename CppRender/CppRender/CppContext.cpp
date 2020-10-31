@@ -211,25 +211,29 @@ void Context::perspective(float fov, float width, float height, float znear, flo
 void Context::drawArrays(int mode, int start, int count)
 {
     CR_ASSERT(_frameBuffers.find(_currentFrameBufferIndex) != _frameBuffers.end(), "");
-    _frameBuffers[_currentArrayBufferIndex]->drawArrays(mode, start, count);
+    _frameBuffers[_currentFrameBufferIndex]->drawArrays(mode, start, count);
 }
 
 void Context::bufferData(int target, int size, void* data, int useage)
 {
-    Buffer* buffer = nullptr;
+    int index = CR_INVALID_VALUE;
     if(target == CR_ARRAY_BUFFER)
     {
-        CR_ASSERT(_buffers.find(_currentArrayBufferIndex) != _buffers.end(), "");
-        buffer = _buffers[_currentArrayBufferIndex];
+        index = _currentArrayBufferIndex;
     }else if(target == CR_ELEMENT_ARRAY_BUFFER)
     {
-        CR_ASSERT(_buffers.find(_currentElementArrayBufferIndex) != _buffers.end(), "");
-        buffer = _buffers[_currentElementArrayBufferIndex];
+        index = _currentArrayBufferIndex;
     }else{
         CR_ASSERT(false, "");
         return;
     }
-    buffer->data(target, size, data, useage);
+    bufferDataIndex(index, size, data, useage);
+}
+
+void Context::bufferDataIndex(int index, int size, void* data, int useage)
+{
+    CR_ASSERT(_buffers.find(index) != _buffers.end(), "");
+    _buffers[index]->data(size, data, useage);
 }
 
 void Context::texImage2D(int target, int level, int internalformat, int width, int height, void* data)
@@ -357,6 +361,39 @@ void* Context::mapBufferIndex(int index, int* size)
     return buffer->get();
 }
 
+int Context::genDepthBuffer()
+{
+    return _frameBuffers[_currentFrameBufferIndex]->genDepthBuffer();
+}
+
+int Context::getDepthBuffer()
+{
+    return _frameBuffers[_currentFrameBufferIndex]->getDepthBuffer();
+}
+
+void Context::enable(int target)
+{
+    switch (target) {
+        case CR_DEPTH_BUFFER:
+            _frameBuffers[_currentFrameBufferIndex]->genDepthBuffer();
+            break;
+            
+        default:
+            break;
+    }
+}
+
+void Context::disable(int target)
+{
+    switch (target) {
+        case CR_DEPTH_BUFFER:
+            _frameBuffers[_frameBufferIndex]->deleteDepthBuffer();
+            break;
+            
+        default:
+            break;
+    }
+}
 
 void Context::setProgramAttribute(int index, int size, int type, bool normalized, void* data)
 {

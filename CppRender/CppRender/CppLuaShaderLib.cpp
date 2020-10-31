@@ -22,7 +22,7 @@ static int shader_texture2D (lua_State *L) {
   lua_getupvalue(L, -4, 1);
   lua_getfield(L, -1, CR_PROGRAM_LUA_NAME);
   Program* program = (Program*)lua_touserdata(L, -1);
-  lua_pop(L, 1);
+  lua_pop(L, 2);
   float texture = lua_tonumber(L, 2);
 
   lua_geti(L, 1, 1);
@@ -45,10 +45,6 @@ static int shader_texture2D (lua_State *L) {
 }
 
 static int shader_matmul(lua_State* L){
-    lua_getupvalue(L, -4, 1);
-    lua_getfield(L, -1, CR_PROGRAM_LUA_NAME);
-    Program* program = (Program*)lua_touserdata(L, -1);
-    lua_pop(L, 1);
 
     Utils::matmul(L, 1, 2);
     return 1;
@@ -56,7 +52,7 @@ static int shader_matmul(lua_State* L){
 
 static const luaL_Reg shaderlib[] = {
     {"texture2D",   shader_texture2D},
-    {"matmul",   shader_matmul},
+    {"mul",   shader_matmul},
   {NULL, NULL},
 };
 

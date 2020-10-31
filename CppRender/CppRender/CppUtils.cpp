@@ -133,7 +133,7 @@ void Utils::getFieldv(lua_State* L, int index, float v[], int* size)
     }
 }
 
-void pushArray(lua_State* L, float v[], int size)
+void Utils::pushArray(lua_State* L, float v[], int size)
 {
     lua_newtable(L);
     for(int i = 0; i < size; ++i)
