@@ -191,6 +191,27 @@ void Utils::dot(lua_State* L, int aIndex, int bIndex)
     lua_pushnumber(L, m);
 }
 
+
+void Utils::inverse(lua_State* L, int aIndex)
+{
+    float va[16] = {};
+    int counta;
+    getFieldv(L, aIndex, va, &counta);
+    
+    glm::mat4 m = glm::inverse(glm::make_mat4(va));
+    pushArray(L, glm::value_ptr(m), 16);
+}
+
+void Utils::transpose(lua_State* L, int aIndex)
+{
+    float va[16] = {};
+    int counta;
+    getFieldv(L, aIndex, va, &counta);
+    
+    glm::mat4 m = glm::transpose(glm::make_mat4(va));
+    pushArray(L, glm::value_ptr(m), 16);
+}
+
 void Utils::reflect(lua_State* L, int aIndex, int bIndex)
 {
     float va[3] = {};
@@ -200,7 +221,7 @@ void Utils::reflect(lua_State* L, int aIndex, int bIndex)
     getFieldv(L, aIndex, va, &counta);
     getFieldv(L, bIndex, vb, &countb);
     
-    glm::vec3 m = glm::reflect(glm::make_vec3(va), glm::make_vec3(vb));
+    glm::vec3 m = glm::normalize(glm::reflect(glm::make_vec3(va), glm::make_vec3(vb)));
     pushArray(L, glm::value_ptr(m), 3);
 }
 
@@ -224,6 +245,12 @@ void Utils::matmul(lua_State *L, int aIndex, int bIndex) {
         glm::vec4 mb = glm::make_vec4(vb);
         glm::vec4 mc = ma * mb;
         pushArray(L, glm::value_ptr(mc), 4);
+    }else if(counta == 16 && countb == 3)
+    {
+        glm::mat4 ma = glm::make_mat4(va);
+        glm::vec3 mb = glm::make_vec4(vb);
+        glm::vec3 mc = glm::mat3(ma) * mb;
+        pushArray(L, glm::value_ptr(mc), 3);
     }else if(counta == 1 && countb == 3)
     {
         glm::vec3 mc = glm::make_vec3(vb) * va[0];

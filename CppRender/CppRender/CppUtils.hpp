@@ -59,6 +59,8 @@ public:
     static void sub(lua_State* L, int aIndex, int bIndex);
     static void dot(lua_State* L, int aIndex, int bIndex);
     static void reflect(lua_State* L, int aIndex, int bIndex);
+    static void inverse(lua_State* L, int aIndex);
+    static void transpose(lua_State* L, int aIndex);
 };
 }
 

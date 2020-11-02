@@ -50,8 +50,8 @@ void FrameBuffer::doClear()
         {
             void* data = _ctx->mapBufferIndex(_depthBufferIndex);
             Texture* tex = _ctx->getTexture(_texture2DIndex);
-            int size = tex->getWidth() * tex->getHeight();
-            memset(data, 0x7f, size);
+            int size = tex->getWidth() * tex->getHeight() * 4;
+            memset(data, 0, size);
         }
     }
 
@@ -76,10 +76,10 @@ int FrameBuffer::genDepthBuffer()
     if(_depthBufferIndex != CR_INVALID_VALUE) { return _depthBufferIndex; }
     Texture* tex = _ctx->getTexture(_texture2DIndex);
     _ctx->genBuffers(1, &_depthBufferIndex);
-    int size = tex->getWidth() * tex->getHeight();
+    int size = tex->getWidth() * tex->getHeight() * 4;
     _ctx->bufferDataIndex(_depthBufferIndex, size, nullptr, CR_STATIC_DRAW);
     void* data = _ctx->mapBufferIndex(_depthBufferIndex);
-    memset(data, 0x7f, size);
+    memset(data, 0, size);
     return _depthBufferIndex;
 }
 

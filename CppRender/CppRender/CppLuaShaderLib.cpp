@@ -80,6 +80,18 @@ static int shader_reflect(lua_State* L){
     return 1;
 }
 
+static int shader_inverse(lua_State* L){
+
+    Utils::inverse(L, 1);
+    return 1;
+}
+
+static int shader_transpose(lua_State* L){
+
+    Utils::transpose(L, 1);
+    return 1;
+}
+
 static const luaL_Reg shaderlib[] = {
     {"texture2D",   shader_texture2D},
     {"mul",   shader_matmul},
@@ -88,6 +100,8 @@ static const luaL_Reg shaderlib[] = {
     {"add", shader_add},
     {"dot", shader_dot},
     {"reflect", shader_reflect},
+    {"inverse", shader_inverse},
+    {"transpose", shader_transpose},
   {NULL, NULL},
 };
 

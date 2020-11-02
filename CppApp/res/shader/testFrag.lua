@@ -15,16 +15,20 @@ function main()
     local lightDir = cr.normalize(cr.sub(lightPos, pos))
 
     local ambient = cr.mul(ambientStrength, lightColor)
+
     local diff = math.max( cr.dot(norm, lightDir), 0.0)
     local diffuse = cr.mul(diff, lightColor)
 
     local viewDir = cr.normalize(cr.sub(viewPos, pos))
-    local reflectDir = cr.reflect(cr.sub({1.0,1.0,1.0}, lightDir), norm)
-    local spec = math.max(cr.dot(viewDir, reflectDir))^32
-    local specular = cr.mul(specularStrength, cr.mul(spec, lightColor))
+    local reflectDir = cr.reflect(cr.sub({0.0,0.0,0.0}, lightDir), norm)
+    local spec = math.max(cr.dot(viewDir, reflectDir)*1, 0.0)^32
+    -- print(spec)
+    local specular = cr.mul(spec * specularStrength, lightColor)
 
     local result = cr.mul(cr.add(cr.add(ambient, diffuse), specular), objColor)
-    cr_Color = result;
+    -- local result = cr.mul(diffuse, objColor)
+    -- local result = diffuse
+    cr_Color = result
     cr_Color[4] = 1;
 end
 

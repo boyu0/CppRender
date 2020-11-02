@@ -12,6 +12,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "CppProgram.hpp"
 #include <cmath>
+#include <algorithm>
 
 namespace CppRender{
 Triangles::Triangles(Context* ctx)
@@ -80,10 +81,10 @@ void Triangles::rasterOne(Program* program, int index[3])
     unsigned char* buffer = (unsigned char*)_ctx->mapBuffer(CR_RENDER_BUFFER);
     
     int depthBuffer = _ctx->getDepthBuffer();
-    char* depthData = nullptr;
+    uint32_t* depthData = nullptr;
     if(depthBuffer != CR_INVALID_VALUE)
     {
-        depthData = (char*)_ctx->mapBufferIndex(depthBuffer);
+        depthData = (uint32_t*)_ctx->mapBufferIndex(depthBuffer);
     }
     for(; iy <= iendy; y+=pery, ++iy)
     {
@@ -104,16 +105,16 @@ void Triangles::rasterOne(Program* program, int index[3])
                     // 深度测试
                     float fz = tpos[0] * p[0].z + tpos[1] * p[1].z + tpos[2] * p[2].z;
                     if(fz > 1.0f || fz < -1.0f) { continue; }
-                    int z = fz * 127;
+                    uint32_t z =  (1.0f - (fz + 1.0f)/2) * (uint32_t)(0xffffffff);
                     int index = (iy * size[0] + ix);
-                    if(z > depthData[index]) { continue; }
-                    depthData[index] = (char)z;
+                    if(z < depthData[index]) { continue; }
+                    depthData[index] = z;
                 }
                 program->runFragment(3, index, glm::value_ptr(tpos), color);
-                buffer[(iy * size[0] + ix) * 4] = (unsigned char)(color[0] * 255);
-                buffer[(iy * size[0] + ix) * 4 + 1] = (unsigned char)(color[1] * 255);
-                buffer[(iy * size[0] + ix) * 4 + 2] = (unsigned char)(color[2] * 255);
-                buffer[(iy * size[0] + ix) * 4 + 3] = (unsigned char)(color[3] * 255);
+                buffer[(iy * size[0] + ix) * 4] = (unsigned char)(glm::clamp(color[0], 0.0f, 1.0f) * 255);
+                buffer[(iy * size[0] + ix) * 4 + 1] = (unsigned char)(glm::clamp(color[1], 0.0f, 1.0f) * 255);
+                buffer[(iy * size[0] + ix) * 4 + 2] = (unsigned char)(glm::clamp(color[2], 0.0f, 1.0f) * 255);
+                buffer[(iy * size[0] + ix) * 4 + 3] = (unsigned char)(glm::clamp(color[3], 0.0f, 1.0f) * 255);
             }
         }
     }
