@@ -96,7 +96,7 @@ void Triangles::rasterOne(Program* program, int index[3])
             bool r1 = Utils::isRight(p[0], p[1], pp);
             bool r2 = Utils::isRight(p[1], p[2], pp);
             bool r3 = Utils::isRight(p[2], p[0], pp);
-            if(r1 == r2 && r2 == r3)
+            if(r1 == r2 && r2 == r3 && r3 == false)
             {
                 
                 glm::vec3 tpos = Utils::getTrianglePos(p[0], p[1], p[2], pp);
