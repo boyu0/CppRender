@@ -10,9 +10,9 @@
 #include "CppContext.hpp"
 
 namespace CppRender {
-void VertexArray::vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer)
+void VertexArray::vertexAttributePointer(const std::string& name, int size, int type, bool normalized, int stride, int pointer)
 {
-    _vertexAttributePointerInfos[index] = VertexAttributePointerInfo{size, type, normalized, stride, pointer, _ctx->get(CR_ARRAY_BUFFER)};
+    _vertexAttributePointerInfos[name] = VertexAttributePointerInfo{size, type, normalized, stride, pointer, _ctx->get(CR_ARRAY_BUFFER)};
 }
 
 void VertexArray::loadOne(int n)

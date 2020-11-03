@@ -60,7 +60,7 @@ public:
 
     void genVertexArrays(int n, int* ids);
     void bindVertexArray(int id);
-    void vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer);
+    void vertexAttributePointer(const std::string& name, int size, int type, bool normalized, int stride, int pointer);
     void vertexArrayLoadOne(int n);
     
     int createShader(int type, const std::string& file);
@@ -69,7 +69,7 @@ public:
     bool linkProgram(int program);
     void useProgram(int program);
     void runProgram(int mode, int start, int count);
-    void setProgramAttribute(int index, int size, int type, bool normalized, void* data);
+    void setProgramAttribute(const std::string& name, int size, int type, bool normalized, void* data);
     void setProgramUniform(const std::string& name, int i);
     void setProgramUniform(const std::string& name, float f[], int count);
 

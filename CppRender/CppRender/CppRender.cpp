@@ -54,9 +54,9 @@ void Render::bindVertexArray(int id)
     ctx->bindVertexArray(id);
 }
 
-void Render::vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer)
+void Render::vertexAttributePointer(const std::string& name, int size, int type, bool normalized, int stride, int pointer)
 {
-    ctx->vertexAttributePointer(index, size, type, normalized, stride, pointer);
+    ctx->vertexAttributePointer(name, size, type, normalized, stride, pointer);
 }
 
 void Render::genTextures(int n, int* ids)

@@ -31,9 +31,9 @@ void Draw::end()
         _ctx->genBuffers(1, &buf);
         _ctx->bindBuffer(CR_ARRAY_BUFFER, buf);
         _ctx->bufferData(CR_ARRAY_BUFFER, _vertexes.size()*sizeof(VertexInfo), &_vertexes[0], CR_DYNAMIC_DRAW);
-        _ctx->vertexAttributePointer(0, 4, CR_FLOAT, false, sizeof(VertexInfo), 0);
-        _ctx->vertexAttributePointer(1, 4, CR_FLOAT, false, sizeof(VertexInfo), 4*sizeof(float));
-        _ctx->vertexAttributePointer(2, 2, CR_FLOAT, false, sizeof(VertexInfo), 8*sizeof(float));
+        _ctx->vertexAttributePointer("", 4, CR_FLOAT, false, sizeof(VertexInfo), 0);
+        _ctx->vertexAttributePointer("", 4, CR_FLOAT, false, sizeof(VertexInfo), 4*sizeof(float));
+        _ctx->vertexAttributePointer("", 2, CR_FLOAT, false, sizeof(VertexInfo), 8*sizeof(float));
         _ctx->bindBuffer(CR_ARRAY_BUFFER, 0);
         _ctx->setProgramUniform("texture", _ctx->get(CR_TEXTURE_2D));
         _ctx->drawArrays(_currentMode, 0, _vertexes.size());

@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <unordered_map>
+#include <string>
 
 namespace CppRender {
 class Context;
@@ -28,11 +29,11 @@ private:
     };
 
 public:
-    void vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer);
+    void vertexAttributePointer(const std::string& name, int size, int type, bool normalized, int stride, int pointer);
     void loadOne(int n);
 
 private:
-    std::unordered_map<int, VertexAttributePointerInfo> _vertexAttributePointerInfos;
+    std::unordered_map<std::string, VertexAttributePointerInfo> _vertexAttributePointerInfos;
     Context* _ctx{};
 };
 }

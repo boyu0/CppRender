@@ -92,10 +92,6 @@
 		997CE6A1253AF4480060CAED /* CppProgram.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE69F253AF4480060CAED /* CppProgram.hpp */; };
 		997CE6A4253AF4F20060CAED /* CppShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE6A2253AF4F20060CAED /* CppShader.cpp */; };
 		997CE6A5253AF4F20060CAED /* CppShader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE6A3253AF4F20060CAED /* CppShader.hpp */; };
-		997CE6A8253AF5990060CAED /* CppVertexShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE6A6253AF5990060CAED /* CppVertexShader.cpp */; };
-		997CE6A9253AF5990060CAED /* CppVertexShader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE6A7253AF5990060CAED /* CppVertexShader.hpp */; };
-		997CE6AC253AF5B20060CAED /* CppFragmentShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE6AA253AF5B20060CAED /* CppFragmentShader.cpp */; };
-		997CE6AD253AF5B20060CAED /* CppFragmentShader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE6AB253AF5B20060CAED /* CppFragmentShader.hpp */; };
 		997CE6B4253D3FC10060CAED /* CppLuaShaderLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE6B2253D3FC10060CAED /* CppLuaShaderLib.cpp */; };
 		997CE6B5253D3FC10060CAED /* CppLuaShaderLib.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 997CE6B3253D3FC10060CAED /* CppLuaShaderLib.hpp */; };
 		997CE6B8253D8BFE0060CAED /* CppTriangles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 997CE6B6253D8BFE0060CAED /* CppTriangles.cpp */; };
@@ -196,10 +192,6 @@
 		997CE69F253AF4480060CAED /* CppProgram.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppProgram.hpp; sourceTree = "<group>"; };
 		997CE6A2253AF4F20060CAED /* CppShader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppShader.cpp; sourceTree = "<group>"; };
 		997CE6A3253AF4F20060CAED /* CppShader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppShader.hpp; sourceTree = "<group>"; };
-		997CE6A6253AF5990060CAED /* CppVertexShader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppVertexShader.cpp; sourceTree = "<group>"; };
-		997CE6A7253AF5990060CAED /* CppVertexShader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppVertexShader.hpp; sourceTree = "<group>"; };
-		997CE6AA253AF5B20060CAED /* CppFragmentShader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppFragmentShader.cpp; sourceTree = "<group>"; };
-		997CE6AB253AF5B20060CAED /* CppFragmentShader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppFragmentShader.hpp; sourceTree = "<group>"; };
 		997CE6B2253D3FC10060CAED /* CppLuaShaderLib.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppLuaShaderLib.cpp; sourceTree = "<group>"; };
 		997CE6B3253D3FC10060CAED /* CppLuaShaderLib.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppLuaShaderLib.hpp; sourceTree = "<group>"; };
 		997CE6B6253D8BFE0060CAED /* CppTriangles.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppTriangles.cpp; sourceTree = "<group>"; };
@@ -270,10 +262,6 @@
 				997CE69F253AF4480060CAED /* CppProgram.hpp */,
 				997CE6A2253AF4F20060CAED /* CppShader.cpp */,
 				997CE6A3253AF4F20060CAED /* CppShader.hpp */,
-				997CE6A6253AF5990060CAED /* CppVertexShader.cpp */,
-				997CE6A7253AF5990060CAED /* CppVertexShader.hpp */,
-				997CE6AA253AF5B20060CAED /* CppFragmentShader.cpp */,
-				997CE6AB253AF5B20060CAED /* CppFragmentShader.hpp */,
 				99F6AEC7253BC4D00056EB4F /* CppLuaEngine.cpp */,
 				99F6AEC8253BC4D00056EB4F /* CppLuaEngine.hpp */,
 				997CE6B2253D3FC10060CAED /* CppLuaShaderLib.cpp */,
@@ -362,10 +350,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				997CE663253AF2C00060CAED /* lzio.h in Headers */,
-				997CE6AD253AF5B20060CAED /* CppFragmentShader.hpp in Headers */,
 				997CE69D253AF2C00060CAED /* lundump.h in Headers */,
 				997CE673253AF2C00060CAED /* ldebug.h in Headers */,
-				997CE6A9253AF5990060CAED /* CppVertexShader.hpp in Headers */,
 				997CE664253AF2C00060CAED /* lgc.h in Headers */,
 				997CE668253AF2C00060CAED /* lua.hpp in Headers */,
 				997CE619253AEA950060CAED /* CppPrimitive.hpp in Headers */,
@@ -495,7 +481,6 @@
 				997CE687253AF2C00060CAED /* lzio.c in Sources */,
 				998B0D802541A93F002472E0 /* CppWindow.cpp in Sources */,
 				997CE618253AEA950060CAED /* CppPrimitive.cpp in Sources */,
-				997CE6A8253AF5990060CAED /* CppVertexShader.cpp in Sources */,
 				997CE697253AF2C00060CAED /* lparser.c in Sources */,
 				997CE6B8253D8BFE0060CAED /* CppTriangles.cpp in Sources */,
 				997CE5C6253716DE0060CAED /* CppRender.cpp in Sources */,
@@ -507,7 +492,6 @@
 				997CE69C253AF2C00060CAED /* ldo.c in Sources */,
 				997CE677253AF2C00060CAED /* lstring.c in Sources */,
 				997CE685253AF2C00060CAED /* loslib.c in Sources */,
-				997CE6AC253AF5B20060CAED /* CppFragmentShader.cpp in Sources */,
 				997CE68F253AF2C00060CAED /* lcode.c in Sources */,
 				997CE6102539A3850060CAED /* CppUtils.cpp in Sources */,
 				997CE66D253AF2C00060CAED /* loadlib.c in Sources */,

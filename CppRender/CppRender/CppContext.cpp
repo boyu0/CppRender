@@ -15,8 +15,6 @@
 #include "CppDraw.hpp"
 #include "CppLuaEngine.hpp"
 #include "CppShader.hpp"
-#include "CppVertexShader.hpp"
-#include "CppFragmentShader.hpp"
 #include "CppProgram.hpp"
 #include "CppVertexArray.hpp"
 #include "CppBuffer.hpp"
@@ -79,19 +77,7 @@ void Context::bindRenderBuffer(int target, int id)
 
 int Context::createShader(int type, const std::string& file)
 {
-    Shader* shader = nullptr;
-    switch (type)
-    {
-    case CR_VERTEX_SHADER:
-        shader = new VertexShader();
-        break;
-    case CR_FRAGMENT_SHADER:
-        shader = new FragmentShader();
-        break;
-    default:
-        CR_ASSERT(false, "");
-        return false;
-    }
+    Shader* shader = new Shader(type);
 
     if(shader == nullptr || !shader->init(this, file))
     {
@@ -122,11 +108,11 @@ void Context::deleteBuffers(int n, int* ids)
     CR_DELETE_ARRAYS(this, _buffers, n, ids);
 }
 
-void Context::vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer)
+void Context::vertexAttributePointer(const std::string& name, int size, int type, bool normalized, int stride, int pointer)
 {
     CR_ASSERT(_vertexArrays.find(_currentVertexArrayIndex) != _vertexArrays.end(), "");
 
-    _vertexArrays[_currentVertexArrayIndex]->vertexAttributePointer(index, size, type, normalized, stride, pointer);
+    _vertexArrays[_currentVertexArrayIndex]->vertexAttributePointer(name, size, type, normalized, stride, pointer);
 }
 
 void Context::frameBufferTexture2D(int target, int attachment, int textarget, int texture, int level)
@@ -395,10 +381,10 @@ void Context::disable(int target)
     }
 }
 
-void Context::setProgramAttribute(int index, int size, int type, bool normalized, void* data)
+void Context::setProgramAttribute(const std::string& name, int size, int type, bool normalized, void* data)
 {
     Program* program = _programs[_currentProgramIndex];
-    program->setAttribute(index, size, type, normalized, data);
+    program->setAttribute(name, size, type, normalized, data);
 }
 
 void Context::setProgramUniform(const std::string& name, int i)

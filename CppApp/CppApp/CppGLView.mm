@@ -230,9 +230,9 @@ int vao;
     Render::bindBuffer(CR_ARRAY_BUFFER, buffers[0]);
     Render::bufferData(CR_ARRAY_BUFFER, sizeof(vertices), vertices, CR_STATIC_DRAW);
     
-    Render::vertexAttributePointer(0, 3, CR_FLOAT, false, 8 * sizeof(float), 0);
-    Render::vertexAttributePointer(1, 3, CR_FLOAT, false, 8 * sizeof(float), 3*sizeof(float));
-    Render::vertexAttributePointer(2, 2, CR_FLOAT, false, 8 * sizeof(float), 6*sizeof(float));
+    Render::vertexAttributePointer("aPos", 3, CR_FLOAT, false, 8 * sizeof(float), 0);
+    Render::vertexAttributePointer("aNormal", 3, CR_FLOAT, false, 8 * sizeof(float), 3*sizeof(float));
+    Render::vertexAttributePointer("aUV", 2, CR_FLOAT, false, 8 * sizeof(float), 6*sizeof(float));
     
     int texture;
     Render::genTextures(1, &texture);

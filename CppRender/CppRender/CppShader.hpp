@@ -18,17 +18,11 @@ namespace CppRender{
 class Context;
 class Shader{
 public:
-    virtual ~Shader() = 0;
-
+    Shader(int type):_type(type){}
+public:
     inline int getType() { return _type; }
     virtual bool init(Context* ctx, const std::string& file);
-    bool runOne();
     inline std::string& getEnv() { return _env; }
-
-    void initVariables(const std::string& name, std::vector<std::string>& target);
-
-protected:
-    bool unpackTableToEnv(const std::string& name);
 
 protected:
     Context* _ctx{};

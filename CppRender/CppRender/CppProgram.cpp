@@ -11,8 +11,6 @@
 #include "CppUtils.hpp"
 #include "CppContext.hpp"
 #include "CppLuaEngine.hpp"
-#include "CppVertexShader.hpp"
-#include "CppFragmentShader.hpp"
 #include "CppTriangles.hpp"
 #include "CppTexture.hpp"
 
@@ -21,17 +19,7 @@ static int g_index = 0;
 
 void Program::attach(Shader* shader)
 {
-    switch (shader->getType())
-    {
-    case CR_VERTEX_SHADER:
-        _vertexShader = dynamic_cast<VertexShader*>(shader);
-        break;
-    case CR_FRAGMENT_SHADER:
-        _fragmentShader = dynamic_cast<FragmentShader*>(shader);
-        break;
-    default:
-        break;
-    }
+    _shaderEnvs[shader->getType()] = shader->getEnv();
 }
 
 bool Program::link()
@@ -42,6 +30,8 @@ bool Program::link()
     engine->getEnv(_env);
     engine->setFieldUserData(CR_PROGRAM_LUA_NAME, this);
     engine->pop(1);
+
+    initVariables(CR_VERTEX_SHADER, CR_SHADER_VERYING, _veryings);
     return true;
 }
 
@@ -50,45 +40,23 @@ void Program::pushVertexAttrf(int count, float f[])
     _primitive->pushVertexAttrf(count, f);
 }
 
-void Program::setAttribute(int index, int size, int type, bool normalized, void* data)
+void Program::setAttribute(const std::string& name, int size, int type, bool normalized, void* data)
 {
-    _vertexShader->setAttribute(index, size, type, normalized, data);
+    Utils::setValue(_ctx, _env, name, size, type, normalized, data);
 }
 
 void Program::beginEnv(int type)
 {
-    Shader* shader = nullptr;
-    switch (type) {
-        case CR_VERTEX_SHADER:
-            shader = _vertexShader;
-            break;
-        case CR_FRAGMENT_SHADER:
-            shader = _fragmentShader;
-            break;
-        default:
-            break;
-    }
     LuaEngine* engine = _ctx->getLuaEngine();
-    engine->getEnv(shader->getEnv());
+    engine->getEnv(_shaderEnvs[type]);
     engine->getEnv(_env);
     engine->setSuper();
 }
 
 void Program::endEnv(int type)
 {
-    Shader* shader = nullptr;
-    switch (type) {
-        case CR_VERTEX_SHADER:
-            shader = _vertexShader;
-            break;
-        case CR_FRAGMENT_SHADER:
-            shader = _fragmentShader;
-            break;
-        default:
-            break;
-    }
     LuaEngine* engine = _ctx->getLuaEngine();
-    engine->getEnv(shader->getEnv());
+    engine->getEnv(_shaderEnvs[type]);
     engine->getEnv(CR_LUA_G);
     engine->setSuper();
 }
@@ -99,12 +67,73 @@ bool Program::runVertex(int start, int count)
     for(int i = start; i < start + count; ++i)
     {
         _ctx->vertexArrayLoadOne(i);
-        _vertexShader->runOne();
-        _vertexShader->dealResult(this);
+        runShader(CR_VERTEX_SHADER);
+        dealVaryings();
     }
     endEnv(CR_VERTEX_SHADER);
 
     return true;
+}
+
+
+void Program::initVariables(int type, const std::string& name, std::vector<std::string>& target)
+{
+    LuaEngine* engine = _ctx->getLuaEngine();
+    engine->getEnv(_shaderEnvs[type]);
+    engine->getField(name);
+    if(engine->isNil())
+    {
+        engine->pop(2);
+        return;
+    }
+    int len = engine->getLen();
+    for(int i = 1; i <= len; ++i)
+    {
+        target.emplace_back(engine->getFieldString(i));
+    }
+    engine->pop(2);
+}
+
+void Program::dealVaryings()
+{
+    LuaEngine* engine = _ctx->getLuaEngine();
+    engine->getEnv(_shaderEnvs[CR_VERTEX_SHADER]);
+    // TODO: error
+    engine->getField(CR_SHADER_VERT_POSITION);
+    int count = engine->getLen();
+    CR_ASSERT(count == 4, "");
+    float pos[4];
+    for(int i = 0; i < 4; ++i)
+    {
+        pos[i] = engine->getFieldFloat(i+1);
+    }
+    engine->pop(1);
+    newVertex(pos);
+
+    for(int index = 0; index < _veryings.size(); ++index)
+    {
+        float v[4] = {0};
+        int count;
+        engine->getFieldv(_veryings[index], -1, v, &count);
+        pushVertexAttrf(count, v);
+    }
+}
+
+bool Program::runShader(int type)
+{
+    LuaEngine* engine = _ctx->getLuaEngine();
+    engine->getEnv(_shaderEnvs[type]);
+    engine->getField(CR_SHADER_MAINFUNC);
+    if(engine->isNil())
+    {
+        CR_ASSERT(false, "main函数不存在");
+        engine->pop(2);
+        return false;
+    }
+
+    bool ret = engine->runFunc(_shaderEnvs[type], 0, 0);
+    engine->pop(1);
+    return ret;
 }
 
 
@@ -138,10 +167,26 @@ void Program::setUniform(const std::string& name, int x)
     Utils::setValue(_ctx, _env, name, 1, CR_INT, false, &x);
 }
 
+void Program::setVerying(const std::string& name, int count, float f[])
+{
+    LuaEngine* engine = _ctx->getLuaEngine();
+    engine->getEnv(_shaderEnvs[CR_FRAGMENT_SHADER]);
+    engine->getFieldOrNewTable(name);
+    engine->setFieldv(f, count);
+    engine->pop(2);
+}
+
+void Program::getResultColor(float color[4])
+{
+    LuaEngine* engine = _ctx->getLuaEngine();
+    engine->getEnv(_shaderEnvs[CR_FRAGMENT_SHADER]);
+    engine->getFieldv(CR_SHADER_VERT_COLOR, -1, color);
+    engine->pop(1);
+}
+
 void Program::runFragment(int count, int index[], float portion[], float color[4])
 {
-    auto& veryings = _vertexShader->getVeryings();
-    for(int i = 0; i < veryings.size(); ++i)
+    for(int i = 0; i < _veryings.size(); ++i)
     {
         float result[4] = {0};
         int pcount = 0;
@@ -153,10 +198,10 @@ void Program::runFragment(int count, int index[], float portion[], float color[4
                 result[k] += portion[j] * p[k];
             }
         }
-        _fragmentShader->setVerying(veryings[i], pcount, result);
+        setVerying(_veryings[i], pcount, result);
     }
-    _fragmentShader->runOne();
-    _fragmentShader->getResult(color);
+    runShader(CR_FRAGMENT_SHADER);
+    getResultColor(color);
 }
 
 LuaEngine* Program::getLuaEngine()

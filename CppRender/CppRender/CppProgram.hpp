@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 #include <string>
+#include <vector>
+#include "CppDefine.h"
 
 namespace CppRender{
 class Shader;
@@ -27,7 +29,7 @@ public:
     void attach(Shader* shader);
     bool link();
     void run(int mode, int start, int count);
-    void setAttribute(int index, int size, int type, bool normalized, void* data);
+    void setAttribute(const std::string& name, int size, int type, bool normalized, void* data);
     void setUniform(const std::string& name, float x);
     void setUniform(const std::string& name, float x, float y);
     void setUniform(const std::string& name, float x, float y, float z);
@@ -47,12 +49,18 @@ public:
 private:
     bool runVertex(int start, int count);
 
+    void initVariables(int type, const std::string& name, std::vector<std::string>& target);
+    void dealVaryings();
+    bool runShader(int type);
+    void setVerying(const std::string& name, int count, float f[]);
+    void getResultColor(float color[4]);
+
 private:
     Context* _ctx{};
-    VertexShader* _vertexShader{};
-    FragmentShader* _fragmentShader{};
     Primitive* _primitive{};
     std::string _env;
+    std::string _shaderEnvs[CR_SHAER_TYPE_COUNT];
+    std::vector<std::string> _veryings;
 };
 }
 

@@ -32,7 +32,7 @@ public:
 
     static void genVertexArrays(int n, int* ids);
     static void bindVertexArray(int id);
-    static void vertexAttributePointer(int index, int size, int type, bool normalized, int stride, int pointer);
+    static void vertexAttributePointer(const std::string& name, int size, int type, bool normalized, int stride, int pointer);
     
     static void clearColor(float r, float g, float b, float a);
     static void clear(int bit);
