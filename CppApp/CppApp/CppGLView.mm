@@ -74,7 +74,6 @@ unsigned char data[] = {
 };
 
 #import <Foundation/Foundation.h>
-#include <OpenGL/gl.h>
 #import "CppGLView.h"
 #include "../../CppRender/CppRender/CppRender.hpp"
 #include <string>
@@ -83,40 +82,14 @@ unsigned char data[] = {
 #include "../../CppRender/include/stb_image.h"
 #include "../../CppRender/include/glm/glm.hpp"
 #include "../../CppRender/include/glm/ext.hpp"
-
-std::string vShader =
-"attribute vec3 aPos; \
-attribute vec3 aColor; \
-attribute vec2 aTexCoord; \
-varying vec3 ourColor; \
-varying vec2 TexCoord; \
-void main() \
-{ \
-    gl_Position = vec4(aPos, 1.0); \
-    ourColor = aColor; \
-    TexCoord = aTexCoord; \
-}";
-
-std::string fShader =
-"varying vec3 ourColor; \
-varying vec2 TexCoord; \
-uniform sampler2D ourTexture; \
-void main() \
-{ \
-    gl_FragColor = texture2D(ourTexture, TexCoord); \
-}";
-
-static int g_width = 300;
-static int g_height = 200;
+#include "GLDraw.hpp"
 
 using namespace CppRender;
 @implementation CppGLView{
     BOOL inited;
-    GLuint texture;
-    GLuint VAO;
-    GLuint program;
     NSDate* _now;
     NSDate* _start;
+    GLDraw _draw;
 }
 
 -(const std::string) getPath:(const std::string& )path{
@@ -172,107 +145,21 @@ using namespace CppRender;
 //}
 
 // --------------------------------------------------------------
-int buffers[2];
-int vao;
--(void) prepareRender{
-    
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
 
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f, 0.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f, 1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f, 1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f, 1.0f, 1.0f,
-         -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f, 0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f, 0.0f, 1.0f,
-
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
-
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
-         -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,
++ (NSOpenGLPixelFormat*) defaultPixelFormat
+{
+    NSOpenGLPixelFormatAttribute attributes [] = {
+        NSOpenGLPFAWindow,
+        NSOpenGLPFADoubleBuffer,
+        NSOpenGLPFADepthSize, (NSOpenGLPixelFormatAttribute)16,
     };
-    
-    Render::enable(CR_DEPTH_BUFFER);
+    return [[NSOpenGLPixelFormat alloc] initWithAttributes:attributes];
+}
 
-    Render::perspective(glm::radians(45.0f), g_width, g_height, 0.1f, 100.0f);
-
-    Render::genVertexArrays(1, &vao);
-    Render::bindVertexArray(vao);
-    Render::genBuffers(2, buffers);
-    Render::bindBuffer(CR_ARRAY_BUFFER, buffers[0]);
-    Render::bufferData(CR_ARRAY_BUFFER, sizeof(vertices), vertices, CR_STATIC_DRAW);
-    
-    Render::vertexAttributePointer("aPos", 3, CR_FLOAT, false, 8 * sizeof(float), 0);
-    Render::vertexAttributePointer("aNormal", 3, CR_FLOAT, false, 8 * sizeof(float), 3*sizeof(float));
-    Render::vertexAttributePointer("aUV", 2, CR_FLOAT, false, 8 * sizeof(float), 6*sizeof(float));
-    
-    int texture;
-    Render::genTextures(1, &texture);
-    Render::bindTexture(texture);
-    int width, height;
-    unsigned char* data = stbi_load([self getPath:"res/png/container.jpg"].c_str(), &width, &height, nullptr, 4);
-    Render::texImage2D(CR_TEXTURE_2D, 0, CR_RGBA8, width, height, data);
-    
-    
-    int crvert = Render::createShader(CR_VERTEX_SHADER, [self getPath:"res/shader/testVert.lua"]);
-    int crfrag = Render::createShader(CR_FRAGMENT_SHADER, [self getPath:"res/shader/testFrag.lua"]);
-    int crprogram = Render::createProgram();
-    Render::attachShader(crprogram, crvert);
-    Render::attachShader(crprogram, crfrag);
-    Render::linkProgram(crprogram);
-    Render::useProgram(crprogram);
-    Render::setProgramUniform("texture", texture);
-    
-    glm::mat4 view = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, 0.0f, -3.0f));
-    Render::setProgramUniform("view", glm::value_ptr(view), 16);
-    glm::mat4 projection = glm::perspective(45.0f, (float)g_width/g_height, 0.1f, 100.0f);
-    Render::setProgramUniform("projection", glm::value_ptr(projection), 16);
-
-
-//    Render::bindBuffer(CR_ELEMENT_ARRAY_BUFFER, buffers[1]);
-//    Render::bufferData(CR_ELEMENT_ARRAY_BUFFER, 0, nullptr, CR_STATIC_DRAW);
-    
-    Render::bindVertexArray(0);
+-(void) prepareRender{
 }
 
 -(void) drawRender{
-    Render::clear(CR_COLOR_BUFFER_BIT | CR_DEPTH_BUFFER_BIT);
-    float time = [_now timeIntervalSinceDate:_start];
-    glm::mat4 model = glm::rotate(glm::mat4(1.0), 50.0f * time * 0.02f, glm::vec3(0.5f, 1.0f, 0.0f));
-//    glm::mat4 model = glm::mat4(1.0);
-    Render::setProgramUniform("model", glm::value_ptr(model), 16);
-    
-    Render::bindVertexArray(vao);
-    Render::drawArrays(CR_TRIANGLES, 0, 36);
-    
 }
 
 
@@ -281,8 +168,11 @@ int vao;
     GLint swapInterval = 1;
 //    [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
 //    glViewport(0, 0, 800, 600);
+    
+    self.winW = 800;
+    self.winH = 600;
 
-    if(!Render::init(g_width, g_height))
+    if(!Render::init(self.winW, self.winH))
     {
         printf("false");
         return;
@@ -293,68 +183,8 @@ int vao;
     Render::clearColor(0, 0, 0, 1);
     Render::clear(CR_COLOR_BUFFER_BIT | CR_DEPTH_BUFFER_BIT);
     [self prepareRender];
-    [self drawRender];
     
-    float vertices[] = {
-    //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
-         1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
-         1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
-        -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
-        -1.0f,  1.0f, 0.0f,   0.0f, 0.0f, 0.0f,   0.0f, 1.0f    // 左上
-    };
-    // float vertices[] = {
-    // //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
-    //      -1.0f,  -0.5f, 0.0f,   0.2f, 0.0f, 0.0f,   1.0f, 0.0f,   // 右上
-    //      -0.5f, 1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   1.0f, 1.0f,   // 右下
-    //     -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 1.0f,   // 左下
-    //     1.0f,  -1.0f, 0.0f,   0.2f, 0.0f, 0.0f,   0.0f, 0.0f    // 左上
-    // };
-    unsigned int indices[] = {
-        0, 1, 3,
-        1, 2, 3,
-    };
-
-    glGenVertexArraysAPPLE(1, &VAO);
-    glBindVertexArrayAPPLE(VAO);
-    
-    int vert = compileShader(vShader, GL_VERTEX_SHADER);
-    int frag = compileShader(fShader, GL_FRAGMENT_SHADER);
-    program = createProgram(vert, frag);
-    
-    
-    
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STREAM_DRAW);
-    
-
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    void* renderData = malloc(800*600*4);
-//    renderData = Render::getRenderData();
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, g_width, g_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    
-    int pos;
-    
-    
-    pos = glGetAttribLocation(program, "aPos");
-    glVertexAttribPointer(pos, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)(0 * sizeof(float)));
-    glEnableVertexAttribArray(pos);
-    pos = glGetAttribLocation(program, "aColor");
-    glVertexAttribPointer(pos, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(pos);
-    pos = glGetAttribLocation(program, "aTexCoord");
-    glVertexAttribPointer(pos, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(pos);
-    
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    glBindVertexArrayAPPLE(0);
+    _draw.prepare();
 
     [NSTimer scheduledTimerWithTimeInterval:1.0/60 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
 
@@ -366,62 +196,13 @@ int vao;
     [self setNeedsDisplay:YES];
 }
 
-int createProgram(GLuint vertex, GLuint fragment)
-{
-    int success;
-    GLuint ID = glCreateProgram();
-    glAttachShader(ID, vertex);
-    glAttachShader(ID, fragment);
-    glLinkProgram(ID);
-    glGetProgramiv(ID, GL_LINK_STATUS, &success);
-    if(!success)
-    {
-        char infoLog[512];
-        glGetProgramInfoLog(ID, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-        return -1;
-    }
-    glDeleteShader(vertex);
-    glDeleteShader(fragment);
-    
-    return ID;
-}
-
-GLuint compileShader(const std::string& code, GLenum type)
-{
-    GLuint vertex = glCreateShader(type);
-    int success;
-    
-    const char* scode = code.c_str();
-    glShaderSource(vertex, 1, &scode, NULL);
-    glCompileShader(vertex);
-    glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
-    if(!success)
-    {
-        char infoLog[512];
-        glGetShaderInfoLog(vertex, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-        return -1;
-    };
-    
-    return vertex;
-}
-
--(void) drawAnObject{
-    glBindVertexArrayAPPLE(VAO);
-    glUseProgram(program);
-    glBindTexture(GL_TEXTURE_2D, texture);
-     void* renderData = Render::getRenderData();
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, g_width, g_height, GL_RGBA, GL_UNSIGNED_BYTE, renderData);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-}
-
 -(void) drawRect: (NSRect) bounds
 {
+    _time = [_now timeIntervalSinceDate:_start];
     [self drawRender];
-    [self drawAnObject];
-    glFlush();
+
+    void* renderData = Render::getRenderData();
+    _draw.draw(self.winW, self.winH, renderData);
 }
 
 @end

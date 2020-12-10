@@ -208,7 +208,7 @@ void Context::bufferData(int target, int size, void* data, int useage)
         index = _currentArrayBufferIndex;
     }else if(target == CR_ELEMENT_ARRAY_BUFFER)
     {
-        index = _currentArrayBufferIndex;
+        index = _currentElementArrayBufferIndex;
     }else{
         CR_ASSERT(false, "");
         return;

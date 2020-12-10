@@ -6,8 +6,8 @@
 //  Copyright © 2020 test. All rights reserved.
 //
 
-#ifndef CR_
-#define CR_
+#ifndef __CPPRENDER__
+#define __CPPRENDER__
 
 #include "CppDefine.h"
 #include <string>

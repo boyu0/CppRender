@@ -16,6 +16,15 @@
 		997CE5F325371A5E0060CAED /* CppGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 997CE5F225371A5E0060CAED /* CppGLView.mm */; };
 		997CE5F625371AED0060CAED /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 997CE5F525371AED0060CAED /* AppKit.framework */; };
 		997CE5F825371BFC0060CAED /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 997CE5F725371BFC0060CAED /* OpenGL.framework */; };
+		9981EBDA2580F89B000399B5 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9981EBD72580F89B000399B5 /* Mesh.cpp */; };
+		9981EBDB2580F89B000399B5 /* Model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9981EBD92580F89B000399B5 /* Model.cpp */; };
+		9981EBDE2580F8D4000399B5 /* ModelGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9981EBDD2580F8D4000399B5 /* ModelGLView.mm */; };
+		9981EBE12580F9BB000399B5 /* GLDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9981EBDF2580F9BB000399B5 /* GLDraw.cpp */; };
+		9981EBE52580FDDE000399B5 /* libIrrXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9981EBE32580FDDE000399B5 /* libIrrXML.a */; };
+		9981EBE72580FEC7000399B5 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9981EBE62580FEC6000399B5 /* libz.tbd */; };
+		9981EBE92580FFF3000399B5 /* CaseBoxView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9981EBE82580FFF3000399B5 /* CaseBoxView.mm */; };
+		9981EBEE2581AD4F000399B5 /* CaseModelView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9981EBED2581AD4F000399B5 /* CaseModelView.mm */; };
+		9981EBF325821146000399B5 /* libassimp.5.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9981EBF225821146000399B5 /* libassimp.5.0.0.dylib */; };
 		99F6AECC253BD8440056EB4F /* res in Resources */ = {isa = PBXBuildFile; fileRef = 99F6AECB253BD8440056EB4F /* res */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +44,23 @@
 		997CE5F425371A760060CAED /* CppGLView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CppGLView.h; sourceTree = "<group>"; };
 		997CE5F525371AED0060CAED /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		997CE5F725371BFC0060CAED /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		9981EBD62580F89B000399B5 /* Model.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Model.hpp; sourceTree = "<group>"; };
+		9981EBD72580F89B000399B5 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
+		9981EBD82580F89B000399B5 /* Mesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
+		9981EBD92580F89B000399B5 /* Model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Model.cpp; sourceTree = "<group>"; };
+		9981EBDC2580F8BA000399B5 /* ModelGLView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelGLView.h; sourceTree = "<group>"; };
+		9981EBDD2580F8D4000399B5 /* ModelGLView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ModelGLView.mm; sourceTree = "<group>"; };
+		9981EBDF2580F9BB000399B5 /* GLDraw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GLDraw.cpp; sourceTree = "<group>"; };
+		9981EBE02580F9BB000399B5 /* GLDraw.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GLDraw.hpp; sourceTree = "<group>"; };
+		9981EBE22580FDDE000399B5 /* libassimp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libassimp.a; path = libs/libassimp.a; sourceTree = "<group>"; };
+		9981EBE32580FDDE000399B5 /* libIrrXML.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libIrrXML.a; path = libs/libIrrXML.a; sourceTree = "<group>"; };
+		9981EBE62580FEC6000399B5 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		9981EBE82580FFF3000399B5 /* CaseBoxView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CaseBoxView.mm; sourceTree = "<group>"; };
+		9981EBEB2581000C000399B5 /* CaseBoxView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaseBoxView.h; sourceTree = "<group>"; };
+		9981EBEC2581AD39000399B5 /* CaseModelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaseModelView.h; sourceTree = "<group>"; };
+		9981EBED2581AD4F000399B5 /* CaseModelView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CaseModelView.mm; sourceTree = "<group>"; };
+		9981EBEF2581B080000399B5 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		9981EBF225821146000399B5 /* libassimp.5.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libassimp.5.0.0.dylib; path = libs/libassimp.5.0.0.dylib; sourceTree = "<group>"; };
 		99F6AECB253BD8440056EB4F /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -43,6 +69,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9981EBF325821146000399B5 /* libassimp.5.0.0.dylib in Frameworks */,
+				9981EBE72580FEC7000399B5 /* libz.tbd in Frameworks */,
+				9981EBE52580FDDE000399B5 /* libIrrXML.a in Frameworks */,
 				997CE5F825371BFC0060CAED /* OpenGL.framework in Frameworks */,
 				997CE5F625371AED0060CAED /* AppKit.framework in Frameworks */,
 				997CE5EE253717ED0060CAED /* libCppRender.a in Frameworks */,
@@ -73,6 +102,11 @@
 		997CE5D7253717400060CAED /* CppApp */ = {
 			isa = PBXGroup;
 			children = (
+				9981EBEF2581B080000399B5 /* Camera.h */,
+				9981EBD72580F89B000399B5 /* Mesh.cpp */,
+				9981EBD82580F89B000399B5 /* Mesh.hpp */,
+				9981EBD92580F89B000399B5 /* Model.cpp */,
+				9981EBD62580F89B000399B5 /* Model.hpp */,
 				997CE5D8253717400060CAED /* AppDelegate.h */,
 				997CE5D9253717400060CAED /* AppDelegate.m */,
 				997CE5DB253717400060CAED /* ViewController.h */,
@@ -84,6 +118,14 @@
 				997CE5E6253717420060CAED /* CppApp.entitlements */,
 				997CE5F225371A5E0060CAED /* CppGLView.mm */,
 				997CE5F425371A760060CAED /* CppGLView.h */,
+				9981EBDC2580F8BA000399B5 /* ModelGLView.h */,
+				9981EBDD2580F8D4000399B5 /* ModelGLView.mm */,
+				9981EBDF2580F9BB000399B5 /* GLDraw.cpp */,
+				9981EBE02580F9BB000399B5 /* GLDraw.hpp */,
+				9981EBE82580FFF3000399B5 /* CaseBoxView.mm */,
+				9981EBEB2581000C000399B5 /* CaseBoxView.h */,
+				9981EBEC2581AD39000399B5 /* CaseModelView.h */,
+				9981EBED2581AD4F000399B5 /* CaseModelView.mm */,
 			);
 			path = CppApp;
 			sourceTree = "<group>";
@@ -91,6 +133,10 @@
 		997CE5EC253717ED0060CAED /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9981EBF225821146000399B5 /* libassimp.5.0.0.dylib */,
+				9981EBE62580FEC6000399B5 /* libz.tbd */,
+				9981EBE22580FDDE000399B5 /* libassimp.a */,
+				9981EBE32580FDDE000399B5 /* libIrrXML.a */,
 				997CE5F725371BFC0060CAED /* OpenGL.framework */,
 				997CE5F525371AED0060CAED /* AppKit.framework */,
 				997CE5ED253717ED0060CAED /* libCppRender.a */,
@@ -171,7 +217,13 @@
 				997CE5DD253717400060CAED /* ViewController.m in Sources */,
 				997CE5E5253717420060CAED /* main.m in Sources */,
 				997CE5DA253717400060CAED /* AppDelegate.m in Sources */,
+				9981EBDB2580F89B000399B5 /* Model.cpp in Sources */,
+				9981EBE12580F9BB000399B5 /* GLDraw.cpp in Sources */,
+				9981EBE92580FFF3000399B5 /* CaseBoxView.mm in Sources */,
+				9981EBEE2581AD4F000399B5 /* CaseModelView.mm in Sources */,
 				997CE5F325371A5E0060CAED /* CppGLView.mm in Sources */,
+				9981EBDA2580F89B000399B5 /* Mesh.cpp in Sources */,
+				9981EBDE2580F8D4000399B5 /* ModelGLView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +296,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SYSTEM_HEADER_SEARCH_PATHS = "${SRCROOT}/../CppRender/include";
 			};
 			name = Debug;
 		};
@@ -295,6 +348,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
+				SYSTEM_HEADER_SEARCH_PATHS = "${SRCROOT}/../CppRender/include";
 			};
 			name = Release;
 		};
@@ -313,8 +367,16 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.boyu0.CppApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"${SRCROOT}/include",
+					"${SRCROOT}/../CppRender/include",
+				);
 			};
 			name = Debug;
 		};
@@ -333,8 +395,16 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.boyu0.CppApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"${SRCROOT}/include",
+					"${SRCROOT}/../CppRender/include",
+				);
 			};
 			name = Release;
 		};
